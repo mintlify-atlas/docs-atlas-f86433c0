@@ -1,0 +1,133 @@
+{
+  "projectType": "saas",
+  "projectName": "Birdflop",
+  "projectDescription": "A 501(c)(3) nonprofit Minecraft server hosting platform with free tools and resources for the community.",
+  "theme": "almond",
+  "primaryColor": "#54daf4",
+  "lightColor": "#7de4f8",
+  "darkColor": "#545eb6",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Hosting",
+            "pages": [
+              "hosting/overview",
+              "hosting/plans",
+              "hosting/getting-started",
+              "hosting/panel-guide",
+              "hosting/database-setup"
+            ]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "tools/overview",
+              "tools/rgbirdflop",
+              "tools/spark-profile",
+              "tools/paper-timings",
+              "tools/flags-generator",
+              "tools/banner-generator",
+              "tools/animated-tab",
+              "tools/animated-textures"
+            ]
+          },
+          {
+            "group": "Bots & Services",
+            "pages": [
+              "bots/botflop",
+              "bots/birdtickets",
+              "bots/binflop"
+            ]
+          },
+          {
+            "group": "Nonprofit",
+            "pages": [
+              "nonprofit/about",
+              "nonprofit/financials",
+              "nonprofit/reimbursements"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "RGBirdflop SDK",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "sdk/introduction",
+              "sdk/installation",
+              "sdk/quickstart"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "sdk/api/generate-output",
+              "sdk/api/color-utilities",
+              "sdk/api/gradient-types",
+              "sdk/api/format-options",
+              "sdk/api/animtab-utils"
+            ]
+          },
+          {
+            "group": "Examples",
+            "pages": [
+              "sdk/examples/basic-gradient",
+              "sdk/examples/custom-formatting",
+              "sdk/examples/shadow-colors",
+              "sdk/examples/minimessage",
+              "sdk/examples/json-output"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Contributing",
+        "groups": [
+          {
+            "group": "Open Source",
+            "pages": [
+              "contributing/overview",
+              "contributing/setup",
+              "contributing/guidelines",
+              "contributing/license"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Nonprofit Minecraft server hosting with flexible plans",
+    "RGBirdflop gradient text generator with NPM package",
+    "Server optimization tools (Spark Profile, Paper Timings analyzers)",
+    "Discord bots (Botflop for timings analysis, BirdTickets for support)",
+    "Minecraft utility tools (Banner generator, Animated textures, Flags generator)",
+    "Community-focused platform with open source contributions",
+    "Free pastebin service (Binflop) for server logs and configs",
+    "Multi-language support (i18n) for global accessibility"
+  ],
+  "publicApiSurface": [
+    "generateOutput(options) - Main gradient generation function",
+    "rgbDefaults - Default configuration object",
+    "hexToRGB(hex) - Convert hex color to RGB array",
+    "rgbToHex(rgb) - Convert RGB array to hex string",
+    "ColorGradient - Gradient generator class",
+    "disperseColors(colors) - Distribute colors evenly",
+    "sortColors(colors) - Sort colors by position",
+    "getShadowColors(rgbStore) - Generate shadow colors for text",
+    "AnimTABUtils - Utilities for TAB plugin animations",
+    "GradientType - Linear, radial, and custom gradient types"
+  ]
+}
