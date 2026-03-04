@@ -1,0 +1,243 @@
+---
+title: RGBirdflop
+description: Create beautiful hex gradient text for Minecraft with RGBirdflop's powerful gradient generator
+---
+
+RGBirdflop is a hex gradient text generator for Minecraft that supports multiple output formats, gradient types, and customization options. Access it at [birdflop.com/resources/rgb](https://birdflop.com/resources/rgb).
+
+## Features
+
+- Multiple gradient types (linear, radial, quadratic, sinusoidal, and more)
+- Custom color stops with hex color picker
+- Output formats for various Minecraft platforms
+- Text formatting options (bold, italic, underline, strikethrough, obfuscated)
+- Text shadow customization
+- Preset system for saving and sharing gradients
+- Real-time preview
+
+## Basic Usage
+
+<Steps>
+  <Step title="Enter Your Text">
+    Type the text you want to apply a gradient to in the input field. The preview updates in real-time.
+  </Step>
+  
+  <Step title="Choose Colors">
+    Click the color buttons to add color stops to your gradient. You can:
+    - Add multiple colors by clicking the + button
+    - Rearrange colors using the arrow buttons
+    - Remove colors with the trash icon
+    - Customize each color using the hex color picker
+  </Step>
+  
+  <Step title="Select Gradient Type">
+    Choose from various gradient types:
+    - **Linear**: Smooth color transition from start to end
+    - **Radial**: Colors radiate from center outward
+    - **Quadratic**: Curved gradient progression
+    - **Sinusoidal**: Wave-like color patterns
+    - And many more experimental types
+  </Step>
+  
+  <Step title="Configure Output Format">
+    Select your target platform:
+    - MiniMessage (Paper, Velocity, etc.)
+    - Legacy (Spigot)
+    - CMI
+    - PlaceholderAPI
+    - SkriptLang
+    - And more
+  </Step>
+  
+  <Step title="Copy and Use">
+    Click the output text to automatically copy it to your clipboard, then paste it into your Minecraft configuration.
+  </Step>
+</Steps>
+
+## Advanced Options
+
+### Text Formatting
+
+Apply additional text styling:
+- **Bold**: Make text bold
+- **Italic**: Italicize text
+- **Underline**: Add underline
+- **Strikethrough**: Strike through text
+- **Obfuscated**: Create the "magic" text effect
+
+### Color Length
+
+Adjust how many characters share the same color. Higher values create broader color bands, while lower values create smoother gradients.
+
+<Note>
+Set "Color Length" to 1 for the smoothest possible gradient effect.
+</Note>
+
+### Trim Spaces
+
+Enable this option to prevent spaces from consuming gradient colors, ensuring colors only change on visible characters.
+
+### Text Shadow
+
+Customize the shadow effect on your text:
+- Shadow color (RGB values)
+- Shadow offset and blur
+- Enable/disable shadow entirely
+
+## Presets
+
+Save and share your gradient configurations:
+
+1. Create your perfect gradient
+2. Navigate to the Presets section
+3. Save your gradient with a custom name
+4. Share the preset URL with others
+5. Browse community presets at [birdflop.com/resources/rgb/presets](https://birdflop.com/resources/rgb/presets)
+
+<Tip>
+Presets include all gradient settings: colors, type, formatting, and output format.
+</Tip>
+
+## Output Formats
+
+### MiniMessage
+
+For modern Paper, Velocity, and other platforms using MiniMessage:
+
+```
+<gradient:#FF0000:#00FF00:#0000FF>Your Text Here</gradient>
+```
+
+### Legacy Format
+
+For Spigot and older servers:
+
+```
+&#FF0000Y&#00FF00o&#0000FFu&#FF0000r &#00FF00T&#0000FFe&#FF0000x&#00FF00t
+```
+
+### CMI Format
+
+For the CMI plugin:
+
+```
+{#FF0000}Y{#00FF00}o{#0000FF}u{#FF0000}r {#00FF00}T{#0000FF}e{#FF0000}x{#00FF00}t
+```
+
+### PlaceholderAPI
+
+For use in PlaceholderAPI placeholders:
+
+```
+<#FF0000>Y<#00FF00>o<#0000FF>u<#FF0000>r <#00FF00>T<#0000FF>e<#FF0000>x<#00FF00>t
+```
+
+## Gradient Types Explained
+
+### Linear
+The standard gradient type. Colors transition evenly from start to finish.
+
+### Radial
+Colors start from the center and radiate outward, creating a circular gradient effect.
+
+### Quadratic
+Uses a quadratic curve for color progression, creating acceleration/deceleration effects.
+
+### Sinusoidal
+Creates wave-like patterns in the color progression.
+
+### Cubic, Quartic, Quintic
+Polynomial curves of increasing complexity for unique gradient shapes.
+
+<Note>
+Experiment with different gradient types to find the perfect look for your text. Use the "Show All Gradients" option to preview all types at once.
+</Note>
+
+## Tips and Best Practices
+
+<Tip>
+**For Smooth Gradients**: Use 3-4 colors maximum and set color length to 1.
+</Tip>
+
+<Tip>
+**For Rainbow Effects**: Use the full color spectrum (red, orange, yellow, green, blue, purple) with linear gradient.
+</Tip>
+
+<Tip>
+**For Readability**: Avoid using too many similar colors together. Ensure sufficient contrast between colors.
+</Tip>
+
+<Warning>
+Some older Minecraft clients may not support hex colors. Test your gradients on your target Minecraft version.
+</Warning>
+
+## Common Use Cases
+
+### Server MOTDs
+
+Create eye-catching server descriptions in your server list:
+
+```yaml
+motd: '<gradient:#FF0000:#FFD700>✦ Your Server Name ✦</gradient>'
+```
+
+### Chat Prefixes
+
+Add colorful rank prefixes:
+
+```yaml
+prefix: '<gradient:#00FFFF:#0080FF>[VIP]</gradient>'
+```
+
+### Scoreboard Titles
+
+Make your sidebars stand out:
+
+```yaml
+title: '<gradient:#FF00FF:#8000FF>═══ Stats ═══</gradient>'
+```
+
+### Welcome Messages
+
+Greet players with style:
+
+```yaml
+message: '<gradient:#FFD700:#FF8C00>Welcome {player}!</gradient>'
+```
+
+## Troubleshooting
+
+### Colors Not Showing
+
+- Verify your server supports hex colors (Paper 1.16+, Velocity, etc.)
+- Check that your plugin supports the output format you selected
+- Ensure you're using a compatible Minecraft client version (1.16+)
+
+### Gradient Looks Choppy
+
+- Decrease the "Color Length" value to 1
+- Add more color stops between your main colors
+- Try a different gradient type (linear usually works best)
+
+### Output Format Not Working
+
+- Verify you selected the correct format for your platform
+- Check plugin documentation for proper syntax
+- Some plugins may require additional configuration to parse hex colors
+
+## Related Tools
+
+- [Animated TAB](/tools/animated-tab) - Create animated gradients for TAB plugin
+- [Banner Generator](/tools/banner-generator) - Design Minecraft banners
+
+## Technical Details
+
+RGBirdflop uses the `@birdflop/rgbirdflop` package to generate gradients. The tool:
+- Calculates color interpolation based on selected gradient type
+- Supports multiple color spaces for smooth transitions
+- Generates optimized output for each format
+- Stores preferences in browser cookies for convenience
+
+<Note>
+All processing happens in your browser. Your text and gradients are never sent to any server.
+</Note>

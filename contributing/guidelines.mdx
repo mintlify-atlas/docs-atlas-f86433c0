@@ -1,0 +1,268 @@
+---
+title: Contribution Guidelines
+description: Guidelines and best practices for contributing to the Birdflop website
+---
+
+## Getting Started
+
+Before making contributions, ensure you have:
+
+1. Read the [contributing overview](/contributing/overview)
+2. Set up your [development environment](/contributing/setup)
+3. Joined our [Discord community](https://discord.com/invite/nmgtX5z)
+
+## Code Contributions
+
+### Finding Something to Work On
+
+- Check the [GitHub Issues](https://github.com/birdflop/web/issues) for open tasks
+- Look for issues labeled `good first issue` if you're new to the project
+- Ask in Discord if you'd like guidance on where to start
+- Propose new features by opening an issue first for discussion
+
+### Workflow
+
+<Steps>
+  <Step title="Create a Branch">
+    Create a new branch for your work:
+
+    ```bash
+    git checkout -b feature/your-feature-name
+    # or
+    git checkout -b fix/bug-description
+    ```
+
+    Use descriptive branch names:
+    - `feature/` for new features
+    - `fix/` for bug fixes
+    - `docs/` for documentation changes
+    - `refactor/` for code refactoring
+  </Step>
+
+  <Step title="Make Your Changes">
+    - Write clean, readable code
+    - Follow the existing code style
+    - Add comments for complex logic
+    - Keep changes focused and atomic
+  </Step>
+
+  <Step title="Test Your Changes">
+    Test your changes locally:
+
+    ```bash
+    # Run the development server
+    pnpm start
+
+    # Check for linting errors
+    pnpm lint
+
+    # Verify TypeScript types
+    pnpm build.types
+    ```
+  </Step>
+
+  <Step title="Commit Your Changes">
+    Write clear, descriptive commit messages:
+
+    ```bash
+    git add .
+    git commit -m "feat: add user profile settings page"
+    # or
+    git commit -m "fix: resolve navigation menu overflow on mobile"
+    ```
+
+    Use conventional commit prefixes:
+    - `feat:` new features
+    - `fix:` bug fixes
+    - `docs:` documentation changes
+    - `style:` formatting, missing semicolons, etc.
+    - `refactor:` code refactoring
+    - `test:` adding tests
+    - `chore:` maintenance tasks
+  </Step>
+
+  <Step title="Push and Create a Pull Request">
+    Push your branch and create a pull request:
+
+    ```bash
+    git push origin your-branch-name
+    ```
+
+    Then open a pull request on GitHub with:
+    - Clear title describing the change
+    - Description of what was changed and why
+    - Reference to any related issues (e.g., "Fixes #123")
+    - Screenshots for UI changes
+  </Step>
+</Steps>
+
+## Code Style
+
+### TypeScript
+
+- Use TypeScript for all new code
+- Avoid using `any` type - use proper typing
+- Prefer interfaces over type aliases for object shapes
+- Use strict mode (already configured)
+
+### Formatting
+
+- The project uses ESLint for code quality
+- Run `pnpm lint` before committing
+- Follow the existing code style in the file you're editing
+- Use meaningful variable and function names
+
+### File Organization
+
+- Place components in appropriate directories
+- Keep related files together
+- Use index files for cleaner imports
+- Follow the existing project structure
+
+## Component Guidelines
+
+### Qwik Components
+
+- Use the `component$` function for all components
+- Leverage Qwik's resumability features
+- Keep components small and focused
+- Use signals (`useSignal`) for reactive state
+- Prefer `useVisibleTask$` over `useTask$` when appropriate
+
+### Styling
+
+- Use Tailwind CSS utility classes
+- Follow the existing design system
+- Ensure responsive design for all screen sizes
+- Test in both light and dark modes (if applicable)
+- Use the `@luminescent/ui` component library when available
+
+## Database Changes
+
+### Schema Modifications
+
+If you need to modify the database schema:
+
+<Steps>
+  <Step title="Update Schema Files">
+    Modify the Drizzle schema files in the appropriate location.
+  </Step>
+
+  <Step title="Generate Migration">
+    ```bash
+    pnpm drizzle:generate
+    ```
+  </Step>
+
+  <Step title="Test Migration Locally">
+    ```bash
+    pnpm wrangler:migrate-local
+    ```
+  </Step>
+
+  <Step title="Document Changes">
+    Include migration details in your pull request description.
+  </Step>
+</Steps>
+
+## Testing
+
+### Manual Testing
+
+- Test all functionality you've added or modified
+- Verify the UI works on different screen sizes
+- Check browser console for errors
+- Test with and without database features (if applicable)
+
+### Before Submitting
+
+Run these checks before creating a pull request:
+
+```bash
+# Lint check
+pnpm lint
+
+# Type check
+pnpm build.types
+
+# Build check
+pnpm build
+```
+
+## Pull Request Guidelines
+
+### PR Description
+
+Your pull request should include:
+
+- **What**: Clear description of changes made
+- **Why**: Explanation of why the changes are needed
+- **How**: Brief overview of the implementation approach
+- **Testing**: How you tested the changes
+- **Screenshots**: For any UI changes (before/after if applicable)
+- **Related Issues**: Link to related issues using "Fixes #issue-number"
+
+### Review Process
+
+- Be responsive to feedback and questions
+- Make requested changes in new commits (don't force push)
+- Engage in discussion if you disagree with feedback
+- Be patient - maintainers are volunteers
+
+### Merging
+
+- PRs require approval from maintainers before merging
+- Keep your branch up to date with main:
+  ```bash
+  git fetch origin
+  git rebase origin/main
+  ```
+- Resolve any conflicts before merge
+
+## Documentation
+
+### Code Comments
+
+- Add comments for complex logic
+- Use JSDoc comments for public functions
+- Explain "why" not "what" in comments
+- Keep comments up to date with code changes
+
+### Documentation Updates
+
+If your changes affect user-facing functionality:
+
+- Update relevant documentation
+- Add examples for new features
+- Update screenshots if UI has changed
+
+## Community Standards
+
+### Be Respectful
+
+- Treat all contributors with respect
+- Provide constructive feedback
+- Be open to different approaches and ideas
+- Help others learn and grow
+
+### Attribution
+
+- Credit others for their ideas and work
+- Don't remove attribution from existing code
+- Acknowledge help received in pull requests
+
+### Licensing
+
+- All contributions are subject to the project's [license](/contributing/license)
+- Only submit code you have the right to contribute
+- Don't include proprietary or copyrighted code
+
+## Questions?
+
+If you have questions about contributing:
+
+- Ask in the [Discord server](https://discord.com/invite/nmgtX5z)
+- Open a [GitHub Discussion](https://github.com/birdflop/web/discussions)
+- Comment on the relevant issue
+
+Thank you for contributing to Birdflop!

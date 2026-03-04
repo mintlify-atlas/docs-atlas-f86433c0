@@ -1,0 +1,380 @@
+---
+title: Flags Generator
+description: Generate optimized JVM startup scripts for your Minecraft server with the best performance flags
+---
+
+The Flags Generator creates optimized startup scripts for your Minecraft server with carefully tuned JVM arguments. Access it at [birdflop.com/resources/flags](https://birdflop.com/resources/flags).
+
+## Features
+
+- Support for multiple flag collections (Aikar's, MeowIce's, Benchmarked, and more)
+- Cross-platform script generation (Linux, Windows, macOS, Pterodactyl)
+- Multiple server types (Paper, Purpur, Velocity, Waterfall)
+- Automatic memory overhead calculation
+- Environment variables support
+- Auto-restart configuration
+- GUI disable option
+- GraalVM optimization flags
+
+## Getting Started
+
+<Steps>
+  <Step title="Configure Basic Settings">
+    1. Enter your server JAR filename (e.g., `paper.jar`, `purpur.jar`)
+    2. Select your operating system/environment
+    3. Choose your server software type
+    4. Set the amount of RAM to allocate
+  </Step>
+  
+  <Step title="Choose Flag Collection">
+    Select a flag set based on your needs:
+    - **Aikar's Flags**: Proven, widely-used flags
+    - **MeowIce's Flags**: Modern optimization flags
+    - **Benchmarked**: Scientifically tested flags
+    - **hilltty's Flags**: Alternative optimization approach
+    - **Obydux's Flags**: GraalVM-specific optimizations
+    - **Etil's Flags**: Balanced performance flags
+  </Step>
+  
+  <Step title="Configure Options">
+    Enable optional features:
+    - No GUI mode (recommended for servers)
+    - Use variables for easier editing
+    - Auto-restart on crash
+    - Calculate overhead (recommended)
+  </Step>
+  
+  <Step title="Copy and Use">
+    Copy the generated script from the output box and save it as:
+    - Linux/macOS: `start.sh`
+    - Windows: `start.bat`
+    - Pterodactyl: Paste into startup command field
+  </Step>
+</Steps>
+
+## Configuration Options
+
+### File Name
+
+The name of your server JAR file. Common examples:
+- `paper.jar`
+- `purpur.jar`
+- `velocity.jar`
+- `server.jar`
+
+<Note>
+The generator automatically appends `.jar` if you forget it.
+</Note>
+
+### Environment
+
+Choose your server's operating system:
+
+#### Linux
+Generates a bash script (`start.sh`) for Linux servers. Most common for dedicated servers and VPS.
+
+#### Windows
+Generates a batch script (`start.bat`) for Windows servers.
+
+#### macOS
+Generates a bash script optimized for macOS systems.
+
+#### Pterodactyl
+Generates a command suitable for the Pterodactyl panel's startup field.
+
+#### Command
+Generates a raw Java command without script wrapper.
+
+### Software
+
+Select your server software:
+
+- **Paper**: Most popular performance-focused server
+- **Purpur**: Paper fork with additional features
+- **Velocity**: Modern proxy server
+- **Waterfall**: Paper-based BungeeCord fork
+
+<Note>
+Some options (like GUI disable) are automatically hidden for software that doesn't support them.
+</Note>
+
+### Memory Allocation
+
+Amount of RAM to allocate to your server (in GiB):
+
+- **Minimum**: 1 GB (only for test/development servers)
+- **Recommended**: 4-8 GB for small-medium servers
+- **Large Servers**: 12-16+ GB for many players
+
+<Warning>
+Don't allocate all available RAM. Leave at least 1-2 GB for the operating system.
+</Warning>
+
+### Calculate Overhead
+
+Enables automatic memory overhead calculation to prevent out-of-memory errors.
+
+**Formula**: `(11x ÷ 12) - 1200MB` where x is allocated RAM
+
+Example: With 6GB allocated, the JVM receives ~4.3GB, leaving room for overhead.
+
+<Tip>
+Always enable this option unless you have a specific reason not to. It prevents crashes from memory issues.
+</Tip>
+
+## Flag Collections Explained
+
+### Aikar's Flags
+
+[Aikar's Flags](https://docs.papermc.io/paper/aikars-flags) are the most widely-used JVM flags in the Minecraft community.
+
+**Best for**: General use, proven stability, wide compatibility
+
+**Key optimizations**:
+- G1GC garbage collector tuning
+- Optimized heap sizing
+- Reduced GC pause times
+- Memory allocation efficiency
+
+### MeowIce's Flags
+
+[MeowIce's Flags](https://github.com/MeowIce/meowice-flags) provide modern optimizations for current Java versions.
+
+**Best for**: Modern servers, Java 17+
+
+**Key optimizations**:
+- Updated GC tuning for Java 17+
+- Reduced memory overhead
+- Improved throughput
+- Lower latency
+
+### Benchmarked Flags
+
+[Benchmarked](https://github.com/brucethemoose/Minecraft-Performance-Flags-Benchmarks) flags are scientifically tested through extensive benchmarks.
+
+**Best for**: Maximum performance, willing to test
+
+**Key optimizations**:
+- Empirically tested settings
+- Multiple configurations for different scenarios
+- Regular updates based on new tests
+
+### hilltty's Flags
+
+[hilltty's Flags](https://github.com/hilltty/hilltty-flags) offer an alternative optimization approach.
+
+**Best for**: Alternative to mainstream flags
+
+### Obydux's Flags
+
+[Obydux's Flags](https://github.com/Obydux/Minecraft-GraalVM-Flags) are specifically designed for GraalVM.
+
+**Best for**: Servers running GraalVM JDK
+
+**Requirements**: Must use GraalVM, not standard OpenJDK
+
+### Etil's Flags
+
+Balanced performance flags suitable for most servers.
+
+**Best for**: General use, balanced approach
+
+## Advanced Options
+
+### No GUI
+
+Disables the default server GUI window.
+
+**Benefits**:
+- Slightly reduced memory usage
+- Better for headless servers
+- Required for some server environments
+
+**When to use**: Always enable for production servers
+
+### Use Variables
+
+Uses environment variables for memory, filename, and other settings.
+
+**Benefits**:
+- Easier to modify settings
+- More maintainable scripts
+- Better for version control
+
+**Example output**:
+```bash
+MEMORY=6G
+FILE=paper.jar
+java -Xms$MEMORY -Xmx$MEMORY -jar $FILE
+```
+
+### Auto-restart
+
+Automatically restarts the server if it stops or crashes.
+
+**Benefits**:
+- Automatic recovery from crashes
+- Continuous uptime
+- Useful for automatic updates
+
+**When to use**: Production servers, unattended servers
+
+<Warning>
+Make sure you can manually stop the auto-restart loop (usually Ctrl+C).
+</Warning>
+
+### Extra Flags
+
+Platform-specific optimizations that appear based on your selections:
+
+#### Modern Vectors
+Enables SIMD operations for optimized map rendering on Pufferfish and forks.
+
+**Requirements**: Pufferfish-based server (Purpur, etc.)
+
+#### Benchmarked (GraalVM)
+Additional flags for Benchmarked collection on GraalVM.
+
+**Requirements**: GraalVM JDK + Benchmarked flags selected
+
+#### MeowIce's Flags (GraalVM)
+GraalVM-specific optimizations for MeowIce's flags.
+
+**Requirements**: GraalVM JDK + MeowIce's flags selected
+
+## Platform-Specific Instructions
+
+### Linux
+
+1. Save the generated script as `start.sh`
+2. Make it executable:
+   ```bash
+   chmod +x start.sh
+   ```
+3. Run the script:
+   ```bash
+   ./start.sh
+   ```
+
+### Windows
+
+1. Save the generated script as `start.bat`
+2. Double-click to run, or use command prompt:
+   ```cmd
+   start.bat
+   ```
+
+### macOS
+
+1. Save the generated script as `start.sh`
+2. Make it executable:
+   ```bash
+   chmod +x start.sh
+   ```
+3. Run the script:
+   ```bash
+   ./start.sh
+   ```
+
+### Pterodactyl
+
+1. Copy the generated command
+2. In your Pterodactyl panel, go to Startup
+3. Paste into the Startup Command field
+4. Restart your server
+
+## Optimization Tips
+
+<Tip>
+**Start Conservative**: Begin with Aikar's flags, then experiment with others if needed.
+</Tip>
+
+<Tip>
+**Monitor Performance**: Use [Spark](/tools/spark-profile) or [Timings](/tools/paper-timings) to measure impact.
+</Tip>
+
+<Tip>
+**Match RAM to Players**: ~1GB per 10 players is a rough guideline, but varies by plugins and world size.
+</Tip>
+
+### Testing Different Flags
+
+To compare flag collections:
+
+1. Generate a baseline profile with current flags
+2. Switch to new flags and restart
+3. Generate another profile under similar conditions
+4. Compare TPS, MSPT, and GC activity
+
+### When to Change Flags
+
+- Server TPS consistently below 20
+- High garbage collection pause times
+- Out of memory errors
+- Upgrading Java versions
+- Changing server software
+
+## Common Issues
+
+### Out of Memory Errors
+
+**Solution**: Enable "Calculate Overhead" or allocate more RAM
+
+### Server Won't Start
+
+**Check**:
+- Java version compatibility (Java 17+ required for modern servers)
+- Correct JAR filename
+- Sufficient RAM available
+- File permissions (Linux/macOS)
+
+### Poor Performance Despite Flags
+
+**Remember**: Flags help, but can't fix:
+- Inefficient plugins
+- World issues (excessive entities, etc.)
+- Insufficient hardware
+- Poor server configuration
+
+Use the [Spark Analyzer](/tools/spark-profile) to identify the actual bottleneck.
+
+## Java Version Recommendations
+
+| Minecraft Version | Recommended Java |
+|-------------------|------------------|
+| 1.20.5+ | Java 21 |
+| 1.18 - 1.20.4 | Java 17 |
+| 1.17 | Java 16 |
+| 1.16 and below | Java 11 |
+
+<Note>
+Flags are optimized for these Java versions. Using older or newer Java may reduce effectiveness.
+</Note>
+
+## GraalVM Benefits
+
+GraalVM is an alternative JDK that can provide better performance:
+
+**Pros**:
+- Potentially higher TPS
+- Better JIT compilation
+- Lower latency
+- Specialized optimizations
+
+**Cons**:
+- Less tested in production
+- May have compatibility issues
+- Requires specific flags
+
+**When to use**: Experimental servers, performance testing, specific compatibility needs
+
+## Related Tools
+
+- [Spark Profile Analyzer](/tools/spark-profile) - Test flag effectiveness
+- [Paper Timings Analyzer](/tools/paper-timings) - Monitor performance
+
+## Further Reading
+
+- [Aikar's Flags Documentation](https://docs.papermc.io/paper/aikars-flags)
+- [Java Garbage Collection Tuning](https://docs.oracle.com/en/java/javase/17/gctuning/)
+- [Paper Optimization Guide](https://eternity.community/index.php/paper-optimization/)

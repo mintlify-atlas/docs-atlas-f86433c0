@@ -1,0 +1,311 @@
+---
+title: Getting Started with Birdflop Hosting
+description: Quick start guide to set up your Minecraft server with Birdflop
+---
+
+# Getting Started with Birdflop Hosting
+
+Get your Minecraft server up and running in minutes with this step-by-step guide.
+
+## Before You Begin
+
+<Note>
+  Make sure you have a valid email address for account creation and a payment method ready.
+</Note>
+
+## Step 1: Choose Your Plan
+
+<Steps>
+  <Step title="Visit the Plans Page">
+    Navigate to the [Birdflop plans page](https://birdflop.com/plans) to view available hosting options.
+  </Step>
+  
+  <Step title="Select Your Region">
+    Choose between:
+    - **EU Premium**: Falkenstein, Germany (Ryzen 9 5950X)
+    - **US Premium**: NYC / Ashburn VA (Ryzen 9 3900XT+)
+    
+    <Note>
+      Select the region closest to most of your players for the best latency.
+    </Note>
+  </Step>
+  
+  <Step title="Choose RAM Amount">
+    Select the amount of RAM based on your expected player count:
+    
+    - **4-6 GB**: Small servers (1-20 players)
+    - **8-12 GB**: Medium servers (20-50 players)
+    - **16-20 GB**: Large servers (50+ players)
+    
+    <Warning>
+      You can always upgrade later, so start small if you're unsure.
+    </Warning>
+  </Step>
+  
+  <Step title="Configure Server Details">
+    Enter your server information:
+    - **Server Name**: A friendly name for your server (e.g., "My Survival Server")
+    - **Server Description**: Optional description for identification
+  </Step>
+  
+  <Step title="Add to Cart">
+    Click the "Add to cart" button to proceed to checkout.
+  </Step>
+</Steps>
+
+## Step 2: Create Your Account
+
+If you're a new customer, you'll need to create an account:
+
+<Steps>
+  <Step title="Enter Account Details">
+    Provide:
+    - Email address
+    - Password
+    - Full name
+    - Billing address
+  </Step>
+  
+  <Step title="Verify Your Email">
+    Check your inbox for a verification email and click the confirmation link.
+  </Step>
+  
+  <Step title="Complete Payment">
+    Choose your payment method and complete the transaction.
+    
+    Accepted payment methods:
+    - Credit/Debit cards
+    - PayPal
+    - Cryptocurrency
+  </Step>
+</Steps>
+
+<Note>
+  Your server will be automatically provisioned within seconds of payment confirmation.
+</Note>
+
+## Step 3: Access Your Server Panel
+
+<Steps>
+  <Step title="Check Your Email">
+    You'll receive an email with:
+    - Panel login URL: `https://client.birdflop.com`
+    - Your server details
+    - Getting started information
+  </Step>
+  
+  <Step title="Log In to the Panel">
+    1. Visit `https://client.birdflop.com`
+    2. Enter your email and password
+    3. You'll see your server dashboard
+  </Step>
+  
+  <Step title="Locate Your Server">
+    Click on your server name to access the control panel.
+  </Step>
+</Steps>
+
+## Step 4: Configure Your Server
+
+### Choose Your Server Type
+
+Birdflop uses an "egg" system to support different server types:
+
+<Tabs>
+  <Tab title="Paper (Recommended)">
+    **Paper** is the most popular and recommended option for most users.
+    
+    **Features**:
+    - Best performance
+    - Plugin support (Spigot/Bukkit plugins)
+    - Active development and updates
+    - Extensive configuration options
+    
+    Paper is pre-selected by default, so no changes needed!
+  </Tab>
+  
+  <Tab title="Forge (Modded)">
+    **Forge** is for modded Minecraft servers.
+    
+    **To switch to Forge**:
+    1. Go to the **Settings** tab
+    2. Find the **Change Egg** section
+    3. Select **Forge Minecraft** from the dropdown
+    4. Enable **Reinstall server** and **Wipe Server Files**
+    5. Click **Change Egg**
+    
+    <Warning>
+      Changing eggs will delete existing server files. Always backup first!
+    </Warning>
+  </Tab>
+  
+  <Tab title="Fabric (Modded)">
+    **Fabric** is a lightweight modding platform.
+    
+    **To switch to Fabric**:
+    1. Go to the **Settings** tab
+    2. Find the **Change Egg** section
+    3. Select **Fabric** from the dropdown
+    4. Enable **Reinstall server** and **Wipe Server Files**
+    5. Click **Change Egg**
+  </Tab>
+  
+  <Tab title="Vanilla">
+    **Vanilla** is the official Minecraft server software.
+    
+    **To switch to Vanilla**:
+    1. Go to the **Settings** tab
+    2. Find the **Change Egg** section
+    3. Select **Vanilla Minecraft** from the dropdown
+    4. Enable **Reinstall server** and **Wipe Server Files**
+    5. Click **Change Egg**
+    
+    <Note>
+      Vanilla doesn't support plugins or mods. Use Paper for better performance with plugin support.
+    </Note>
+  </Tab>
+</Tabs>
+
+### Select Your Minecraft Version
+
+1. Navigate to the **Startup** tab
+2. Find the **Minecraft Version** field
+3. Enter your desired version (e.g., `1.21.4`, `1.20.1`)
+4. Restart your server for changes to take effect
+
+<Note>
+  The server will automatically download the correct server JAR file for your specified version.
+</Note>
+
+## Step 5: Start Your Server
+
+<Steps>
+  <Step title="Go to Console Tab">
+    Click the **Console** tab in your server panel.
+  </Step>
+  
+  <Step title="Start the Server">
+    Click the green **Start** button.
+    
+    The server will:
+    1. Download necessary files
+    2. Generate world and configuration files
+    3. Start accepting connections
+    
+    This process takes 30-60 seconds on first startup.
+  </Step>
+  
+  <Step title="Accept the EULA">
+    On first start, you'll need to accept the Minecraft EULA:
+    
+    1. The server will stop after generating files
+    2. Go to the **Files** tab
+    3. Find and edit `eula.txt`
+    4. Change `eula=false` to `eula=true`
+    5. Save the file
+    6. Return to **Console** and click **Start** again
+  </Step>
+  
+  <Step title="Wait for Startup">
+    Watch the console for the message:
+    ```
+    [Server thread/INFO]: Done! For help, type "help"
+    ```
+    
+    Your server is now online!
+  </Step>
+</Steps>
+
+## Step 6: Connect to Your Server
+
+<Steps>
+  <Step title="Find Your Server IP">
+    Your server IP is displayed at the top of the panel.
+    
+    Format: `node.birdflop.com:12345`
+    
+    <Note>
+      Plans with 8GB+ RAM include a dedicated IP without a port number.
+    </Note>
+  </Step>
+  
+  <Step title="Launch Minecraft">
+    1. Open Minecraft Java Edition
+    2. Click **Multiplayer**
+    3. Click **Add Server**
+    4. Enter your server IP
+    5. Click **Done**
+  </Step>
+  
+  <Step title="Join Your Server">
+    Double-click your server to connect!
+  </Step>
+</Steps>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Panel Guide" icon="sliders" href="/hosting/panel-guide">
+    Learn about all panel features and controls
+  </Card>
+  <Card title="Database Setup" icon="database" href="/hosting/database-setup">
+    Set up MySQL databases for plugins
+  </Card>
+  <Card title="Install Plugins" icon="puzzle-piece">
+    Browse plugins at SpigotMC.org or Modrinth
+  </Card>
+  <Card title="Server Configuration" icon="gear">
+    Optimize your server.properties and other configs
+  </Card>
+</CardGroup>
+
+## Common Issues
+
+<AccordionGroup>
+  <Accordion title="Server won't start">
+    Common causes:
+    - **EULA not accepted**: Edit `eula.txt` and set `eula=true`
+    - **Incorrect Java version**: Some versions require Java 17 or 21
+    - **Corrupted files**: Try reinstalling from the Settings tab
+    
+    Check the console for specific error messages.
+  </Accordion>
+  
+  <Accordion title="Can't connect to server">
+    Troubleshooting steps:
+    1. Verify the server is running (green status in panel)
+    2. Double-check the IP address and port
+    3. Make sure you're using Java Edition (not Bedrock)
+    4. Check if your firewall is blocking Minecraft
+    5. Verify you're using the correct Minecraft version
+  </Accordion>
+  
+  <Accordion title="Out of memory errors">
+    Solutions:
+    - Reduce view-distance in `server.properties`
+    - Remove unnecessary plugins
+    - Upgrade to a plan with more RAM
+    - Optimize your server settings
+  </Accordion>
+  
+  <Accordion title="Lag or poor performance">
+    Performance tips:
+    - Use Paper instead of Vanilla or Spigot
+    - Optimize `server.properties` and `paper-global.yml`
+    - Use performance monitoring plugins
+    - Reduce view-distance and simulation-distance
+    - Remove laggy plugins
+  </Accordion>
+</AccordionGroup>
+
+## Getting Help
+
+<Card title="Join Our Discord" icon="discord">
+  Need assistance? Join our Discord community for support from staff and other users.
+  
+  Available 24/7 with typical response times under 30 minutes.
+</Card>
+
+<Warning>
+  Remember your 3-day satisfaction guarantee! If you're not happy with our service within the first 3 days, request a full refund.
+</Warning>

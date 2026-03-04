@@ -1,0 +1,394 @@
+---
+title: Animated TAB
+description: Create animated gradient text for the TAB plugin with customizable speeds and animation styles
+---
+
+Animated TAB creates gradient animations for the [TAB plugin](https://github.com/NEZNAMY/TAB), generating animated text configurations that can be used in tab lists, nametags, and other TAB features. Access it at [birdflop.com/resources/animtab](https://birdflop.com/resources/animtab).
+
+## Features
+
+- All gradient types from RGBirdflop
+- Customizable animation speed
+- Multiple animation styles (forward, reverse, ping-pong)
+- Custom animation names
+- Adjustable gradient length
+- Real-time animated preview
+- TAB-compatible YAML output
+- Text formatting options
+
+## Prerequisites
+
+This tool generates configurations for the TAB plugin:
+
+1. Install [TAB plugin](https://www.spigotmc.org/resources/tab.57806/) on your Paper/Spigot server
+2. Ensure your server supports RGB/hex colors (1.16+)
+3. Configure TAB's basic settings
+
+<Note>
+TAB is a premium plugin available on SpigotMC. This tool generates compatible animations but requires TAB to be installed.
+</Note>
+
+## Getting Started
+
+<Steps>
+  <Step title="Design Your Gradient">
+    Use the gradient controls to design your text:
+    - Enter text to animate
+    - Add colors with the + button
+    - Choose gradient type
+    - Apply formatting (bold, italic, etc.)
+  </Step>
+  
+  <Step title="Configure Animation">
+    Set animation parameters:
+    - **Animation Name**: Identifier for the animation
+    - **Animation Interval**: Speed in milliseconds (lower = faster)
+    - **Animation Style**: Forward, Reverse, or Ping Pong
+    - **Gradient Length**: How stretched the gradient appears
+  </Step>
+  
+  <Step title="Preview Animation">
+    Watch the real-time preview to see how your animation will look in-game.
+  </Step>
+  
+  <Step title="Copy Configuration">
+    Copy the generated YAML output from the bottom section.
+  </Step>
+  
+  <Step title="Add to TAB">
+    Paste the configuration into your TAB plugin's `animations.yml` file.
+  </Step>
+</Steps>
+
+## Animation Settings
+
+### Animation Name
+
+The identifier for your animation used in TAB configurations.
+
+```yaml
+animation-name:
+  change-interval: 100
+  texts:
+    - "<frame 1>"
+    - "<frame 2>"
+```
+
+<Tip>
+Use descriptive names like `rainbow-fade`, `blue-pulse`, or `gradient-shift` for easy identification.
+</Tip>
+
+### Animation Interval
+
+Time in milliseconds between frame updates.
+
+- **50ms**: Very fast, smooth animation (20 FPS)
+- **100ms**: Fast animation (10 FPS)
+- **200ms**: Medium speed (5 FPS)
+- **500ms**: Slow animation (2 FPS)
+- **1000ms**: Very slow (1 FPS)
+
+<Note>
+Lower intervals create smoother animations but generate more frames, increasing file size.
+</Note>
+
+### Animation Styles
+
+#### Forward (Default)
+
+Animates from start to finish, then instantly loops back.
+
+```
+Frame 1 → Frame 2 → Frame 3 → Frame 1 → ...
+```
+
+**Best for**: Flowing text, scrolling gradients
+
+#### Reverse
+
+Animates backwards from finish to start.
+
+```
+Frame 3 → Frame 2 → Frame 1 → Frame 3 → ...
+```
+
+**Best for**: Reverse flow effects
+
+#### Ping Pong
+
+Animates forward then backward, creating a seamless loop.
+
+```
+Frame 1 → Frame 2 → Frame 3 → Frame 2 → Frame 1 → ...
+```
+
+**Best for**: Pulsing effects, smooth loops, wave patterns
+
+### Gradient Length
+
+Multiplier for how stretched the gradient appears.
+
+- **1x**: Gradient spans exactly the text length
+- **2x**: Gradient is twice the text length (more stretched)
+- **3x**: Very stretched gradient
+- **0.5x**: Compressed gradient (multiple color cycles)
+
+<Tip>
+Higher values create slower, more subtle color transitions. Lower values create faster color cycling.
+</Tip>
+
+## Using in TAB
+
+### Adding to animations.yml
+
+1. Open `plugins/TAB/animations.yml`
+2. Paste the generated configuration
+3. Save the file
+4. Run `/tab reload` or restart the server
+
+### Using the Animation
+
+Reference animations in TAB configs with `%animation:name%`:
+
+#### Tab List Header/Footer
+
+```yaml
+# config.yml
+header:
+  - "%animation:rainbow-fade%"
+footer:
+  - "&7Welcome to the server"
+```
+
+#### Player List Names
+
+```yaml
+# config.yml
+groups:
+  admin:
+    tabprefix: "%animation:admin-gradient%&r "
+```
+
+#### Nametags
+
+```yaml
+# config.yml
+groups:
+  vip:
+    tagprefix: "%animation:vip-pulse%&r "
+```
+
+#### Scoreboard
+
+```yaml
+# config.yml
+scoreboard:
+  title: "%animation:title-gradient%"
+```
+
+## Example Animations
+
+### Rainbow Flow
+
+**Settings**:
+- Text: "RAINBOW"
+- Colors: Red → Orange → Yellow → Green → Blue → Purple
+- Type: Linear
+- Style: Forward
+- Interval: 100ms
+- Length: 2x
+
+**Use case**: Colorful, attention-grabbing text
+
+### Subtle Pulse
+
+**Settings**:
+- Text: "VIP"
+- Colors: Gold → Yellow → Gold
+- Type: Linear
+- Style: Ping Pong
+- Interval: 200ms
+- Length: 1x
+
+**Use case**: Elegant rank prefix
+
+### Fast Cycle
+
+**Settings**:
+- Text: "ADMIN"
+- Colors: Red → Orange
+- Type: Linear  
+- Style: Forward
+- Interval: 50ms
+- Length: 1x
+
+**Use case**: Alert/warning style text
+
+### Wave Effect
+
+**Settings**:
+- Text: "Welcome"
+- Colors: Cyan → Blue → Cyan
+- Type: Sinusoidal
+- Style: Forward
+- Interval: 150ms
+- Length: 2x
+
+**Use case**: Smooth, flowing gradient
+
+## Output Format Customization
+
+The tool includes an "Output Format" section for advanced users who need compatibility with other plugins or custom TAB setups.
+
+**Default format**:
+```
+{name}:
+  change-interval: {interval}
+  texts:
+{frames}
+```
+
+**Variables**:
+- `{name}`: Animation name
+- `{interval}`: Frame interval in ms
+- `{frames}`: Generated frame list
+
+<Warning>
+Only modify the output format if you know what you're doing. The default format works for standard TAB installations.
+</Warning>
+
+## Performance Considerations
+
+### Frame Count
+
+Total frames = Text length × Gradient length
+
+- More frames = smoother animation
+- More frames = larger config file
+- More frames = more processing
+
+<Tip>
+For typical server use, 20-50 frames is a good balance. Very long text or high gradient lengths can create hundreds of frames.
+</Tip>
+
+### Update Interval
+
+Faster intervals (lower ms) mean:
+- Smoother visual animation
+- More frequent updates
+- Slightly higher server load
+
+**Recommended**: 100-200ms for most animations
+
+### Multiple Animations
+
+Using many animations simultaneously:
+- Can impact performance on large servers
+- Each player sees all animations
+- Consider limiting animated elements
+
+<Note>
+TAB is well-optimized, but hundreds of players with many animations can add overhead.
+</Note>
+
+## Advanced Techniques
+
+### Layered Text
+
+Combine static and animated text:
+
+```yaml
+header:
+  - "&8&m---------&r %animation:title% &8&m---------"
+  - "&7%animation:subtitle%"
+```
+
+### Conditional Animations
+
+Use TAB's placeholder conditions:
+
+```yaml
+groups:
+  vip:
+    tabprefix: "%animation:vip-gradient%%animation:online-only%&r "
+```
+
+### Synced Animations
+
+Create multiple animations with matching intervals for synchronized effects:
+
+1. Design animation A (interval: 200ms)
+2. Design animation B (interval: 200ms, offset start)
+3. Use both in same display
+
+## Troubleshooting
+
+### Animation Not Showing
+
+**Check**:
+- TAB plugin is installed and loaded
+- `/tab reload` was run after adding animation
+- Animation name matches in config and animations.yml
+- Server supports hex colors (1.16+)
+
+### Animation is Choppy
+
+**Solutions**:
+- Decrease gradient length for more frames
+- Lower animation interval for faster updates
+- Use ping-pong style for smoother loops
+- Add more color stops for smoother transitions
+
+### Colors Look Wrong
+
+**Check**:
+- Preview vs in-game differences (client rendering)
+- Resource pack color modifications
+- Output format matches TAB version
+
+### Config File Errors
+
+**Common issues**:
+- YAML indentation (use spaces, not tabs)
+- Missing quotes around special characters
+- Duplicate animation names
+- Invalid color codes
+
+<Tip>
+Use a YAML validator to check your animations.yml for syntax errors.
+</Tip>
+
+## TAB Plugin Versions
+
+This tool generates output compatible with:
+- TAB 3.x (latest)
+- TAB 2.x (legacy)
+
+<Note>
+For TAB 4.x or newer, check the TAB documentation for any format changes.
+</Note>
+
+## Comparison with RGBirdflop
+
+| Feature | Animated TAB | RGBirdflop |
+|---------|--------------|------------|
+| Output | Animation frames | Single gradient |
+| Use case | TAB plugin | Static text |
+| Preview | Animated | Static |
+| Frames | Multiple | Single |
+| File size | Large | Small |
+
+<Tip>
+Use RGBirdflop for static gradients in config files. Use Animated TAB specifically for TAB plugin animations.
+</Tip>
+
+## Related Tools
+
+- [RGBirdflop](/tools/rgbirdflop) - Create static gradient text
+- [Animated Textures](/tools/animated-textures) - Animate resource pack textures
+
+## Further Resources
+
+- [TAB Plugin Wiki](https://github.com/NEZNAMY/TAB/wiki)
+- [TAB Discord](https://discord.gg/bvSDjFw)
+- [Animation Configuration Guide](https://github.com/NEZNAMY/TAB/wiki/Feature-guide:-Animations)

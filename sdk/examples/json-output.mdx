@@ -1,0 +1,446 @@
+---
+title: 'JSON Format Output'
+description: 'Generate Minecraft JSON text components with RGB gradients'
+---
+
+## Overview
+
+The JSON output format generates Minecraft's native JSON text component format with RGB colors. This format is used by commands like `/tellraw`, `/title`, and in various plugin APIs.
+
+## Basic JSON Gradient
+
+Generate a JSON gradient:
+
+```typescript
+import { rgbDefaults, generateOutput, formats } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Hello',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[2], // JSON format
+});
+
+console.log(result);
+// Output: {"text":"","extra":[{"text":"H","color":"#ff0000"},{"text":"e","color":"#bf003f"},{"text":"l","color":"#7f007f"},{"text":"l","color":"#3f00bf"},{"text":"o","color":"#0000ff"}]}
+```
+
+<Info>
+The JSON format is `formats[2]` in the formats array. It uses the special value `'JSON'` for the `color` property.
+
+The output structure is:
+```json
+{
+  "text": "",
+  "extra": [
+    { "text": "character", "color": "#hexcode" },
+    ...
+  ]
+}
+```
+</Info>
+
+## Formatted Output
+
+Let's look at the formatted JSON output:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Hi',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[2],
+});
+
+console.log(JSON.stringify(JSON.parse(result), null, 2));
+```
+
+Output:
+```json
+{
+  "text": "",
+  "extra": [
+    {
+      "text": "H",
+      "color": "#ff0000"
+    },
+    {
+      "text": "i",
+      "color": "#0000ff"
+    }
+  ]
+}
+```
+
+## JSON with Text Formatting
+
+Add bold, italic, and other formatting:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Bold',
+  colors: [
+    { hex: '#ffaa00', pos: 0 },
+    { hex: '#ff5500', pos: 100 },
+  ],
+  format: formats[2],
+  bold: true,
+  italic: true,
+});
+
+console.log(JSON.stringify(JSON.parse(result), null, 2));
+```
+
+Output:
+```json
+{
+  "text": "",
+  "extra": [
+    {
+      "text": "B",
+      "color": "#ffaa00",
+      "bold": true,
+      "italic": true
+    },
+    {
+      "text": "o",
+      "color": "#ff8c00",
+      "bold": true,
+      "italic": true
+    },
+    {
+      "text": "l",
+      "color": "#ff6e00",
+      "bold": true,
+      "italic": true
+    },
+    {
+      "text": "d",
+      "color": "#ff5500",
+      "bold": true,
+      "italic": true
+    }
+  ]
+}
+```
+
+### Available Formatting Properties
+
+| SDK Option | JSON Property | Type |
+|------------|---------------|------|
+| `bold: true` | `"bold": true` | boolean |
+| `italic: true` | `"italic": true` | boolean |
+| `underline: true` | `"underlined": true` | boolean |
+| `strikethrough: true` | `"strikethrough": true` | boolean |
+| `obfuscate: true` | `"obfuscated": true` | boolean |
+
+<Note>
+Note the spelling difference: SDK uses `underline` but JSON uses `underlined`.
+</Note>
+
+## JSON with Shadow Colors
+
+Add shadow effects using the `shadow_color` property:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Shadow',
+  colors: [
+    { hex: '#ffff00', pos: 0 },
+    { hex: '#ff8800', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#444400', pos: 0 },
+    { hex: '#442200', pos: 100 },
+  ],
+  format: formats[2],
+});
+
+console.log(JSON.stringify(JSON.parse(result), null, 2));
+```
+
+Output excerpt:
+```json
+{
+  "text": "",
+  "extra": [
+    {
+      "text": "S",
+      "color": "#ffff00",
+      "shadow_color": [0.27, 0.27, 0, 1]
+    },
+    ...
+  ]
+}
+```
+
+<Info>
+Shadow colors are normalized to the 0-1 range:
+- RGB values divided by 255
+- Rounded to 2 decimal places  
+- Alpha channel always set to 1
+- Format: `[red, green, blue, alpha]`
+
+Example: `#444400` → `[0.27, 0.27, 0, 1]`
+</Info>
+
+## Color Length Control
+
+Control how many characters share the same color:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Chunky',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[2],
+  colorlength: 2,  // 2 characters per color step
+});
+
+console.log(JSON.stringify(JSON.parse(result), null, 2));
+```
+
+Output:
+```json
+{
+  "text": "",
+  "extra": [
+    {
+      "text": "Ch",
+      "color": "#ff0000"
+    },
+    {
+      "text": "un",
+      "color": "#aa0054"
+    },
+    {
+      "text": "ky",
+      "color": "#5400aa"
+    }
+  ]
+}
+```
+
+<Tip>
+When `colorlength` is greater than 1:
+- Multiple characters are combined into single `extra` entries
+- Reduces JSON size for long text
+- Creates chunkier, less smooth gradients
+</Tip>
+
+## Trim Spaces
+
+Control whether whitespace gets color applied:
+
+```typescript
+const withTrim = generateOutput({
+  ...rgbDefaults,
+  text: 'A B',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[2],
+  trimspaces: true,  // Default
+});
+
+console.log(JSON.stringify(JSON.parse(withTrim), null, 2));
+```
+
+With `trimspaces: true`:
+```json
+{
+  "text": "",
+  "extra": [
+    {
+      "text": "A",
+      "color": "#ff0000"
+    },
+    {
+      "text": " "
+    },
+    {
+      "text": "B",
+      "color": "#0000ff"
+    }
+  ]
+}
+```
+
+<Note>
+When `trimspaces: true`, whitespace characters are added to the `extra` array without color or formatting properties, making them render in default color.
+</Note>
+
+## Single Color Output
+
+When only one color is provided:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Single',
+  colors: [
+    { hex: '#00ff00', pos: 0 },
+  ],
+  format: formats[2],
+});
+
+console.log(JSON.stringify(JSON.parse(result), null, 2));
+```
+
+Output:
+```json
+{
+  "text": "",
+  "extra": [
+    {
+      "text": "S",
+      "color": "#00ff00"
+    },
+    {
+      "text": "i",
+      "color": "#00ff00"
+    },
+    ...
+  ]
+}
+```
+
+<Info>
+Even with a single color, each character (or segment based on `colorlength`) gets its own entry in the `extra` array.
+</Info>
+
+## Gradient Types
+
+JSON format supports all gradient types:
+
+```typescript
+// RGB interpolation (default)
+const rgbResult = generateOutput({
+  ...rgbDefaults,
+  text: 'RGB',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  gradientType: 'rgb',
+  format: formats[2],
+});
+
+// HSL interpolation
+const hslResult = generateOutput({
+  ...rgbDefaults,
+  text: 'HSL',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  gradientType: 'hsl',
+  format: formats[2],
+});
+
+// HSV interpolation
+const hsvResult = generateOutput({
+  ...rgbDefaults,
+  text: 'HSV',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  gradientType: 'hsv',
+  format: formats[2],
+});
+```
+
+## Complete Example
+
+A full-featured JSON gradient:
+
+```typescript
+import { rgbDefaults, generateOutput, formats } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'JSON Gradient',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#ffaa00', pos: 50 },
+    { hex: '#ffff00', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#440000', pos: 0 },
+    { hex: '#442200', pos: 50 },
+    { hex: '#444400', pos: 100 },
+  ],
+  format: formats[2],
+  bold: true,
+  italic: true,
+  gradientType: 'rgb',
+  trimspaces: true,
+  colorlength: 1,
+});
+
+// Pretty print for readability
+const parsed = JSON.parse(result);
+console.log(JSON.stringify(parsed, null, 2));
+```
+
+## Using JSON Output
+
+JSON text components can be used in various Minecraft contexts:
+
+### Tellraw Command
+```typescript
+const json = generateOutput({ /* options */ });
+const command = `/tellraw @a ${json}`;
+```
+
+### Title Command
+```typescript
+const json = generateOutput({ /* options */ });
+const command = `/title @a title ${json}`;
+```
+
+### Plugin API (Bukkit/Spigot)
+```java
+String jsonString = "..."; // From SDK
+Component component = GsonComponentSerializer.gson().deserialize(jsonString);
+player.sendMessage(component);
+```
+
+<Tip>
+The JSON output is already stringified and ready to use in Minecraft commands or to be parsed by game libraries.
+</Tip>
+
+## Use Cases
+
+JSON format is ideal for:
+
+1. **Commands** - `/tellraw`, `/title`, `/summon`, etc.
+2. **Books** - Written book content
+3. **Signs** - Sign text with colors
+4. **Entities** - Custom entity names
+5. **Plugin APIs** - Direct use with Adventure or Spigot APIs
+6. **Chat Systems** - Custom chat formatting
+
+## Related Examples
+
+<CardGroup cols={2}>
+  <Card title="Shadow Colors" icon="droplet" href="/sdk/examples/shadow-colors">
+    Learn more about shadow effects in JSON
+  </Card>
+  <Card title="Custom Formatting" icon="bold" href="/sdk/examples/custom-formatting">
+    Learn more about text formatting options
+  </Card>
+</CardGroup>

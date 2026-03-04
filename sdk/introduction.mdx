@@ -1,0 +1,82 @@
+---
+title: Introduction
+description: Learn about the RGBirdflop NPM package for generating Minecraft RGB gradient text
+---
+
+## What is RGBirdflop?
+
+RGBirdflop is an NPM package (`@birdflop/rgbirdflop`) that generates RGB gradient text for Minecraft. It provides a powerful, local solution for creating colorful text gradients without requiring API calls.
+
+## Key Features
+
+- **No API Required**: Generate gradients locally without network dependencies
+- **Multiple Color Spaces**: Support for RGB, HSL, OKLAB, OKLCH, CIELAB, and LuvLCh gradients
+- **Format Support**: MiniMessage, JSON, legacy color codes, and more
+- **Text Formatting**: Bold, italic, underline, strikethrough, and obfuscate styles
+- **TypeScript Support**: Full TypeScript definitions included
+- **Customizable**: Fine-tune color positions, gradient length, and output format
+
+## Package Information
+
+<CardGroup cols={2}>
+  <Card title="Package Name" icon="npm">
+    `@birdflop/rgbirdflop`
+  </Card>
+  <Card title="Version" icon="tag">
+    0.1.15
+  </Card>
+  <Card title="License" icon="scale-balanced">
+    AGPL-3.0-or-later
+  </Card>
+  <Card title="Node Version" icon="node">
+    >= 24.13.0
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+- **Minecraft Plugins**: Add colorful gradients to plugin messages and chat
+- **Server MOTDs**: Create eye-catching server descriptions
+- **Scoreboard Text**: Display animated or gradient scoreboards
+- **Chat Formatting**: Enhance player chat with gradient names or prefixes
+- **TAB Plugin**: Generate animated text for TAB plugin configurations
+
+## How It Works
+
+The package takes your text and color stops, then generates a smooth gradient by:
+
+1. Interpolating colors across the specified color space
+2. Applying the gradient to each character or segment of text
+3. Formatting the output for your target platform (MiniMessage, JSON, etc.)
+4. Adding optional text formatting like bold or italic
+
+## Example Output
+
+Input:
+```typescript
+{
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#00ff00', pos: 50 },
+    { hex: '#0000ff', pos: 100 }
+  ],
+  text: 'Hello, World!',
+  format: formats[1] // &#$1$2$3$4$5$6$f$c
+}
+```
+
+Output:
+```
+&#ff0000H&#ff3300e&#ff6600l&#ff9900l&#ffcc00o&#ffff00,&#ccff00 &#99ff00W&#66ff00o&#33ff00r&#00ff00l&#00ff33d&#00ff66!&#00ff99
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/sdk/installation">
+    Install the package using npm, yarn, or pnpm
+  </Card>
+  <Card title="Quick Start" icon="rocket" href="/sdk/quickstart">
+    Get started with a working example
+  </Card>
+</CardGroup>

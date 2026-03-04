@@ -1,0 +1,187 @@
+---
+title: generateOutput
+description: Generate formatted gradient text output from color and text configuration
+icon: wand-magic-sparkles
+---
+
+## Overview
+
+The `generateOutput` function is the main text generation function in the RGBirdflop SDK. It takes a configuration object and generates formatted gradient text in various output formats including MiniMessage, JSON, and template-based formats.
+
+## Function Signature
+
+```typescript
+function generateOutput(rgbStore: typeof rgbDefaults): string
+```
+
+## Parameters
+
+<ParamField path="rgbStore" type="typeof rgbDefaults" required>
+  Configuration object containing all gradient settings. See [Format Options](/sdk/api/format-options) for the complete `rgbDefaults` structure.
+  
+  Key properties:
+  - `colors` - Array of color stops with hex and position
+  - `shadowcolors` - Optional shadow color stops
+  - `text` - The text to apply the gradient to
+  - `format` - Output format (MiniMessage, JSON, or template)
+  - `colorlength` - Number of characters per color segment
+  - `gradientType` - Gradient interpolation type ('rgb', 'hsl', 'oklab', 'oklch', 'cielab', 'luvLch')
+  - Formatting flags: `bold`, `italic`, `underline`, `strikethrough`, `obfuscate`
+  - `prefixsuffix` - Wrapper template with `$t` placeholder
+  - `trimspaces` - Whether to skip gradient for whitespace-only segments
+  - `lowercase` - Convert output to lowercase
+</ParamField>
+
+## Return Value
+
+<ResponseField name="output" type="string">
+  Formatted gradient text string in the specified format:
+  - **MiniMessage**: `<gradient:#color1:#color2>text</gradient>` or `<color:#hex>text</color>`
+  - **JSON**: Serialized JSON with `{text: "", extra: [{text: "...", color: "#...", ...}]}`
+  - **Template**: Custom format using placeholders like `&#$1$2$3$4$5$6$f$c`
+</ResponseField>
+
+## Usage Examples
+
+### Basic Gradient
+
+```typescript
+import { generateOutput, rgbDefaults } from '@birdflop/rgbirdflop';
+
+const config = {
+  ...rgbDefaults,
+  text: 'Birdflop',
+  colors: [
+    { hex: '#54daf4', pos: 0 },
+    { hex: '#545eb6', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' },
+  gradientType: 'oklab' as const
+};
+
+const output = generateOutput(config);
+// Output: <gradient:#54daf4:#545eb6>Birdflop</gradient>
+```
+
+### Single Color
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Hello',
+  colors: [{ hex: '#FF5733', pos: 0 }],
+  format: { color: 'MiniMessage' }
+};
+
+const output = generateOutput(config);
+// Output: <color:#FF5733>Hello</color>
+```
+
+### JSON Format with Formatting
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Bold Gradient',
+  colors: [
+    { hex: '#FF0000', pos: 0 },
+    { hex: '#0000FF', pos: 100 }
+  ],
+  format: { color: 'JSON' },
+  bold: true,
+  colorlength: 1
+};
+
+const output = generateOutput(config);
+// Output: {"text":"","extra":[{"text":"B","color":"#FF0000","bold":true},...
+```
+
+### Template Format (Bukkit/Spigot)
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Minecraft',
+  colors: [
+    { hex: '#00FF00', pos: 0 },
+    { hex: '#FFFF00', pos: 100 }
+  ],
+  format: {
+    color: '&#$1$2$3$4$5$6$f$c',
+    char: '&'
+  },
+  bold: true
+};
+
+const output = generateOutput(config);
+// Output: &#0&#0&#F&#F&#0&#0&lM&#1&#1&#E&#E&#0&#0&li&#2&#2&#D&#D&#0&#0&ln...
+```
+
+### Custom Gradient Positions
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Rainbow Text',
+  colors: [
+    { hex: '#FF0000', pos: 0 },
+    { hex: '#FFFF00', pos: 25 },
+    { hex: '#00FF00', pos: 50 },
+    { hex: '#0000FF', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' },
+  gradientType: 'hsl' as const
+};
+
+const output = generateOutput(config);
+// Generates uneven gradient segments based on positions
+```
+
+### With Shadow Colors (MiniMessage)
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Shadowed',
+  colors: [
+    { hex: '#FFFFFF', pos: 0 },
+    { hex: '#AAAAAA', pos: 100 }
+  ],
+  shadowcolors: [
+    { hex: '#000000', pos: 0 },
+    { hex: '#333333', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' }
+};
+
+const output = generateOutput(config);
+// Output includes <shadow:...> tags within gradient
+```
+
+## Format Templates
+
+Template formats use these placeholders:
+- `$1` through `$6` - Individual hex digits
+- `$f` - Format codes (bold, italic, etc.)
+- `$c` - The character/text segment
+- `$t` - Full text (in wrapper templates)
+
+## Related Functions
+
+- [Color Utilities](/sdk/api/color-utilities) - Color conversion helpers
+- [Gradient Types](/sdk/api/gradient-types) - ColorGradient class and types
+- [Format Options](/sdk/api/format-options) - Configuration defaults
+
+## Implementation Details
+
+The function internally:
+1. Sorts colors by position
+2. Detects single-color vs multi-color gradients
+3. Routes to format-specific renderers:
+   - `renderMiniMessageGradient` for MiniMessage
+   - `renderJsonGradient` for JSON
+   - `renderTemplateGradient` for template formats
+4. Applies formatting wrappers (bold, italic, etc.)
+5. Applies prefix/suffix if configured
+
+Source: `packages/rgbirdflop/src/util/RGBUtils.ts:168`

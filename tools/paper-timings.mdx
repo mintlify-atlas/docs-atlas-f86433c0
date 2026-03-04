@@ -1,0 +1,315 @@
+---
+title: Paper Timings Analyzer
+description: Analyze Paper timings reports and get automated optimization recommendations for your Minecraft server
+---
+
+The Paper Timings Analyzer automatically analyzes your server's timings report and provides specific optimization recommendations. Access it at [birdflop.com/resources/papertimings](https://birdflop.com/resources/papertimings).
+
+## What are Paper Timings?
+
+Paper Timings is a built-in profiling system for Paper, Purpur, and other Paper-based servers that measures:
+- Plugin execution time
+- Entity processing
+- Tile entity performance
+- World generation
+- Overall server TPS
+
+<Note>
+Purpur 1.19+ removed timings in favor of Spark. Use the [Spark Profile Analyzer](/tools/spark-profile) for these versions.
+</Note>
+
+## Getting Started
+
+<Steps>
+  <Step title="Enable Timings">
+    Timings are usually enabled by default on Paper servers. Verify in `paper-global.yml`:
+    ```yaml
+    timings:
+      enabled: true
+    ```
+  </Step>
+  
+  <Step title="Generate Report">
+    Run the command in-game or console:
+    ```
+    /timings report
+    ```
+    Wait for the report to generate (may take a few seconds).
+  </Step>
+  
+  <Step title="Get the Link">
+    Copy the timings URL from chat (looks like `https://timings.aikar.co/?id=xxxxx` or `https://timin.gs/xxxxx`).
+  </Step>
+  
+  <Step title="Analyze">
+    Paste the timings link into the analyzer at [birdflop.com/resources/papertimings](https://birdflop.com/resources/papertimings) and click Submit.
+  </Step>
+</Steps>
+
+## Understanding the Analysis
+
+The analyzer provides recommendations across multiple categories:
+
+### Server Configuration
+
+Analyzes your configuration files and suggests optimizations:
+- `server.properties` settings
+- `paper-global.yml` and `paper-world-defaults.yml`
+- `bukkit.yml` and `spigot.yml`
+- Plugin-specific configurations
+
+### Performance Metrics
+
+Evaluates key performance indicators:
+- **TPS (Ticks Per Second)**: Should be 20.0
+- **MSPT (Milliseconds Per Tick)**: Should be under 50ms
+- **Entity Count**: Flags excessive entities
+- **Chunk Count**: Identifies too many loaded chunks
+- **Plugin Count**: Warns about plugin overload
+
+### Plugin Performance
+
+Identifies problematic plugins:
+- High-impact plugins consuming tick time
+- Event listener overhead
+- Inefficient database queries
+- Suggestions for alternatives or updates
+
+### World Issues
+
+Detects world-specific problems:
+- Spawn chunk entity accumulation
+- Tile entity lag (hoppers, furnaces, etc.)
+- Mob AI overhead
+- Chunk generation performance
+
+## Reading Recommendations
+
+Each recommendation includes:
+
+1. **Category**: Configuration, Plugin, World, or System
+2. **Issue**: Specific problem detected
+3. **Current Value**: Your current setting
+4. **Recommended Value**: Suggested optimization
+5. **Rationale**: Why the change helps performance
+
+<Warning>
+These are not magic values. Many settings have real consequences on your server's mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information.
+</Warning>
+
+## Best Practices
+
+<Tip>
+**Generate During Lag**: Create timings reports when your server is experiencing the issue you want to diagnose.
+</Tip>
+
+<Tip>
+**Wait for Data**: Let the server run for at least 5 minutes before generating a report for accurate data.
+</Tip>
+
+<Tip>
+**Compare Before/After**: Generate reports before and after making changes to measure improvement.
+</Tip>
+
+### When to Generate Timings
+
+- Server TPS drops below 20
+- Players report lag or stuttering
+- After installing new plugins
+- During regular maintenance
+- Before major events or updates
+
+### What to Look For in the Report
+
+Key sections to review:
+
+1. **System**: Server hardware and Java version
+2. **Timings Summary**: Overall server health
+3. **Plugin Timings**: Top CPU consumers
+4. **Entity Timings**: Entity processing costs
+5. **Configuration**: Current server settings
+
+## Common Issues and Solutions
+
+### Low TPS (< 20)
+
+**Symptom**: Server running slowly, delays in player actions
+
+**Common Causes**:
+- Too many entities
+- Inefficient plugins
+- Overloaded chunks
+- High player count with insufficient hardware
+
+**Solutions**:
+```yaml
+# paper-world-defaults.yml
+entities:
+  spawning:
+    all-chunks-are-slime-chunks: false
+    per-player-mob-spawns: true
+  behavior:
+    zombie-villager-infection-chance: 0.5
+    
+hopper:
+  disable-move-event: true
+  
+tick-rates:
+  behavior:
+    villager:
+      validatenearbypoi: 60
+      acquirepoi: 120
+  sensor:
+    villager:
+      secondarypoisensor: 80
+      nearestbedsensor: 80
+```
+
+### High Plugin Overhead
+
+**Symptom**: One or more plugins using >5% of tick time
+
+**Solutions**:
+1. Update plugins to latest versions
+2. Review plugin configurations for optimization options
+3. Consider lighter alternatives
+4. Remove unused plugins
+5. Contact plugin authors with timings data
+
+### Excessive Entities
+
+**Symptom**: High entity count (>500 per world)
+
+**Solutions**:
+```yaml
+# paper-world-defaults.yml
+entities:
+  spawning:
+    monster-spawn-max-light-level: 0
+  behavior:
+    despawn-ranges:
+      ambient:
+        soft: 32
+        hard: 128
+      creature:
+        soft: 32
+        hard: 128
+      monster:
+        soft: 32
+        hard: 128
+```
+
+### Hopper Lag
+
+**Symptom**: Tile entity section shows high hopper costs
+
+**Solutions**:
+```yaml
+# paper-world-defaults.yml
+hopper:
+  disable-move-event: true
+  cooldown-when-full: true
+  ignore-occluding-blocks: true
+```
+
+Or use hopper-optimizing plugins like HopperOptimizer.
+
+### Chunk Generation Lag
+
+**Symptom**: High chunk generation costs in timings
+
+**Solutions**:
+- Pre-generate your world using Chunky plugin
+- Reduce world border size
+- Limit player exploration
+- Optimize generator settings
+
+## Direct Link Format
+
+Skip the input form with a direct link:
+
+```
+https://birdflop.com/resources/papertimings/[code]
+```
+
+Replace `[code]` with the report ID from the timings URL.
+
+## Timings Commands
+
+### Basic Commands
+
+```
+/timings report        # Generate and upload report
+/timings reset         # Reset collected data
+/timings on            # Enable timings
+/timings off           # Disable timings
+/timings paste         # Upload current timings
+```
+
+### Advanced Usage
+
+Reset timings before testing:
+```
+/timings reset
+# Wait 5-10 minutes during normal gameplay
+/timings report
+```
+
+Compare before/after optimization:
+```
+/timings reset
+# Baseline report
+/timings report
+# Make changes
+/timings reset
+# Test report
+/timings report
+```
+
+## Timings vs Spark
+
+| Feature | Timings | Spark |
+|---------|---------|-------|
+| Built-in | Paper only | Requires plugin |
+| Detail Level | High-level overview | Detailed profiling |
+| Overhead | Very low | Low (~5%) |
+| Real-time | No | Yes |
+| Thread Info | Limited | Detailed |
+| Best For | General diagnosis | Deep analysis |
+
+<Note>
+Use Timings for quick checks and regular monitoring. Use Spark for deep-dive performance analysis.
+</Note>
+
+## Limitations
+
+- Spigot timings provide less detail than Paper timings
+- Cannot profile startup lag
+- May miss short performance spikes
+- Less detailed than Spark profiler
+- Removed in Purpur 1.19+
+
+## Migration to Spark
+
+If your server version removed timings:
+
+1. Install Spark plugin from [spark.lucko.me](https://spark.lucko.me/)
+2. Use `/spark profiler` instead of `/timings report`
+3. Use the [Spark Profile Analyzer](/tools/spark-profile)
+
+<Tip>
+Spark provides more detailed information than timings and is the recommended profiling tool for modern servers.
+</Tip>
+
+## Related Tools
+
+- [Spark Profile Analyzer](/tools/spark-profile) - More detailed profiling
+- [Flags Generator](/tools/flags-generator) - Optimize JVM flags
+
+## Powered By Botflop
+
+This analyzer uses the [Botflop](https://github.com/Pemigrade/botflop) analysis engine, which can also analyze timings automatically in Discord.
+
+<Tip>
+Add Botflop to your Discord server for automatic timings analysis when links are shared in chat.
+</Tip>

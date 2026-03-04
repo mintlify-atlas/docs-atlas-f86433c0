@@ -1,0 +1,450 @@
+---
+title: Format Options
+description: rgbDefaults configuration and output format templates
+icon: sliders
+---
+
+## Overview
+
+The `rgbDefaults` object defines the default configuration for gradient text generation. It contains all settings for colors, formatting, output formats, and gradient behavior.
+
+## rgbDefaults
+
+Default configuration object for gradient generation.
+
+```typescript
+const rgbDefaults: {
+  version: number;
+  colors: Array<{ hex: string; pos: number }>;
+  shadowcolors: null | Array<{ hex: string; pos: number }>;
+  colorlength: number;
+  text: string;
+  format: format;
+  prefixsuffix: string;
+  customFormat: boolean;
+  trimspaces: boolean;
+  disperse: boolean;
+  lowercase: boolean;
+  bold: boolean;
+  italic: boolean;
+  underline: boolean;
+  strikethrough: boolean;
+  obfuscate: boolean;
+  gradientType: GradientType;
+}
+```
+
+### Properties
+
+<ParamField path="version" type="number" default="4">
+  Configuration version number
+</ParamField>
+
+<ParamField path="colors" type="Array<{ hex: string; pos: number }>" default="[{ hex: '#54daf4', pos: 0 }, { hex: '#545eb6', pos: 100 }]">
+  Array of color stops defining the gradient.
+  - `hex`: Hex color string (e.g., '#FF5733')
+  - `pos`: Position in gradient (0-100)
+</ParamField>
+
+<ParamField path="shadowcolors" type="null | Array<{ hex: string; pos: number }>" default="null">
+  Optional shadow color stops for MiniMessage format. If null, auto-generates shadows at 25% brightness of main colors.
+</ParamField>
+
+<ParamField path="colorlength" type="number" default="1">
+  Number of characters per color segment. Higher values = fewer color changes.
+</ParamField>
+
+<ParamField path="text" type="string" default="'Birdflop'">
+  The text to apply the gradient to
+</ParamField>
+
+<ParamField path="format" type="format" default="formats[1]">
+  Output format template. See [Format Templates](#format-templates) below.
+</ParamField>
+
+<ParamField path="prefixsuffix" type="string" default="''">
+  Wrapper template with `$t` placeholder for the full output. Applied after all other formatting.
+</ParamField>
+
+<ParamField path="customFormat" type="boolean" default="false">
+  Whether using a custom format template
+</ParamField>
+
+<ParamField path="trimspaces" type="boolean" default="true">
+  Skip gradient for whitespace-only segments (preserves spacing)
+</ParamField>
+
+<ParamField path="disperse" type="boolean" default="false">
+  Auto-distribute colors evenly (overrides pos values)
+</ParamField>
+
+<ParamField path="lowercase" type="boolean" default="false">
+  Convert output to lowercase
+</ParamField>
+
+<ParamField path="bold" type="boolean" default="false">
+  Apply bold formatting
+</ParamField>
+
+<ParamField path="italic" type="boolean" default="false">
+  Apply italic formatting
+</ParamField>
+
+<ParamField path="underline" type="boolean" default="false">
+  Apply underline formatting
+</ParamField>
+
+<ParamField path="strikethrough" type="boolean" default="false">
+  Apply strikethrough formatting
+</ParamField>
+
+<ParamField path="obfuscate" type="boolean" default="false">
+  Apply obfuscated/magic text formatting (Minecraft)
+</ParamField>
+
+<ParamField path="gradientType" type="GradientType" default="'rgb'">
+  Gradient interpolation type: 'rgb', 'hsl', 'oklab', 'oklch', 'cielab', or 'luvLch'. See [Gradient Types](/sdk/api/gradient-types).
+</ParamField>
+
+## format Interface
+
+Defines the output format template structure.
+
+```typescript
+interface format {
+  color: string;
+  char?: string;
+  class?: string;
+  bold?: string;
+  italic?: string;
+  underline?: string;
+  strikethrough?: string;
+  obfuscate?: string;
+}
+```
+
+<ParamField path="color" type="string" required>
+  Color format template using placeholders:
+  - `$1` through `$6`: Individual hex digits
+  - `$f`: Format codes (bold, italic, etc.)
+  - `$c`: The character/text segment
+  - Special values: 'MiniMessage', 'JSON'
+</ParamField>
+
+<ParamField path="char" type="string">
+  Format character for Minecraft-style codes (e.g., '&' or '§')
+</ParamField>
+
+<ParamField path="class" type="string">
+  CSS class for web output (future use)
+</ParamField>
+
+<ParamField path="bold" type="string">
+  Bold wrapper template with `$t` placeholder
+</ParamField>
+
+<ParamField path="italic" type="string">
+  Italic wrapper template with `$t` placeholder
+</ParamField>
+
+<ParamField path="underline" type="string">
+  Underline wrapper template with `$t` placeholder
+</ParamField>
+
+<ParamField path="strikethrough" type="string">
+  Strikethrough wrapper template with `$t` placeholder
+</ParamField>
+
+<ParamField path="obfuscate" type="string">
+  Obfuscate wrapper template with `$t` placeholder
+</ParamField>
+
+## Format Templates
+
+Pre-defined format templates in the `formats` array:
+
+### MiniMessage (index 0)
+
+```typescript
+{
+  color: 'MiniMessage',
+  bold: '<b>$t</b>',
+  italic: '<i>$t</i>',
+  underline: '<u>$t</u>',
+  strikethrough: '<st>$t</st>',
+  obfuscate: '<obf>$t</obf>'
+}
+```
+
+Generates MiniMessage format: `<gradient:#color1:#color2>text</gradient>`
+
+### Bukkit/Spigot Ampersand (index 1, default)
+
+```typescript
+{
+  color: '&#$1$2$3$4$5$6$f$c',
+  char: '&'
+}
+```
+
+Generates: `&#F&#F&#5&#7&#3&#3&ltext` (if bold)
+
+### JSON (index 2)
+
+```typescript
+{
+  color: 'JSON'
+}
+```
+
+Generates JSON tellraw format:
+```json
+{
+  "text": "",
+  "extra": [
+    {"text": "T", "color": "#FF0000", "bold": true},
+    {"text": "e", "color": "#FF3300"},
+    ...
+  ]
+}
+```
+
+### Section Sign (index 3)
+
+```typescript
+{
+  color: '§x§$1§$2§$3§$4§$5§$6$f$c',
+  char: '§'
+}
+```
+
+### CMI/Essentials Ampersand (index 4)
+
+```typescript
+{
+  color: '&x&$1&$2&$3&$4&$5&$6$f$c',
+  char: '&'
+}
+```
+
+### DeluxeMenus/AdvancedBan (index 5)
+
+```typescript
+{
+  color: '<#$1$2$3$4$5$6>$f$c',
+  char: '&'
+}
+```
+
+### BBCode (index 6)
+
+```typescript
+{
+  color: '[COLOR=#$1$2$3$4$5$6]$c[/COLOR]',
+  bold: '[BOLD]$t[/BOLD]',
+  italic: '[ITALIC]$t[/ITALIC]',
+  underline: '[UNDERLINE]$t[/UNDERLINE]',
+  strikethrough: '[STRIKETHROUGH]$t[/STRIKETHROUGH]'
+}
+```
+
+## Usage Examples
+
+### Basic Configuration
+
+```typescript
+import { generateOutput, rgbDefaults } from '@birdflop/rgbirdflop';
+
+const config = {
+  ...rgbDefaults,
+  text: 'Hello World',
+  colors: [
+    { hex: '#FF0000', pos: 0 },
+    { hex: '#0000FF', pos: 100 }
+  ]
+};
+
+const output = generateOutput(config);
+```
+
+### MiniMessage Format
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Gradient Text',
+  colors: [
+    { hex: '#54daf4', pos: 0 },
+    { hex: '#545eb6', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' },
+  bold: true
+};
+
+const output = generateOutput(config);
+// Output: <b><gradient:#54daf4:#545eb6>Gradient Text</gradient></b>
+```
+
+### Custom Format
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Custom',
+  colors: [{ hex: '#FF5733', pos: 0 }],
+  format: {
+    color: '<span style="color: #$1$2$3$4$5$6">$c</span>',
+  },
+  customFormat: true
+};
+
+const output = generateOutput(config);
+// Output: <span style="color: #FF5733">Custom</span>
+```
+
+### With Prefix/Suffix
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Server',
+  colors: [
+    { hex: '#FFD700', pos: 0 },
+    { hex: '#FFA500', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' },
+  prefixsuffix: '[Premium] $t [VIP]'
+};
+
+const output = generateOutput(config);
+// Output: [Premium] <gradient:#FFD700:#FFA500>Server</gradient> [VIP]
+```
+
+### Multi-Color with Custom Positions
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Rainbow',
+  colors: [
+    { hex: '#FF0000', pos: 0 },
+    { hex: '#FFFF00', pos: 33 },
+    { hex: '#00FF00', pos: 66 },
+    { hex: '#0000FF', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' },
+  gradientType: 'hsl' as const
+};
+
+const output = generateOutput(config);
+```
+
+### Longer Color Segments
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Longer Segments',
+  colors: [
+    { hex: '#FF0000', pos: 0 },
+    { hex: '#0000FF', pos: 100 }
+  ],
+  colorlength: 3, // 3 characters per color
+  format: { color: 'MiniMessage' }
+};
+
+// Each color applies to 3 characters instead of 1
+```
+
+## Utility Functions
+
+### disperseColors
+
+Auto-distributes colors evenly across the gradient.
+
+```typescript
+function disperseColors(
+  colors: typeof rgbDefaults.colors
+): Array<{ hex: string; pos: number }>
+```
+
+<ParamField path="colors" type="Array<{ hex: string; pos: number }>" required>
+  Input color array (pos values are ignored)
+</ParamField>
+
+<ResponseField name="distributedColors" type="Array<{ hex: string; pos: number }>">
+  Colors with evenly distributed positions
+</ResponseField>
+
+#### Example
+
+```typescript
+import { disperseColors } from '@birdflop/rgbirdflop';
+
+const colors = [
+  { hex: '#FF0000', pos: 0 },
+  { hex: '#00FF00', pos: 0 },
+  { hex: '#0000FF', pos: 0 }
+];
+
+const dispersed = disperseColors(colors);
+// Returns: [
+//   { hex: '#FF0000', pos: 0 },
+//   { hex: '#00FF00', pos: 50 },
+//   { hex: '#0000FF', pos: 100 }
+// ]
+```
+
+### sortColors
+
+Sorts colors by position.
+
+```typescript
+function sortColors(
+  colors: Array<{ hex: string; pos: number }>
+): Array<{ hex: string; pos: number }>
+```
+
+### swapItems
+
+Swaps two items in an array, maintaining pos values if present.
+
+```typescript
+function swapItems(array: any[], indexA: number, indexB: number): any[]
+```
+
+<ParamField path="array" type="any[]" required>
+  Array to swap items in
+</ParamField>
+
+<ParamField path="indexA" type="number" required>
+  First index (supports negative wrapping)
+</ParamField>
+
+<ParamField path="indexB" type="number" required>
+  Second index (supports negative wrapping)
+</ParamField>
+
+<ResponseField name="swappedArray" type="any[]">
+  New array with swapped items
+</ResponseField>
+
+### getShadowColors
+
+Generates shadow colors for the gradient (auto-darkens or uses custom).
+
+```typescript
+function getShadowColors(
+  rgbStore: typeof rgbDefaults
+): Array<{ hex: string; pos: number }>
+```
+
+## Related
+
+- [Generate Output](/sdk/api/generate-output) - Use these options to generate text
+- [Gradient Types](/sdk/api/gradient-types) - Gradient interpolation types
+- [Color Utilities](/sdk/api/color-utilities) - Color conversion functions
+
+## Implementation
+
+Source: `packages/rgbirdflop/src/util/Defaults.ts:58`

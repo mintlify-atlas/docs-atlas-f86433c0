@@ -1,0 +1,516 @@
+---
+title: Animated Textures
+description: Convert GIFs to Minecraft animated textures and generate resource pack files with frame timing controls
+---
+
+Animated Textures converts GIF images and static images into Minecraft-compatible animated textures with proper `.png` and `.mcmeta` files. Access it at [birdflop.com/resources/animtexture](https://birdflop.com/resources/animtexture).
+
+## Features
+
+- GIF to Minecraft texture conversion
+- Static image support
+- Custom frame timing per frame
+- Bounce animation mode
+- Synchronized duration mode
+- Frame accumulation (combine multiple GIFs)
+- Automatic dimension detection
+- Direct Discord emoji support
+- Minecraft chat preview
+- PNG and MCMETA file generation
+
+## Getting Started
+
+<Steps>
+  <Step title="Upload or Link Image">
+    Provide your source image:
+    - **Upload**: Select GIF or image from your device
+    - **URL**: Paste image URL (works with Discord emojis)
+  </Step>
+  
+  <Step title="Configure Dimensions">
+    Set texture size:
+    - Width and Height in pixels
+    - Enable "Lock Dimensions" for square textures
+    - Click refresh icons to detect original size
+  </Step>
+  
+  <Step title="Adjust Frame Timing">
+    For each frame:
+    - Set individual frame duration in ticks (1 tick = 1/20 second)
+    - Or enable "Sync Duration" to set all frames at once
+  </Step>
+  
+  <Step title="Configure Options">
+    - **Bounce Animation**: Makes animation reverse at end
+    - **Add to Existing**: Accumulate frames from multiple images
+    - **Show Chat Preview**: Preview as Minecraft chat sprite
+  </Step>
+  
+  <Step title="Download Files">
+    Download both files:
+    - **PNG**: Combined sprite sheet with all frames
+    - **MCMETA**: Animation metadata file
+  </Step>
+</Steps>
+
+## Understanding Minecraft Animated Textures
+
+### Texture Format
+
+Minecraft animated textures consist of:
+
+1. **PNG file**: Vertical sprite sheet of all frames
+2. **MCMETA file**: JSON metadata with frame timing
+
+```
+texture.png         (16x64 for 4 frames at 16x16)
+texture.png.mcmeta  (animation data)
+```
+
+### Frame Layout
+
+Frames are stacked vertically in the PNG:
+
+```
+[Frame 0]  ← Top
+[Frame 1]
+[Frame 2]
+[Frame 3]  ← Bottom
+```
+
+Each frame is the same width and height.
+
+### MCMETA Format
+
+The `.png.mcmeta` file defines animation:
+
+```json
+{
+  "animation": {
+    "frames": [
+      { "index": 0, "time": 20 },
+      { "index": 1, "time": 10 },
+      { "index": 2, "time": 15 }
+    ]
+  }
+}
+```
+
+- **index**: Frame number (0-based)
+- **time**: Duration in ticks (20 ticks = 1 second)
+
+## Uploading Images
+
+### From Device
+
+Click "Select GIF or image from your device" and choose:
+- **GIF files**: Automatically extracts all frames
+- **PNG/JPG/WEBP**: Creates single-frame animation
+- **Multiple files**: Select multiple images to combine
+
+### From URL
+
+Paste any image URL:
+- Direct image links (`.gif`, `.png`, etc.)
+- Discord CDN links
+- Image hosting services
+
+<Tip>
+**Discord Emojis**: Paste Discord emoji URLs directly. The tool automatically converts `.webp?animated=true` to `.gif` format.
+</Tip>
+
+### Discord Emoji Direct Link
+
+To get Discord emoji URL:
+
+1. In Discord, type `\:emoji_name:`
+2. Send the message
+3. Copy the resulting emoji URL
+4. Paste into the tool
+
+**Example**:
+```
+https://cdn.discordapp.com/emojis/904177608537804870.gif
+```
+
+## Texture Dimensions
+
+### Width and Height
+
+Set the dimensions for each frame:
+
+- **Common sizes**: 16x16, 32x32, 64x64
+- **Custom sizes**: Any size works, but power-of-2 is recommended
+- **Non-square**: Disable "Lock Dimensions" for different widths/heights
+
+<Note>
+Minecraft resource packs commonly use power-of-2 dimensions (16, 32, 64, 128) but any size is technically supported.
+</Note>
+
+### Lock Dimensions
+
+When enabled, height automatically matches width (square textures).
+
+**Recommended for**:
+- Item textures
+- Block textures
+- Most UI elements
+
+**Disable for**:
+- Banners
+- Special UI elements
+- Non-square sprites
+
+### Auto-Detect Size
+
+Click the refresh icon (↻) next to Width or Height to automatically set to the original image dimensions.
+
+<Tip>
+Use auto-detect then adjust if needed. Many GIFs are small and need upscaling for Minecraft.
+</Tip>
+
+## Frame Timing
+
+### Individual Frame Duration
+
+By default, each frame has its own duration control:
+
+- Measured in **ticks** (1 tick = 1/20 second = 50ms)
+- GIF frames automatically import with original timing
+- Adjust per frame for custom animations
+
+**Common durations**:
+- **2 ticks** (0.1s): Very fast
+- **5 ticks** (0.25s): Fast
+- **10 ticks** (0.5s): Medium
+- **20 ticks** (1.0s): Slow
+- **40 ticks** (2.0s): Very slow
+
+### Sync Duration Mode
+
+Enable "Sync Duration" to set all frames to the same duration.
+
+**Use when**:
+- All frames should display for equal time
+- Converting static images to animation
+- Creating consistent loops
+
+### Frame Management
+
+For each frame:
+- **View**: See frame preview
+- **Edit timing**: Adjust duration in ticks
+- **Remove**: Click X to delete frame
+
+## Animation Options
+
+### Bounce Animation
+
+When enabled, plays animation forward then backward:
+
+```
+Frame 1 → 2 → 3 → 2 → 1 → 2 → 3 → ...
+```
+
+**Creates**:
+- Seamless loops
+- Pulsing effects
+- Smooth reversing animations
+
+**MCMETA output**: Adds reversed frames automatically
+
+<Tip>
+Bounce mode effectively doubles your animation length, creating smoother loops from short GIFs.
+</Tip>
+
+### Add to Existing Frames
+
+When enabled, new images append to current frames instead of replacing them.
+
+**Use cases**:
+- Combine multiple GIFs
+- Add static frames to GIF
+- Build complex animations from parts
+
+**Workflow**:
+1. Load first GIF
+2. Enable "Add to existing frames"
+3. Load second GIF
+4. Continue adding as needed
+
+### Minecraft Chat Preview
+
+Shows how the texture looks as a chat sprite using the modern font sprite system.
+
+**Example usage**:
+```
+this is so funny <sprite:item/texture_name>
+```
+
+<Note>
+Chat sprites require proper resource pack setup. This preview simulates the appearance.
+</Note>
+
+## Using in Resource Packs
+
+### File Placement
+
+Place files in your resource pack:
+
+#### Block Textures
+```
+assets/minecraft/textures/block/
+  texture_name.png
+  texture_name.png.mcmeta
+```
+
+#### Item Textures
+```
+assets/minecraft/textures/item/
+  texture_name.png
+  texture_name.png.mcmeta
+```
+
+#### Custom Textures
+```
+assets/namespace/textures/path/
+  texture_name.png
+  texture_name.png.mcmeta
+```
+
+### Referencing in Models
+
+In block/item models:
+
+```json
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "item/texture_name"
+  }
+}
+```
+
+Minecraft automatically detects the `.mcmeta` file and animates the texture.
+
+### Chat Sprites (Font)
+
+For chat sprites, add to font JSON:
+
+```json
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "item/texture_name.png",
+      "height": 16,
+      "chars": ["\uE000"]
+    }
+  ]
+}
+```
+
+Then use in chat:
+```
+<sprite:item/texture_name>
+```
+
+## Example Use Cases
+
+### Discord Emoji to Item
+
+1. Copy Discord emoji URL
+2. Paste into URL field
+3. Set dimensions to 16x16
+4. Adjust frame timing if needed
+5. Download PNG and MCMETA
+6. Add to resource pack as custom item texture
+
+### Loading Animation
+
+1. Upload GIF of loading spinner
+2. Set to 16x16 or 32x32
+3. Enable "Sync Duration" at 2 ticks
+4. Enable "Bounce" if appropriate
+5. Use for custom UI element
+
+### Fire Texture
+
+1. Upload fire GIF
+2. Size to 16x16 (or 32x32 for HD)
+3. Keep original frame timing
+4. Replace `minecraft:block/fire_0.png`
+5. Copy same files for `fire_1.png`
+
+### Water Animation
+
+1. Create water flow GIF
+2. Size to 16x16 or higher
+3. Use slow frame timing (10-20 ticks)
+4. Replace `minecraft:block/water_still.png`
+
+## Advanced Techniques
+
+### Multi-Stage Animations
+
+1. Create stage 1 animation (frames 1-10)
+2. Enable "Add to existing"
+3. Add stage 2 animation (frames 11-20)
+4. Add stage 3, etc.
+5. Result: Complex multi-part animation
+
+### Variable Speed Animations
+
+Create pauses or speed changes:
+
+1. Set fast sections to 2-5 ticks
+2. Set slow sections to 20-40 ticks
+3. Create dramatic timing effects
+
+### Seamless Loops
+
+For perfect loops:
+
+1. Ensure first and last frames are similar
+2. Or use "Bounce" mode
+3. Test in-game to verify smoothness
+4. Adjust final frame timing to match loop point
+
+## Performance Considerations
+
+### File Size
+
+- More frames = larger PNG file
+- Higher dimensions = larger file
+- Many animated textures can increase pack size
+
+<Tip>
+**Optimize**: Use only as many frames as needed for smooth animation. 8-16 frames is often sufficient.
+</Tip>
+
+### Frame Count
+
+- **Under 16 frames**: Minimal impact
+- **16-32 frames**: Moderate impact
+- **Over 32 frames**: Consider if all are necessary
+
+### Dimensions
+
+- 16x16: Standard, very efficient
+- 32x32: HD, moderate impact
+- 64x64: High-res, noticeable impact
+- 128x128+: Significant impact, use sparingly
+
+## Common Issues
+
+### Animation Too Fast/Slow
+
+**Solution**: Adjust frame timing
+- Too fast: Increase tick values
+- Too slow: Decrease tick values
+- Uneven: Adjust individual frames
+
+### GIF Not Loading
+
+**Check**:
+- File is valid GIF format
+- File size is reasonable (< 10 MB)
+- URL is direct image link
+- Discord URLs are converted to .gif
+
+### Texture Looks Pixelated
+
+**Solutions**:
+- Increase dimensions before conversion
+- Start with higher resolution source
+- Use image upscaling before import
+
+### MCMETA Not Working
+
+**Verify**:
+- File named exactly `texture.png.mcmeta` (not `.png.mcmeta.txt`)
+- Valid JSON format (no syntax errors)
+- Placed in same folder as PNG
+- Resource pack loaded and enabled
+
+### Frames in Wrong Order
+
+**Solution**: Import frames individually with "Add to existing" in the correct order.
+
+## Resource Pack Integration
+
+### Basic Pack Structure
+
+```
+my_pack/
+├── pack.mcmeta
+├── pack.png
+└── assets/
+    └── minecraft/
+        └── textures/
+            ├── block/
+            └── item/
+                ├── my_texture.png
+                └── my_texture.png.mcmeta
+```
+
+### pack.mcmeta
+
+```json
+{
+  "pack": {
+    "pack_format": 15,
+    "description": "My Animated Textures"
+  }
+}
+```
+
+Update `pack_format` for your Minecraft version.
+
+### Testing
+
+1. Place pack in `.minecraft/resourcepacks/`
+2. Enable in Options → Resource Packs
+3. Check F3 screen for errors
+4. View texture in-game
+
+<Tip>
+**Quick reload**: Press F3 + T to reload resource packs without restarting.
+</Tip>
+
+## Troubleshooting
+
+### Texture Not Animating
+
+**Check**:
+- MCMETA file in correct location
+- MCMETA syntax is valid JSON
+- Resource pack is enabled
+- Texture is actually being used
+
+### Wrong Speed In-Game
+
+**Remember**: Server TPS affects animation speed
+- 20 TPS: Normal speed
+- 10 TPS: Half speed
+- Low TPS = slower animations
+
+### Transparency Issues
+
+**Ensure**:
+- Source image has proper alpha channel
+- PNG format (not JPG)
+- Resource pack supports transparency for that texture
+
+## Related Tools
+
+- [Banner Generator](/tools/banner-generator) - Create banner designs
+- [Animated TAB](/tools/animated-tab) - Animate TAB plugin text
+- [RGBirdflop](/tools/rgbirdflop) - Create gradient text
+
+## Further Resources
+
+- [Minecraft Wiki: Resource Pack](https://minecraft.wiki/w/Resource_Pack)
+- [Texture Animation](https://minecraft.wiki/w/Resource_Pack#Textures)
+- [MCMETA Format](https://minecraft.wiki/w/Resource_Pack#Animation)
+- [Font Sprites](https://minecraft.wiki/w/Resource_Pack#Fonts)

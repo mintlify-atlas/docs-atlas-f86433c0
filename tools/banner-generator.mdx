@@ -1,0 +1,331 @@
+---
+title: Banner Generator
+description: Design Minecraft banners visually with a 3D preview and generate the give command
+---
+
+The Banner Generator lets you design custom Minecraft banners visually and generates the `/give` command to create them in-game. Access it at [birdflop.com/resources/banner](https://birdflop.com/resources/banner).
+
+## Features
+
+- Interactive 3D banner preview with realistic lighting
+- All 16 Minecraft dye colors
+- 38+ banner patterns (stripes, gradients, borders, and more)
+- Layer management (reorder, duplicate, delete)
+- Real-time preview rendering
+- Automatic command generation for Minecraft 1.20.5+
+- Animated banner sway effect
+
+## Getting Started
+
+<Steps>
+  <Step title="Choose Base Color">
+    Select the base banner color by clicking any of the 16 dye bottles. This is the starting color of your banner.
+  </Step>
+  
+  <Step title="Add Patterns">
+    Click the green + button to add pattern layers. Each layer consists of:
+    - A pattern type (stripe, gradient, border, etc.)
+    - A color to apply the pattern in
+  </Step>
+  
+  <Step title="Customize Layers">
+    Click any pattern layer to modify:
+    - Choose from 16 colors
+    - Select from 38+ available patterns
+    - Preview updates in real-time
+  </Step>
+  
+  <Step title="Manage Layers">
+    Use the layer controls:
+    - **Arrow buttons**: Move layer earlier/later in the stack
+    - **Copy button**: Duplicate the layer
+    - **Trash button**: Remove the layer
+  </Step>
+  
+  <Step title="Copy Command">
+    Click the command text area to automatically copy the `/give` command to your clipboard.
+  </Step>
+</Steps>
+
+## Understanding Banner Layers
+
+Minecraft banners work like layers in image editing software:
+
+1. **Base layer**: The base color of the banner (selected first)
+2. **Pattern layers**: Applied in order from first to last
+3. **Layer limit**: Maximum 6 patterns per banner (7 total layers with base)
+
+<Note>
+Layers are applied in order. Later layers appear on top of earlier layers.
+</Note>
+
+## Available Patterns
+
+The generator includes all vanilla Minecraft banner patterns:
+
+### Basic Patterns
+
+- **Stripes**: Top, bottom, left, right, diagonal patterns
+- **Crosses**: Vertical, horizontal, diagonal cross patterns
+- **Borders**: Single and double border patterns
+- **Gradients**: Top and bottom gradients
+- **Quarters**: Split the banner into quadrants
+
+### Special Patterns
+
+- **Circle**: Center circle
+- **Rhombus**: Diamond shape
+- **Triangle**: Top and bottom triangles
+- **Curly Border**: Decorative wavy border
+- **Bricks**: Brick wall pattern
+- **Creeper**: Creeper face (special pattern)
+- **Skull**: Skeleton skull (special pattern)
+- **Flower**: Flower charge (special pattern)
+- **Mojang**: Mojang logo (special pattern)
+- **Globe**: Globe pattern (special pattern)
+- **Piglin**: Piglin snout (special pattern)
+
+<Tip>
+Special patterns require specific banner pattern items obtained through gameplay (trading, looting, etc.).
+</Tip>
+
+## Layer Management
+
+### Reordering Layers
+
+Use the arrow buttons to change layer order:
+- **Left arrow**: Move layer earlier in the stack (lower)
+- **Right arrow**: Move layer later in the stack (higher)
+
+### Duplicating Layers
+
+Click the copy icon to duplicate a layer with the same pattern and color. Useful for:
+- Creating symmetric designs
+- Building complex patterns from similar bases
+- Quickly testing color variations
+
+### Deleting Layers
+
+Click the red trash icon to remove a layer. Cannot be undone.
+
+## Using the 3D Preview
+
+### Interactive Camera
+
+The 3D preview uses orbit controls:
+- **Left click + drag**: Rotate camera around banner
+- **Scroll wheel**: Zoom in/out
+- **Right click + drag**: Pan camera
+
+### Animation
+
+The banner gently sways to simulate how it looks in-game on a banner stand.
+
+### Lighting
+
+The preview uses realistic lighting:
+- Ambient lighting for overall illumination
+- Directional light for shadows
+- Hemisphere light for natural sky/ground lighting
+
+## Command Format
+
+The generator produces commands for Minecraft 1.20.5+ using the new component format:
+
+```
+/give @p minecraft:blue_banner[banner_patterns=[{pattern:stripe_bottom,color:white},{pattern:stripe_top,color:white},{pattern:circle,color:light_blue}]]
+```
+
+### Command Breakdown
+
+- `@p`: Gives to nearest player
+- `minecraft:blue_banner`: Base color
+- `banner_patterns=[...]`: Array of pattern layers
+- Each pattern: `{pattern:pattern_name,color:color_name}`
+
+<Note>
+This format works in Minecraft 1.20.5+. Earlier versions use different NBT syntax.
+</Note>
+
+## Design Tips
+
+<Tip>
+**Start Simple**: Begin with 2-3 layers and add complexity gradually.
+</Tip>
+
+<Tip>
+**Use Contrast**: High contrast between base and patterns makes designs more visible.
+</Tip>
+
+<Tip>
+**Layer Order Matters**: Place background elements first, details last.
+</Tip>
+
+### Creating Common Designs
+
+#### Flag Design
+
+1. Choose base color for background
+2. Add horizontal stripes for flag sections
+3. Add symbol in center (cross, circle, etc.)
+4. Use borders for framing
+
+#### Logo Design
+
+1. Start with solid base color
+2. Add geometric shapes (rhombus, circle, etc.)
+3. Use contrasting colors
+4. Keep it simple (max 4-5 layers)
+
+#### Shield Design
+
+1. Choose metal color base (gray, light gray)
+2. Add border for rim
+3. Add central emblem (gradient, circle, etc.)
+4. Use traditional heraldic colors
+
+#### Team Marker
+
+1. Bright, distinct base color per team
+2. Add identifying pattern (stripe position)
+3. Optional: add number or symbol
+4. Keep very simple for quick recognition
+
+## Example Designs
+
+### Simple Cross
+
+1. Base: White banner
+2. Pattern 1: Red cross
+
+### Gradient Flag
+
+1. Base: Blue banner
+2. Pattern 1: White gradient (bottom)
+3. Pattern 2: Light blue circle
+
+### Creeper Banner
+
+1. Base: Lime banner
+2. Pattern 1: Black creeper pattern
+
+### Double Border
+
+1. Base: Red banner
+2. Pattern 1: Yellow border
+3. Pattern 2: Orange border
+4. Pattern 3: Red circle (center)
+
+## Color Palette
+
+All 16 Minecraft dye colors are available:
+
+| Color | Usage |
+|-------|-------|
+| White | Backgrounds, snow, clouds |
+| Light Gray | Stone, silver |
+| Gray | Metal, stone |
+| Black | Outlines, shadows |
+| Red | Flags, danger |
+| Orange | Fire, warm accents |
+| Yellow | Gold, sun, warning |
+| Lime | Nature, lime accents |
+| Green | Nature, safe |
+| Cyan | Water, ice, tech |
+| Light Blue | Sky, ice, water |
+| Blue | Water, sky, royal |
+| Purple | Magic, royal |
+| Magenta | Fantasy, highlights |
+| Pink | Soft accents |
+| Brown | Earth, wood |
+
+<Tip>
+Use color theory for better designs: complementary colors (opposite on color wheel) create strong contrast.
+</Tip>
+
+## Technical Details
+
+### 3D Rendering
+
+The preview uses Three.js for 3D rendering:
+- WebGL-accelerated graphics
+- Real-time texture generation from patterns
+- OBJ model loading for banner mesh
+- Canvas texture mapping for pattern layers
+
+### Performance
+
+The generator renders at 60 FPS on most devices. For best performance:
+- Use a modern browser (Chrome, Firefox, Edge)
+- Enable hardware acceleration
+- Close unnecessary browser tabs
+
+## Limitations
+
+<Note>
+- Maximum 6 pattern layers (Minecraft limitation)
+- Command format for Minecraft 1.20.5+
+- Special patterns require obtaining pattern items in-game
+- Some older versions use different NBT syntax
+</Note>
+
+## Using Banners In-Game
+
+### Placement
+
+Place banners:
+- On walls (faces outward)
+- On floor with banner stand
+- On shields (combine in crafting table)
+
+### Shield Application
+
+Combine banner + shield in crafting:
+```
+[Banner] [Shield] → [Decorated Shield]
+```
+
+### Copying Banners
+
+Craft copies without pattern items:
+```
+[Banner] + [Blank Banner] → 2x [Copied Banner]
+```
+
+### Map Markers
+
+Place banner, then right-click with map to add marker.
+
+## Troubleshooting
+
+### Command Doesn't Work
+
+- Verify Minecraft version (1.20.5+ required for this format)
+- Check for typos if manually editing
+- Ensure you have permission to use `/give`
+
+### Pattern Not Available
+
+- Some patterns require obtaining pattern items:
+  - Creeper: Creeper head + paper
+  - Skull: Wither skeleton skull + paper
+  - Flower: Oxeye daisy + paper
+  - Mojang: Enchanted golden apple + paper (removed in newer versions)
+
+### 3D Preview Not Loading
+
+- Enable JavaScript in browser
+- Try a different browser
+- Check browser console for errors
+- Ensure WebGL is supported and enabled
+
+## Related Tools
+
+- [Animated Textures](/tools/animated-textures) - Create custom textures
+- [RGBirdflop](/tools/rgbirdflop) - Design gradient text for banners and signs
+
+## Further Resources
+
+- [Minecraft Wiki: Banner](https://minecraft.wiki/w/Banner)
+- [Banner Pattern Showcase](https://minecraft.wiki/w/Banner/Patterns)
+- [Shield Customization](https://minecraft.wiki/w/Shield#Customization)

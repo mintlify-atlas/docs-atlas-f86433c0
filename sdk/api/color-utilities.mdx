@@ -1,0 +1,358 @@
+---
+title: Color Utilities
+description: Hex, RGB, HSL, HSV, OKLAB, and other color space conversion functions
+icon: palette
+---
+
+## Overview
+
+The RGBirdflop SDK provides comprehensive color space conversion utilities for working with colors in different formats. These utilities enable seamless conversion between hex strings, RGB arrays, and various color spaces including HSL, HSV, OKLAB, OKLCh, CIELAB, and LuvLCh.
+
+## Hex Conversions
+
+### hexToRGB
+
+Converts a hex color string to RGB values.
+
+```typescript
+function hexToRGB(hex: string): [number, number, number]
+```
+
+<ParamField path="hex" type="string" required>
+  Hex color string (e.g., '#FF00AA' or 'FF00AA' or 'FFF')
+</ParamField>
+
+<ResponseField name="rgb" type="[number, number, number]">
+  Tuple of [R, G, B] values (0-255 range)
+</ResponseField>
+
+#### Example
+
+```typescript
+import { hexToRGB } from '@birdflop/rgbirdflop';
+
+const rgb = hexToRGB('#FF5733');
+// Returns: [255, 87, 51]
+
+const rgb2 = hexToRGB('FFF');
+// Returns: [255, 255, 255] (expands 3-char hex)
+```
+
+### rgbToHex
+
+Converts RGB values to a hex color string (without '#' prefix).
+
+```typescript
+function rgbToHex(RGBAcolor: number[]): string
+```
+
+<ParamField path="RGBAcolor" type="number[]" required>
+  RGB array [r, g, b] with values in 0-255 range
+</ParamField>
+
+<ResponseField name="hex" type="string">
+  Hex color string without '#' prefix (e.g., 'FF5733')
+</ResponseField>
+
+#### Example
+
+```typescript
+import { rgbToHex } from '@birdflop/rgbirdflop';
+
+const hex = rgbToHex([255, 87, 51]);
+// Returns: 'FF5733'
+```
+
+### hex
+
+Converts a single color channel to hex.
+
+```typescript
+function hex(c: number): string
+```
+
+<ParamField path="c" type="number" required>
+  Color channel value (0-255)
+</ParamField>
+
+<ResponseField name="hex" type="string">
+  Two-character hex string (e.g., '00', 'FF')
+</ResponseField>
+
+### trim
+
+Removes the '#' prefix from a hex color string.
+
+```typescript
+function trim(s: string): string
+```
+
+## HSL Color Space
+
+### rgbToHsl
+
+Converts RGB to HSL color space.
+
+```typescript
+function rgbToHsl(rgb: number[]): HSL
+```
+
+<ParamField path="rgb" type="number[]" required>
+  RGB array [r, g, b] with values in 0-255 range
+</ParamField>
+
+<ResponseField name="hsl" type="HSL">
+  HSL color object:
+  - `h`: Hue (0-360 degrees)
+  - `s`: Saturation (0-100%)
+  - `l`: Lightness (0-100%)
+</ResponseField>
+
+#### Example
+
+```typescript
+import { rgbToHsl, hexToRGB } from '@birdflop/rgbirdflop';
+
+const rgb = hexToRGB('#FF5733');
+const hsl = rgbToHsl(rgb);
+// Returns: { h: 9.6, s: 100, l: 60 }
+```
+
+### hslToRgb
+
+Converts HSL to RGB.
+
+```typescript
+function hslToRgb(hsl: HSL): number[]
+```
+
+<ParamField path="hsl" type="HSL" required>
+  HSL color object with h (0-360), s (0-100), l (0-100)
+</ParamField>
+
+<ResponseField name="rgb" type="number[]">
+  RGB array [r, g, b] with values in 0-255 range
+</ResponseField>
+
+### hexToHsl / hslToHex
+
+Direct conversions between hex and HSL.
+
+```typescript
+function hexToHsl(hex: string): HSL
+function hslToHex(hsl: HSL): string
+```
+
+### interpolateHsl
+
+Interpolates between two HSL colors using the shortest path around the color wheel.
+
+```typescript
+function interpolateHsl(color1: HSL, color2: HSL, factor: number): HSL
+```
+
+<ParamField path="color1" type="HSL" required>
+  First HSL color
+</ParamField>
+
+<ParamField path="color2" type="HSL" required>
+  Second HSL color
+</ParamField>
+
+<ParamField path="factor" type="number" required>
+  Interpolation factor (0 = color1, 1 = color2)
+</ParamField>
+
+## HSV Color Space
+
+### rgbToHsv / hsvToRgb
+
+Converts between RGB and HSV (Hue, Saturation, Value/Brightness).
+
+```typescript
+function rgbToHsv(rgb: number[]): HSV
+function hsvToRgb(hsv: HSV): number[]
+```
+
+<ResponseField name="hsv" type="HSV">
+  HSV color object:
+  - `h`: Hue (0-360 degrees)
+  - `s`: Saturation (0-100%)
+  - `v`: Value/Brightness (0-100%)
+</ResponseField>
+
+### hexToHsv / hsvToHex
+
+Direct conversions between hex and HSV.
+
+```typescript
+function hexToHsv(hex: string): HSV
+function hsvToHex(hsv: HSV): string
+```
+
+### hslToHsv / hsvToHsl
+
+Converts between HSL and HSV color spaces.
+
+```typescript
+function hslToHsv(hsl: HSL): HSV
+function hsvToHsl(hsv: HSV): HSL
+```
+
+### interpolateHsv
+
+Interpolates between two HSV colors.
+
+```typescript
+function interpolateHsv(color1: HSV, color2: HSV, factor: number): HSV
+```
+
+## OKLAB Color Space
+
+OKLAB is a perceptually uniform color space where Euclidean distance corresponds to perceived color difference.
+
+### rgbToOklab
+
+Converts RGB to OKLAB color space.
+
+```typescript
+function rgbToOklab(rgb: number[]): OKLAB
+```
+
+<ParamField path="rgb" type="number[]" required>
+  RGB array [r, g, b] with values in 0-255 range
+</ParamField>
+
+<ResponseField name="oklab" type="OKLAB">
+  OKLAB color object:
+  - `L`: Lightness (0-1 typically)
+  - `a`: Green-red axis
+  - `b`: Blue-yellow axis
+</ResponseField>
+
+### hexToOklab
+
+Converts hex color to OKLAB.
+
+```typescript
+function hexToOklab(hex: string): OKLAB
+```
+
+### interpolateColor
+
+Linearly interpolates between two OKLAB colors.
+
+```typescript
+function interpolateColor(color1: OKLAB, color2: OKLAB, factor: number): OKLAB
+```
+
+## Utility Functions
+
+### getBrightness
+
+Calculates the perceived brightness of an RGB color.
+
+```typescript
+function getBrightness(RGBAcolor: number[]): number
+```
+
+<ParamField path="RGBAcolor" type="number[]" required>
+  RGB array [r, g, b] with values in 0-255 range
+</ParamField>
+
+<ResponseField name="brightness" type="number">
+  Brightness value calculated using the formula: sqrt(0.299*R² + 0.587*G² + 0.114*B²)
+</ResponseField>
+
+### getRandomColor
+
+Generates a random hex color.
+
+```typescript
+function getRandomColor(): string
+```
+
+<ResponseField name="color" type="string">
+  Random hex color string with '#' prefix (e.g., '#A3F2B1')
+</ResponseField>
+
+#### Example
+
+```typescript
+import { getRandomColor } from '@birdflop/rgbirdflop';
+
+const randomColor = getRandomColor();
+// Returns: '#A3F2B1' (example - randomized)
+```
+
+### vectorDistance
+
+Calculates the Euclidean distance between two vectors (useful for color comparison in perceptually uniform spaces).
+
+```typescript
+function vectorDistance(vec1: number[], vec2: number[]): number
+```
+
+<ParamField path="vec1" type="number[]" required>
+  First vector
+</ParamField>
+
+<ParamField path="vec2" type="number[]" required>
+  Second vector (must be same length as vec1)
+</ParamField>
+
+<ResponseField name="distance" type="number">
+  Euclidean distance between the vectors
+</ResponseField>
+
+## Advanced Color Spaces
+
+The SDK also includes utilities for:
+- **OKLCh** - Cylindrical OKLAB (Lightness, Chroma, Hue)
+- **CIELAB** - CIE L*a*b* color space
+- **LuvLCh** - CIE LCh based on CIELUV
+
+These are exported from the package and follow similar patterns to the HSL and OKLAB utilities.
+
+## Type Definitions
+
+```typescript
+interface HSL {
+  h: number; // Hue (0-360 degrees)
+  s: number; // Saturation (0-100%)
+  l: number; // Lightness (0-100%)
+}
+
+interface HSV {
+  h: number; // Hue (0-360 degrees)
+  s: number; // Saturation (0-100%)
+  v: number; // Value/Brightness (0-100%)
+}
+
+interface OKLAB {
+  L: number; // Lightness (0-1 typically)
+  a: number; // Green-red axis
+  b: number; // Blue-yellow axis
+}
+
+interface LinearRGB {
+  r: number; // 0-1 range
+  g: number; // 0-1 range
+  b: number; // 0-1 range
+}
+```
+
+## Related
+
+- [Gradient Types](/sdk/api/gradient-types) - Use these colors in gradients
+- [Generate Output](/sdk/api/generate-output) - Apply colors to text
+
+## Implementation
+
+Source files:
+- `packages/rgbirdflop/src/util/Colors/Hex.ts`
+- `packages/rgbirdflop/src/util/Colors/HSL.ts`
+- `packages/rgbirdflop/src/util/Colors/OKLAB.ts`
+- `packages/rgbirdflop/src/util/Colors/OKLCh.ts`
+- `packages/rgbirdflop/src/util/Colors/CIELAB.ts`
+- `packages/rgbirdflop/src/util/Colors/LuvLCh.ts`

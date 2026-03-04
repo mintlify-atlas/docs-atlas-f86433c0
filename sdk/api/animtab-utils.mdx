@@ -1,0 +1,393 @@
+---
+title: AnimTAB Utilities
+description: AnimTAB animation frame generation for TAB plugins
+icon: film
+---
+
+## Overview
+
+AnimTAB utilities generate animated gradient text frames for Minecraft TAB plugins. These functions create sequences of gradient frames that can be used in player list animations, scoreboards, and other animated text displays.
+
+## generateAnimTABFrames
+
+Generates animation frames for TAB plugins with configurable animation styles.
+
+```typescript
+function generateAnimTABFrames(
+  rgbStore: typeof rgbDefaults,
+  animtabStore: typeof animTABDefaults
+): {
+  OutputArray: string[];
+  frames: string[][];
+}
+```
+
+<ParamField path="rgbStore" type="typeof rgbDefaults" required>
+  Gradient configuration object. See [Format Options](/sdk/api/format-options).
+</ParamField>
+
+<ParamField path="animtabStore" type="typeof animTABDefaults" required>
+  Animation configuration object. See [animTABDefaults](#animtabdefaults) below.
+</ParamField>
+
+<ResponseField name="result" type="object">
+  Object containing:
+  - `OutputArray`: Formatted animation frames as strings
+  - `frames`: Raw color arrays for each frame
+</ResponseField>
+
+### Usage Example
+
+```typescript
+import {
+  generateAnimTABFrames,
+  rgbDefaults,
+  animTABDefaults
+} from '@birdflop/rgbirdflop';
+
+const config = {
+  ...rgbDefaults,
+  text: 'Server',
+  colors: [
+    { hex: '#FF0000', pos: 0 },
+    { hex: '#0000FF', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' },
+  gradientType: 'oklab' as const
+};
+
+const animConfig = {
+  ...animTABDefaults,
+  type: 1, // Normal (Left -> Right)
+  speed: 50,
+  length: 1
+};
+
+const { OutputArray, frames } = generateAnimTABFrames(config, animConfig);
+console.log(`Generated ${OutputArray.length} frames`);
+console.log('First frame:', OutputArray[0]);
+```
+
+## AnimationOutput
+
+Generates complete TAB animation output with YAML formatting.
+
+```typescript
+function AnimationOutput(
+  rgbStore: typeof rgbDefaults,
+  animtabStore: typeof animTABDefaults
+): string
+```
+
+<ParamField path="rgbStore" type="typeof rgbDefaults" required>
+  Gradient configuration object
+</ParamField>
+
+<ParamField path="animtabStore" type="typeof animTABDefaults" required>
+  Animation configuration object
+</ParamField>
+
+<ResponseField name="output" type="string">
+  Formatted TAB animation output ready to paste into config
+</ResponseField>
+
+### Usage Example
+
+```typescript
+import { AnimationOutput, rgbDefaults, animTABDefaults } from '@birdflop/rgbirdflop';
+
+const config = {
+  ...rgbDefaults,
+  text: 'Welcome',
+  colors: [
+    { hex: '#FFD700', pos: 0 },
+    { hex: '#FFA500', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' }
+};
+
+const animConfig = {
+  ...animTABDefaults,
+  name: 'welcome-animation',
+  type: 3, // Bouncing
+  speed: 100
+};
+
+const output = AnimationOutput(config, animConfig);
+console.log(output);
+
+/* Output:
+welcome-animation:
+  change-interval: 100
+  texts:
+  - "<gradient:#FFD700:#FFA500>Welcome</gradient>"
+  - "<gradient:#FFC107:#FFB700>Welcome</gradient>"
+  ...
+*/
+```
+
+## animTABDefaults
+
+Default configuration for AnimTAB animations.
+
+```typescript
+const animTABDefaults: {
+  name: string;
+  type: number;
+  speed: number;
+  length: number;
+  outputFormat: string;
+}
+```
+
+### Properties
+
+<ParamField path="name" type="string" default="'logo'">
+  Animation name for TAB config
+</ParamField>
+
+<ParamField path="type" type="number" default="1">
+  Animation type:
+  - `1`: Normal (Left → Right)
+  - `2`: Reversed (Right → Left)
+  - `3`: Bouncing (Left → Right → Left)
+  - `4`: Full Text Cycle (all text same color per frame)
+</ParamField>
+
+<ParamField path="speed" type="number" default="50">
+  Frame change interval in milliseconds (lower = faster)
+</ParamField>
+
+<ParamField path="length" type="number" default="1">
+  Animation length multiplier (affects number of frames)
+</ParamField>
+
+<ParamField path="outputFormat" type="string" default="Output template string">
+  Output template with placeholders:
+  - `%name%`: Animation name
+  - `%speed%`: Speed value
+  - `%output:{...}%`: Frame array with `$t` as frame placeholder
+  
+  Default format:
+  ```yaml
+  %name%:
+    change-interval: %speed%
+    texts:
+  %output:{  - "$t"}%
+  ```
+</ParamField>
+
+## Animation Types
+
+Available animation styles defined in `animationStyles`:
+
+```typescript
+const animationStyles = [
+  { name: 'Normal (Left -> Right)', value: 1 },
+  { name: 'Reversed (Right -> Left)', value: 2 },
+  { name: 'Bouncing (Left -> Right -> Left)', value: 3 },
+  { name: 'Full Text Cycle', value: 4 }
+]
+```
+
+### Type 1: Normal (Left → Right)
+
+Gradient flows from left to right.
+
+```typescript
+const animConfig = {
+  ...animTABDefaults,
+  type: 1
+};
+
+// Frame 1: [Red, Orange, Yellow]
+// Frame 2: [Orange, Yellow, Green]
+// Frame 3: [Yellow, Green, Blue]
+```
+
+### Type 2: Reversed (Right → Left)
+
+Gradient flows from right to left (reverses the frame order).
+
+```typescript
+const animConfig = {
+  ...animTABDefaults,
+  type: 2
+};
+```
+
+### Type 3: Bouncing
+
+Gradient bounces back and forth (forward + reverse).
+
+```typescript
+const animConfig = {
+  ...animTABDefaults,
+  type: 3
+};
+
+// Generates 2x frames: forward sequence + reversed sequence
+```
+
+### Type 4: Full Text Cycle
+
+Entire text cycles through colors as a single unit.
+
+```typescript
+const animConfig = {
+  ...animTABDefaults,
+  type: 4
+};
+
+// Frame 1: <color:#FF0000>Text</color>
+// Frame 2: <color:#FF3300>Text</color>
+// Frame 3: <color:#FF6600>Text</color>
+```
+
+## Advanced Examples
+
+### Multi-Color Bouncing Animation
+
+```typescript
+import { AnimationOutput, rgbDefaults, animTABDefaults } from '@birdflop/rgbirdflop';
+
+const config = {
+  ...rgbDefaults,
+  text: 'Rainbow Server',
+  colors: [
+    { hex: '#FF0000', pos: 0 },
+    { hex: '#FFFF00', pos: 33 },
+    { hex: '#00FF00', pos: 66 },
+    { hex: '#0000FF', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' },
+  gradientType: 'hsl' as const,
+  colorlength: 1
+};
+
+const animConfig = {
+  ...animTABDefaults,
+  name: 'rainbow-bounce',
+  type: 3,
+  speed: 75,
+  length: 2
+};
+
+const output = AnimationOutput(config, animConfig);
+```
+
+### Fast Full-Text Color Cycle
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'VIP',
+  colors: [
+    { hex: '#FFD700', pos: 0 },
+    { hex: '#FFA500', pos: 50 },
+    { hex: '#FFD700', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' },
+  bold: true
+};
+
+const animConfig = {
+  ...animTABDefaults,
+  name: 'vip-pulse',
+  type: 4,
+  speed: 30,
+  length: 1
+};
+
+const output = AnimationOutput(config, animConfig);
+```
+
+### Bukkit Format Animation
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Server',
+  colors: [
+    { hex: '#54daf4', pos: 0 },
+    { hex: '#545eb6', pos: 100 }
+  ],
+  format: {
+    color: '&#$1$2$3$4$5$6$f$c',
+    char: '&'
+  },
+  gradientType: 'oklab' as const
+};
+
+const animConfig = {
+  ...animTABDefaults,
+  name: 'server-title',
+  type: 1,
+  speed: 50,
+  outputFormat: 'texts:\n%output:{  - "$t"}%'
+};
+
+const { OutputArray } = generateAnimTABFrames(config, animConfig);
+console.log(OutputArray.join('\n'));
+```
+
+### Custom Output Format
+
+```typescript
+const animConfig = {
+  ...animTABDefaults,
+  name: 'custom-anim',
+  type: 1,
+  speed: 100,
+  outputFormat: `animation:
+  name: %name%
+  speed: %speed%ms
+  frames:
+%output:{    - '$t'}%`
+};
+
+const output = AnimationOutput(rgbConfig, animConfig);
+```
+
+## Frame Calculation
+
+The number of frames generated depends on animation type:
+
+```typescript
+const textLength = text.length;
+const colorSegments = textLength * animtabStore.length / rgbStore.colorlength;
+
+// Type 1, 2: loopAmount = colorSegments * 2 - 2
+// Type 3: loopAmount = (colorSegments * 2 - 2) * 2 (bouncing doubles frames)
+// Type 4: loopAmount = colorSegments
+```
+
+## MiniMessage Custom Positions
+
+When using custom color positions with MiniMessage, frames are generated with segment-based gradients:
+
+```typescript
+const config = {
+  ...rgbDefaults,
+  text: 'Gradient',
+  colors: [
+    { hex: '#FF0000', pos: 0 },
+    { hex: '#00FF00', pos: 30 },
+    { hex: '#0000FF', pos: 100 }
+  ],
+  format: { color: 'MiniMessage' }
+};
+
+// Generates:
+// <gradient:#FF0000:#00FF00>Gra</gradient><gradient:#00FF00:#0000FF>dient</gradient>
+```
+
+## Related
+
+- [Generate Output](/sdk/api/generate-output) - Single-frame gradient generation
+- [Gradient Types](/sdk/api/gradient-types) - Interpolation methods
+- [Format Options](/sdk/api/format-options) - Configuration options
+
+## Implementation
+
+Source: `packages/rgbirdflop/src/util/AnimTABUtils.ts:6`

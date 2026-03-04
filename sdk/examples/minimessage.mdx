@@ -1,0 +1,317 @@
+---
+title: 'MiniMessage Format'
+description: 'Generate gradients in MiniMessage format for modern Minecraft plugins'
+---
+
+## Overview
+
+MiniMessage is a modern text formatting system used by Paper, Velocity, and other modern Minecraft servers. The RGBirdflop SDK can output gradients directly in MiniMessage format.
+
+## Basic MiniMessage Gradient
+
+Generate a simple MiniMessage gradient:
+
+```typescript
+import { rgbDefaults, generateOutput, formats } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Hello World',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[0], // MiniMessage format
+});
+
+console.log(result);
+// Output: <gradient:#ff0000:#0000ff>Hello World</gradient>
+```
+
+<Info>
+The MiniMessage format is `formats[0]` in the formats array. It uses the special value `'MiniMessage'` for the `color` property.
+</Info>
+
+## Multi-Color Gradients
+
+MiniMessage supports multiple colors in a single gradient tag:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Rainbow Text',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#ffff00', pos: 33 },
+    { hex: '#00ff00', pos: 66 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[0],
+});
+
+console.log(result);
+// Output: <gradient:#ff0000:#ffff00:#00ff00:#0000ff>Rainbow Text</gradient>
+```
+
+<Note>
+When colors are evenly distributed (positions are proportional), all colors are included in a single `<gradient>` tag with colon-separated hex values.
+</Note>
+
+## Uneven Color Distribution
+
+When colors have custom positions, multiple gradient tags are generated:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Custom Positions',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#00ff00', pos: 30 },   // Not evenly distributed
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[0],
+});
+
+console.log(result);
+// Output: <gradient:#ff0000:#00ff00>Custom </gradient><gradient:#00ff00:#0000ff>Positions</gradient>
+```
+
+<Tip>
+The SDK automatically splits the text into segments based on color positions when they're not evenly distributed. Each segment gets its own `<gradient>` tag.
+</Tip>
+
+## Single Color
+
+When only one color is provided, the `<color>` tag is used instead of `<gradient>`:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Single Color',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+  ],
+  format: formats[0],
+});
+
+console.log(result);
+// Output: <color:#ff0000>Single Color</color>
+```
+
+## MiniMessage with Formatting
+
+Add bold, italic, and other formatting:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Formatted Gradient',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[0],
+  bold: true,
+  italic: true,
+});
+
+console.log(result);
+// Output: <b><i><gradient:#ff0000:#0000ff>Formatted Gradient</gradient></i></b>
+```
+
+### Available Formatting Tags
+
+| Option | MiniMessage Tag |
+|--------|----------------|
+| `bold: true` | `<b>...</b>` |
+| `italic: true` | `<i>...</i>` |
+| `underline: true` | `<u>...</u>` |
+| `strikethrough: true` | `<st>...</st>` |
+| `obfuscate: true` | `<obf>...</obf>` |
+
+## MiniMessage with Shadows
+
+Add shadow effects to your gradient:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Shadow Effect',
+  colors: [
+    { hex: '#ffff00', pos: 0 },
+    { hex: '#ff8800', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#444400', pos: 0 },
+    { hex: '#442200', pos: 100 },
+  ],
+  format: formats[0],
+});
+
+console.log(result);
+// Output: <gradient:#ffff00:#ff8800><shadow:#444400:1>S</shadow><shadow:#444300:1>h</shadow>...</gradient>
+```
+
+<Info>
+Shadow tags are nested inside the gradient tag. Adjacent characters with the same shadow color are grouped together for efficiency.
+
+The shadow format is `<shadow:COLOR:OFFSET>` where OFFSET is always `1`.
+</Info>
+
+## Prefix and Suffix
+
+Add text before and after the gradient:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Gradient',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[0],
+  prefixsuffix: '[Server] $t <!>',
+});
+
+console.log(result);
+// Output: [Server] <gradient:#ff0000:#0000ff>Gradient</gradient> <!>
+```
+
+<Note>
+The `$t` placeholder in `prefixsuffix` is replaced with the formatted gradient output.
+</Note>
+
+## Gradient Types
+
+Control color interpolation method:
+
+```typescript
+// RGB interpolation (default)
+const rgbGradient = generateOutput({
+  ...rgbDefaults,
+  text: 'RGB Gradient',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  gradientType: 'rgb',
+  format: formats[0],
+});
+
+// HSL interpolation
+const hslGradient = generateOutput({
+  ...rgbDefaults,
+  text: 'HSL Gradient',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  gradientType: 'hsl',
+  format: formats[0],
+});
+
+// HSV interpolation
+const hsvGradient = generateOutput({
+  ...rgbDefaults,
+  text: 'HSV Gradient',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  gradientType: 'hsv',
+  format: formats[0],
+});
+```
+
+<Tip>
+Different gradient types produce different color transitions:
+- `'rgb'` - Direct RGB interpolation (default)
+- `'hsl'` - HSL color space (passes through different hues)
+- `'hsv'` - HSV color space (brightness-focused)
+</Tip>
+
+## Trim Spaces
+
+Control whether spaces skip color changes:
+
+```typescript
+const withTrim = generateOutput({
+  ...rgbDefaults,
+  text: 'Hello World',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[0],
+  trimspaces: true,  // Default: spaces don't affect gradient
+});
+
+const withoutTrim = generateOutput({
+  ...rgbDefaults,
+  text: 'Hello World',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[0],
+  trimspaces: false,  // Spaces are counted in gradient
+});
+```
+
+<Note>
+When `trimspaces: true` (default), whitespace characters don't consume gradient steps, making the color transition smoother across words.
+</Note>
+
+## Complete Example
+
+A full-featured MiniMessage gradient:
+
+```typescript
+import { rgbDefaults, generateOutput, formats } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Welcome to our server!',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#ffaa00', pos: 50 },
+    { hex: '#ffff00', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#440000', pos: 0 },
+    { hex: '#442200', pos: 50 },
+    { hex: '#444400', pos: 100 },
+  ],
+  format: formats[0],
+  bold: true,
+  gradientType: 'rgb',
+  trimspaces: true,
+  prefixsuffix: '✨ $t ✨',
+});
+
+console.log(result);
+// Output: ✨ <b><gradient:#ff0000:#ffaa00:#ffff00><shadow:...>...</shadow></gradient></b> ✨
+```
+
+## Use Cases
+
+MiniMessage format is ideal for:
+
+1. **Paper Servers** - Native support in Paper 1.16+
+2. **Velocity Proxies** - Full MiniMessage support
+3. **Adventure API** - Direct compatibility
+4. **Modern Plugins** - Many modern plugins use MiniMessage
+5. **Server Messages** - MOTDs, chat, titles, etc.
+
+## Related Examples
+
+<CardGroup cols={2}>
+  <Card title="Shadow Colors" icon="droplet" href="/sdk/examples/shadow-colors">
+    Learn more about shadow effects
+  </Card>
+  <Card title="Custom Formatting" icon="bold" href="/sdk/examples/custom-formatting">
+    Learn more about text formatting
+  </Card>
+</CardGroup>

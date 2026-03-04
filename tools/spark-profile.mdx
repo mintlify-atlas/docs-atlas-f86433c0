@@ -1,0 +1,230 @@
+---
+title: Spark Profile Analyzer
+description: Analyze Spark profiler reports and get automated optimization recommendations for your Minecraft server
+---
+
+The Spark Profile Analyzer automatically analyzes your server's performance profile and provides specific optimization recommendations. Access it at [birdflop.com/resources/sparkprofile](https://birdflop.com/resources/sparkprofile).
+
+## What is Spark?
+
+Spark is a performance profiler plugin for Minecraft servers that helps identify:
+- CPU usage by plugins and game systems
+- Tick duration and performance bottlenecks
+- Thread activity and resource consumption
+- Memory allocation patterns
+
+## Getting Started
+
+<Steps>
+  <Step title="Install Spark">
+    Download and install the Spark plugin from [spark.lucko.me](https://spark.lucko.me/) on your server.
+    
+    <Note>
+    Purpur servers 1.19+ have Spark built-in, no installation needed.
+    </Note>
+  </Step>
+  
+  <Step title="Start Profiling">
+    Run the command in-game or console:
+    ```
+    /spark profiler
+    ```
+    This begins recording server performance data.
+  </Step>
+  
+  <Step title="Stop and Get Link">
+    After 30-60 seconds of gameplay, stop the profiler:
+    ```
+    /spark profiler --stop
+    ```
+    Copy the link provided (looks like `https://spark.lucko.me/xxxxxx`).
+  </Step>
+  
+  <Step title="Analyze">
+    Paste the Spark link into the analyzer at [birdflop.com/resources/sparkprofile](https://birdflop.com/resources/sparkprofile) and click Submit.
+  </Step>
+</Steps>
+
+## Understanding the Analysis
+
+The analyzer examines your profile and provides recommendations in several categories:
+
+### Plugin Performance Issues
+
+Identifies plugins consuming excessive CPU time:
+- Plugins using >10% of tick time
+- Inefficient event handlers
+- Poorly optimized operations
+- Suggestions for alternatives or configuration changes
+
+### Server Configuration
+
+Recommends configuration changes:
+- View distance adjustments
+- Entity limits and spawning
+- Chunk loading settings
+- Redstone optimization
+- Mob AI settings
+
+### World Issues
+
+Detects world-specific problems:
+- Excessive entities in specific chunks
+- Overloaded tile entities (hoppers, furnaces, etc.)
+- Chunk generation lag
+- Redstone contraptions causing lag
+
+### System Performance
+
+Analyzes system-level issues:
+- CPU bottlenecks
+- Memory pressure
+- Disk I/O problems
+- Java version recommendations
+
+## Reading Recommendations
+
+Each recommendation includes:
+
+1. **Severity Level**: Critical, High, Medium, or Low priority
+2. **Description**: What the issue is and why it matters
+3. **Solution**: Specific steps to resolve the issue
+4. **Impact**: Expected performance improvement
+
+<Warning>
+These are not magic values. Many settings have real consequences on your server's mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information.
+</Warning>
+
+## Best Practices
+
+<Tip>
+**Profile During Peak Activity**: Run the profiler when your server is experiencing lag for the most useful data.
+</Tip>
+
+<Tip>
+**Profile for 30-60 Seconds**: Longer profiles provide more accurate data, but 30-60 seconds is usually sufficient.
+</Tip>
+
+<Tip>
+**Profile Different Scenarios**: Create separate profiles for different situations (player events, chunk generation, etc.).
+</Tip>
+
+### When to Profile
+
+- During player-reported lag
+- After installing new plugins
+- When testing configuration changes
+- During regular maintenance checks
+- Before and after optimization attempts
+
+### What to Look For
+
+In the Spark web viewer, pay attention to:
+
+1. **Top Contributors**: Plugins/systems at the top of the flame graph
+2. **Tick Duration**: Should be under 50ms (20 TPS)
+3. **GC Activity**: Frequent garbage collection indicates memory issues
+4. **Thread Count**: Too many threads can cause problems
+
+## Common Issues and Solutions
+
+### High Tick Time
+
+**Symptom**: Server TPS below 20, laggy gameplay
+
+**Common Causes**:
+- Too many entities in loaded chunks
+- Inefficient plugins (especially anticheats)
+- Large redstone contraptions
+- Excessive chunk loading
+
+**Solutions**:
+- Reduce entity spawning in server.properties and paper-world-defaults.yml
+- Optimize or remove problematic plugins
+- Limit redstone clock speeds
+- Reduce player view distance
+
+### Plugin Overhead
+
+**Symptom**: Specific plugin consuming >10% of tick time
+
+**Solutions**:
+- Check plugin configuration for optimization options
+- Update to latest version (may include performance fixes)
+- Look for alternative plugins
+- Contact plugin developer with profiler data
+
+### World Issues
+
+**Symptom**: Lag in specific areas or chunks
+
+**Solutions**:
+- Use `/spark tickmonitoring` to find laggy chunks
+- Reduce entities in problem areas
+- Remove excessive tile entities (hoppers, etc.)
+- Consider regenerating extremely problematic chunks
+
+### Memory Issues
+
+**Symptom**: Frequent garbage collection in profiler
+
+**Solutions**:
+- Allocate more RAM to your server
+- Optimize JVM flags (see [Flags Generator](/tools/flags-generator))
+- Reduce loaded chunks (view distance, simulation distance)
+- Remove memory-heavy plugins
+
+## Direct Link Format
+
+You can skip the input form by constructing a direct link:
+
+```
+https://birdflop.com/resources/sparkprofile/[code]
+```
+
+Replace `[code]` with the Spark profile ID from the spark.lucko.me URL.
+
+## Advanced Profiling
+
+### Thread Profiling
+
+Profile specific threads:
+```
+/spark profiler --thread [thread-name]
+```
+
+### Sampling Interval
+
+Adjust sampling rate (lower = more detailed, higher overhead):
+```
+/spark profiler --interval 4
+```
+
+### Focus on Specific Plugin
+
+Profile only a specific plugin:
+```
+/spark profiler --only-ticks-over 50
+```
+
+## Limitations
+
+<Note>
+- Profiling adds ~5% overhead while active
+- Short profiles may not capture intermittent issues
+- Cannot profile startup lag (only runtime)
+- Some native code operations may not appear in profile
+</Note>
+
+## Related Tools
+
+- [Paper Timings Analyzer](/tools/paper-timings) - Alternative profiling tool for Paper servers
+- [Flags Generator](/tools/flags-generator) - Optimize JVM startup flags
+
+## Powered By Botflop
+
+This analyzer uses the same analysis engine as the [Botflop Discord bot](https://github.com/Pemigrade/botflop), which can automatically analyze profiles posted in Discord.
+
+<Tip>
+Add Botflop to your Discord server to get instant profile analysis when you share Spark links in chat.
+</Tip>

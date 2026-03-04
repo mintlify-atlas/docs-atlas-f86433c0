@@ -1,0 +1,224 @@
+---
+title: Development Environment Setup
+description: Set up your local development environment to contribute to the Birdflop website
+---
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** version 24.13.0 or higher
+- **pnpm** package manager (version 10.28.2 or compatible)
+- **Git** for version control
+
+## Installation Steps
+
+<Steps>
+  <Step title="Fork and Clone the Repository">
+    Fork the Birdflop website repository on GitHub at [github.com/birdflop/web](https://github.com/birdflop/web), then clone your fork:
+
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/web.git
+    cd web
+    ```
+  </Step>
+
+  <Step title="Install Dependencies">
+    Navigate to the project directory and install all necessary dependencies:
+
+    ```bash
+    pnpm install
+    ```
+
+    This will automatically run the `postinstall` script which generates Drizzle types and Cloudflare worker types.
+  </Step>
+
+  <Step title="Build the Project">
+    Run the initial build to set up the RGBirdflop package and Cloudflare worker types:
+
+    ```bash
+    pnpm build
+    ```
+
+    This is only necessary the first time you set up the project to avoid type errors.
+  </Step>
+
+  <Step title="Start the Development Server">
+    Start the development server:
+
+    ```bash
+    pnpm start
+    ```
+
+    The website should now be accessible at `http://localhost:5173`.
+  </Step>
+</Steps>
+
+## Database Setup (Optional)
+
+The Birdflop website uses Cloudflare D1 for its database. Setting up a local database is required for contributing to the Presets system and other features that depend on database functionality. Without this setup, Flopbird may show errors when opening certain pages.
+
+<Steps>
+  <Step title="Migrate the Local Database">
+    Run the migration command to set up the local database schema:
+
+    ```bash
+    pnpm wrangler:migrate-local
+    ```
+
+    This creates and configures a local D1 database with the required schema.
+  </Step>
+
+  <Step title="Start the Server">
+    Start the development server:
+
+    ```bash
+    pnpm start
+    ```
+
+    Your local database is now ready to use.
+  </Step>
+</Steps>
+
+## Environment Variables (Optional)
+
+For Discord login functionality to work locally, you'll need to set up a Discord application and configure environment variables.
+
+<Steps>
+  <Step title="Create a Discord Application">
+    1. Visit the [Discord Developer Portal](https://discord.com/developers/applications)
+    2. Create a new application
+    3. Navigate to the OAuth2 section
+    4. Add `http://localhost:5173/auth/callback/discord` as a redirect URI
+    5. Note your Client ID and Client Secret
+  </Step>
+
+  <Step title="Create .env File">
+    Create a `.env` file in the root of the project:
+
+    ```bash
+    AUTH_SECRET=this_can_be_any_random_string
+    AUTH_DISCORD_ID=your_discord_client_id
+    AUTH_DISCORD_SECRET=your_discord_client_secret
+    ADMINS=your_user_id_after_login
+    ```
+
+    <Note>
+      The `ADMINS` value should be your user ID, which you can find on your profile page after logging in.
+    </Note>
+  </Step>
+</Steps>
+
+## Available Scripts
+
+Here are the main scripts you'll use during development:
+
+### Development
+
+```bash
+# Start development server with hot reload
+pnpm start
+
+# Start with Wrangler dev (Cloudflare local development)
+pnpm dev
+
+# Debug mode with inspector
+pnpm dev.debug
+```
+
+### Building
+
+```bash
+# Build the entire project
+pnpm build
+
+# Build only the RGBirdflop package
+pnpm build.pkg
+
+# Build client-side only
+pnpm build.client
+
+# Type-check without emitting
+pnpm build.types
+```
+
+### Database Management
+
+```bash
+# Migrate local D1 database
+pnpm wrangler:migrate-local
+
+# Generate Drizzle migrations
+pnpm drizzle:generate
+
+# Push schema changes
+pnpm drizzle:push
+
+# Open Drizzle Studio (database GUI)
+pnpm drizzle:studio
+```
+
+### Code Quality
+
+```bash
+# Run ESLint
+pnpm lint
+
+# Generate Cloudflare worker types
+pnpm cf-typegen
+```
+
+### Deployment
+
+```bash
+# Deploy to Cloudflare Pages
+pnpm deploy
+
+# Preview production build
+pnpm preview
+```
+
+## Verify Your Setup
+
+To verify everything is working correctly:
+
+1. The development server starts without errors
+2. You can access `http://localhost:5173` in your browser
+3. The site loads and navigation works
+4. TypeScript shows no errors in your editor
+
+## Troubleshooting
+
+### Port Already in Use
+
+If port 5173 is already in use, the dev server will try to use the next available port. Check the terminal output for the actual URL.
+
+### Type Errors
+
+If you see TypeScript errors:
+
+```bash
+pnpm build.pkg
+pnpm cf-typegen
+```
+
+### Database Errors
+
+If you get database-related errors, ensure you've run:
+
+```bash
+pnpm wrangler:migrate-local
+```
+
+### Module Not Found
+
+Try deleting `node_modules` and reinstalling:
+
+```bash
+rm -rf node_modules
+pnpm install
+```
+
+## Next Steps
+
+Now that your environment is set up, review the [contribution guidelines](/contributing/guidelines) to learn how to make your first contribution.

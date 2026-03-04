@@ -1,0 +1,228 @@
+---
+title: 'Shadow Colors'
+description: 'Add shadow effects to text gradients for enhanced visual depth'
+---
+
+## Overview
+
+Shadow colors create a secondary gradient that adds depth to your text. This feature is particularly useful for creating text effects with visual depth in Minecraft.
+
+## Basic Shadow Colors
+
+Add a shadow gradient to your text:
+
+```typescript
+import { rgbDefaults, generateOutput } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Shadowed Text',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#440000', pos: 0 },    // Dark red shadow
+    { hex: '#000044', pos: 100 },  // Dark blue shadow
+  ],
+});
+```
+
+<Note>
+Shadow colors are only supported in **MiniMessage** and **JSON** output formats. They are ignored in template-based formats like `&#RRGGBB`.
+</Note>
+
+## MiniMessage Shadow Output
+
+With MiniMessage format, shadows use the `<shadow>` tag:
+
+```typescript
+import { formats } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Shadow',
+  colors: [
+    { hex: '#ffff00', pos: 0 },
+    { hex: '#ff8800', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#444400', pos: 0 },
+    { hex: '#442200', pos: 100 },
+  ],
+  format: formats[0], // MiniMessage
+});
+
+console.log(result);
+// Output: <gradient:#ffff00:#ff8800><shadow:#444400:1>S</shadow><shadow:#444100:1>h</shadow>...</gradient>
+```
+
+<Info>
+The MiniMessage shadow format is `<shadow:COLOR:OFFSET>text</shadow>` where:
+- `COLOR` is the hex color (e.g., `#444400`)
+- `OFFSET` is always `1` in this implementation
+- Adjacent characters with the same shadow color are grouped together
+</Info>
+
+## JSON Shadow Output
+
+JSON format uses the `shadow_color` property with normalized RGB values:
+
+```typescript
+import { formats } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Hi',
+  colors: [
+    { hex: '#00ff00', pos: 0 },
+    { hex: '#00aa00', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#004400', pos: 0 },
+    { hex: '#002200', pos: 100 },
+  ],
+  format: formats[2], // JSON
+});
+
+console.log(result);
+// Output includes "shadow_color": [0.27, 0.27, 0, 1] for each character
+```
+
+<Tip>
+Shadow colors in JSON are normalized to 0-1 range:
+- RGB values are divided by 255
+- Rounded to 2 decimal places
+- Alpha channel is always 1
+
+For example: `#004400` becomes `[0, 0.27, 0, 1]`
+</Tip>
+
+## Automatic Shadow Generation
+
+<Warning>
+The SDK does **not** automatically generate shadow colors. If you don't provide `shadowcolors`, no shadows will be applied.
+
+Note: The `getShadowColors` utility function in the source code can generate shadows at 25% brightness, but this is not automatically applied by `generateOutput`.
+</Warning>
+
+## Multi-Color Shadows
+
+Create complex shadow gradients matching your main gradient:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Rainbow Shadow',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#ffff00', pos: 33 },
+    { hex: '#00ff00', pos: 66 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#440000', pos: 0 },
+    { hex: '#444400', pos: 33 },
+    { hex: '#004400', pos: 66 },
+    { hex: '#000044', pos: 100 },
+  ],
+  format: formats[0], // MiniMessage
+});
+```
+
+## Shadow Position Control
+
+Shadow colors support the same position control as main colors:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Custom Shadow Positions',
+  colors: [
+    { hex: '#ffffff', pos: 0 },
+    { hex: '#aaaaaa', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#000000', pos: 0 },
+    { hex: '#222222', pos: 30 },   // Shadow changes earlier
+    { hex: '#111111', pos: 100 },
+  ],
+  format: formats[0],
+});
+```
+
+<Note>
+Shadow positions (`pos`) work independently from main color positions. This allows you to create unique shadow effects that don't match the main gradient pattern.
+</Note>
+
+## Shadow with Formatting
+
+Combine shadows with text formatting:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Bold Shadow',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#440000', pos: 0 },
+    { hex: '#000044', pos: 100 },
+  ],
+  format: formats[0],
+  bold: true,
+});
+
+console.log(result);
+// Output: <b><gradient:#ff0000:#0000ff><shadow:...>text</shadow></gradient></b>
+```
+
+## Gradient Types with Shadows
+
+Shadows respect the gradient type setting:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'HSL Shadow Gradient',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  shadowcolors: [
+    { hex: '#440000', pos: 0 },
+    { hex: '#000044', pos: 100 },
+  ],
+  gradientType: 'hsl',  // HSL interpolation
+  format: formats[0],
+});
+```
+
+<Tip>
+Supported gradient types that apply to both main and shadow colors:
+- `'rgb'` - Standard RGB interpolation (default)
+- `'hsl'` - HSL color space interpolation
+- `'hsv'` - HSV color space interpolation
+</Tip>
+
+## Use Cases
+
+Shadow colors are useful for:
+
+1. **Text Depth** - Adding visual depth to important messages
+2. **Readability** - Improving text visibility on various backgrounds
+3. **Style Effects** - Creating unique aesthetic effects
+4. **Brand Identity** - Matching server branding with shadow effects
+
+## Related Examples
+
+<CardGroup cols={2}>
+  <Card title="MiniMessage Output" icon="message" href="/sdk/examples/minimessage">
+    Learn more about MiniMessage format
+  </Card>
+  <Card title="JSON Output" icon="code" href="/sdk/examples/json-output">
+    Learn more about JSON format
+  </Card>
+</CardGroup>

@@ -1,0 +1,315 @@
+---
+title: Gradient Types
+description: ColorGradient class and gradient interpolation types
+icon: chart-line
+---
+
+## Overview
+
+The RGBirdflop SDK provides a unified gradient interface that supports multiple color space interpolation methods. The `ColorGradient` and `ColorAnimatedGradient` classes offer perceptually smooth color transitions using various color spaces.
+
+## ColorGradient
+
+Unified gradient interface that can switch between RGB, HSL, OKLAB, OKLCh, CIELAB, and LuvLCh interpolation.
+
+### Constructor
+
+```typescript
+class ColorGradient {
+  constructor(
+    colors: { rgb: number[], pos: number }[],
+    numSteps: number,
+    type?: GradientType
+  )
+}
+```
+
+<ParamField path="colors" type="Array<{ rgb: number[], pos: number }>" required>
+  Array of color stops with RGB values and positions.
+  - `rgb`: RGB array [r, g, b] with values in 0-255 range
+  - `pos`: Position in gradient (0-100)
+</ParamField>
+
+<ParamField path="numSteps" type="number" required>
+  Number of steps in the gradient sequence
+</ParamField>
+
+<ParamField path="type" type="GradientType" default="'rgb'">
+  Interpolation type: 'rgb', 'hsl', 'oklab', 'oklch', 'cielab', or 'luvLch'
+</ParamField>
+
+### Methods
+
+#### next()
+
+Gets the next color in the gradient sequence.
+
+```typescript
+next(): number[]
+```
+
+<ResponseField name="color" type="number[]">
+  RGB array [r, g, b] with values in 0-255 range
+</ResponseField>
+
+#### getType()
+
+Gets the current gradient type.
+
+```typescript
+getType(): GradientType
+```
+
+<ResponseField name="type" type="GradientType">
+  The interpolation type used by this gradient
+</ResponseField>
+
+### Usage Example
+
+```typescript
+import { ColorGradient, hexToRGB } from '@birdflop/rgbirdflop';
+
+const colors = [
+  { rgb: hexToRGB('#FF0000'), pos: 0 },
+  { rgb: hexToRGB('#0000FF'), pos: 100 }
+];
+
+const gradient = new ColorGradient(colors, 10, 'oklab');
+
+for (let i = 0; i < 10; i++) {
+  const color = gradient.next();
+  console.log(`Step ${i}: RGB(${color.join(', ')})`);
+}
+```
+
+## ColorAnimatedGradient
+
+Animated gradient interface with offset support for creating animation effects.
+
+### Constructor
+
+```typescript
+class ColorAnimatedGradient {
+  constructor(
+    colors: { rgb: number[], pos: number }[],
+    numSteps: number,
+    offset: number,
+    type?: GradientType
+  )
+}
+```
+
+<ParamField path="colors" type="Array<{ rgb: number[], pos: number }>" required>
+  Array of color stops with RGB values and positions
+</ParamField>
+
+<ParamField path="numSteps" type="number" required>
+  Number of steps in the gradient sequence
+</ParamField>
+
+<ParamField path="offset" type="number" required>
+  Starting offset for animation (used to shift the gradient)
+</ParamField>
+
+<ParamField path="type" type="GradientType" default="'rgb'">
+  Interpolation type
+</ParamField>
+
+### Methods
+
+Same as `ColorGradient`: `next()` and `getType()`
+
+### Usage Example
+
+```typescript
+import { ColorAnimatedGradient, hexToRGB } from '@birdflop/rgbirdflop';
+
+const colors = [
+  { rgb: hexToRGB('#54daf4'), pos: 0 },
+  { rgb: hexToRGB('#545eb6'), pos: 100 }
+];
+
+// Create animation frames
+for (let frame = 0; frame < 20; frame++) {
+  const gradient = new ColorAnimatedGradient(colors, 8, frame, 'hsl');
+  
+  const frameColors = [];
+  for (let i = 0; i < 8; i++) {
+    frameColors.push(gradient.next());
+  }
+  
+  console.log(`Frame ${frame}:`, frameColors);
+}
+```
+
+## GradientType
+
+Union type of all available gradient interpolation types.
+
+```typescript
+type GradientType = 'rgb' | 'hsl' | 'oklab' | 'oklch' | 'cielab' | 'luvLch'
+```
+
+### Available Types
+
+<ParamField path="rgb" type="'rgb'">
+  **Linear RGB interpolation** - Fast, simple, but may appear muddy in some transitions (e.g., red to green passes through brown)
+</ParamField>
+
+<ParamField path="hsl" type="'hsl'">
+  **HSL color space interpolation** - Intuitive color transitions that follow the color wheel, great for rainbow effects
+</ParamField>
+
+<ParamField path="oklab" type="'oklab'">
+  **OKLAB interpolation** - Perceptually uniform color space, recommended for smooth, natural-looking gradients
+</ParamField>
+
+<ParamField path="oklch" type="'oklch'">
+  **OKLCh interpolation** - Cylindrical OKLAB (Lightness, Chroma, Hue), great for controlling saturation and brightness
+</ParamField>
+
+<ParamField path="cielab" type="'cielab'">
+  **CIE L*a*b* interpolation** - Industry-standard perceptually uniform color space
+</ParamField>
+
+<ParamField path="luvLch" type="'luvLch'">
+  **CIE LCh (based on CIELUV)** - Alternative perceptually uniform cylindrical color space
+</ParamField>
+
+### Comparison Example
+
+```typescript
+import { ColorGradient, hexToRGB, rgbToHex } from '@birdflop/rgbirdflop';
+
+const colors = [
+  { rgb: hexToRGB('#FF0000'), pos: 0 },
+  { rgb: hexToRGB('#00FF00'), pos: 100 }
+];
+
+const types: GradientType[] = ['rgb', 'hsl', 'oklab', 'oklch'];
+
+types.forEach(type => {
+  const gradient = new ColorGradient(colors, 5, type);
+  console.log(`${type}:`);
+  
+  for (let i = 0; i < 5; i++) {
+    const color = gradient.next();
+    console.log(`  Step ${i}: #${rgbToHex(color)}`);
+  }
+});
+
+// Output shows different midpoint colors:
+// rgb: passes through brown/yellow tones
+// hsl: vivid yellow midpoint
+// oklab: perceptually smooth transition
+// oklch: controlled chroma transition
+```
+
+## GRADIENT_TYPES
+
+Const array containing all available gradient type values (single source of truth).
+
+```typescript
+const GRADIENT_TYPES = ['rgb', 'hsl', 'oklab', 'oklch', 'cielab', 'luvLch'] as const
+```
+
+## Individual Gradient Classes
+
+For direct use, you can import specific gradient implementations:
+
+```typescript
+import {
+  RgbGradient,
+  RgbAnimatedGradient,
+  HslGradient,
+  HslAnimatedGradient,
+  OklabGradient,
+  OklabAnimatedGradient,
+  OklchGradient,
+  OklchAnimatedGradient,
+  CielabGradient,
+  CielabAnimatedGradient,
+  LuvLChGradient,
+  LuvLChAnimatedGradient
+} from '@birdflop/rgbirdflop';
+```
+
+All classes follow the same interface as `ColorGradient` and `ColorAnimatedGradient`.
+
+## Base Gradient Architecture
+
+### TwoStopGradient Interface
+
+Each gradient type implements this interface for two-color interpolation:
+
+```typescript
+interface TwoStopGradient {
+  lowerRange: number;
+  upperRange: number;
+  colorAt(step: number): number[];
+}
+```
+
+### BaseGradient Class
+
+Common gradient logic shared by all gradient types:
+- Normalizes color stops (ensures 0% and 100% positions)
+- Creates gradient segments between color pairs
+- Handles step sequencing with easing function
+- Manages color stop position swapping
+
+## Advanced Usage
+
+### Custom Color Positions
+
+```typescript
+const colors = [
+  { rgb: hexToRGB('#FF0000'), pos: 0 },
+  { rgb: hexToRGB('#FFFF00'), pos: 20 },
+  { rgb: hexToRGB('#00FF00'), pos: 80 },
+  { rgb: hexToRGB('#0000FF'), pos: 100 }
+];
+
+const gradient = new ColorGradient(colors, 100, 'oklch');
+// Quick transition from red to yellow,
+// then slow transition to green,
+// then quick to blue
+```
+
+### Multi-Color Text Gradient
+
+```typescript
+import { ColorGradient, hexToRGB, rgbToHex } from '@birdflop/rgbirdflop';
+
+const text = 'Rainbow';
+const colors = [
+  { rgb: hexToRGB('#FF0000'), pos: 0 },
+  { rgb: hexToRGB('#FF7F00'), pos: 16.67 },
+  { rgb: hexToRGB('#FFFF00'), pos: 33.33 },
+  { rgb: hexToRGB('#00FF00'), pos: 50 },
+  { rgb: hexToRGB('#0000FF'), pos: 66.67 },
+  { rgb: hexToRGB('#4B0082'), pos: 83.33 },
+  { rgb: hexToRGB('#9400D3'), pos: 100 }
+];
+
+const gradient = new ColorGradient(colors, text.length, 'hsl');
+
+const result = Array.from(text).map((char, i) => {
+  const color = gradient.next();
+  return `<color:#${rgbToHex(color)}>${char}</color>`;
+}).join('');
+
+console.log(result);
+```
+
+## Related
+
+- [Generate Output](/sdk/api/generate-output) - Use gradients with text
+- [Color Utilities](/sdk/api/color-utilities) - Convert between color spaces
+- [Format Options](/sdk/api/format-options) - Configure gradient settings
+
+## Implementation
+
+Source: `packages/rgbirdflop/src/util/ColorUtils/index.ts:24`
+
+Base implementation: `packages/rgbirdflop/src/util/ColorUtils/BaseGradient.ts:81`

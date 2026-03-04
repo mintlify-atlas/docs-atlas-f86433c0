@@ -1,0 +1,124 @@
+---
+title: Installation
+description: How to install the RGBirdflop NPM package
+---
+
+## Prerequisites
+
+Before installing RGBirdflop, ensure you have:
+
+- **Node.js** version 24.13.0 or higher
+- A package manager: npm, yarn, or pnpm
+
+## Install the Package
+
+Choose your preferred package manager:
+
+<CodeGroup>
+```bash npm
+npm install @birdflop/rgbirdflop
+```
+
+```bash yarn
+yarn add @birdflop/rgbirdflop
+```
+
+```bash pnpm
+pnpm add @birdflop/rgbirdflop
+```
+</CodeGroup>
+
+## Verify Installation
+
+After installation, verify that the package is correctly installed:
+
+<CodeGroup>
+```bash npm
+npm list @birdflop/rgbirdflop
+```
+
+```bash yarn
+yarn list @birdflop/rgbirdflop
+```
+
+```bash pnpm
+pnpm list @birdflop/rgbirdflop
+```
+</CodeGroup>
+
+You should see output similar to:
+```
+@birdflop/rgbirdflop@0.1.15
+```
+
+## TypeScript Configuration
+
+If you're using TypeScript, the package includes type definitions. No additional setup is required.
+
+The package exports types from:
+```
+./lib-types/index.d.ts
+```
+
+## Package Exports
+
+The package provides the following exports:
+
+### Main Entry Point
+```typescript
+import { rgbDefaults, generateOutput } from '@birdflop/rgbirdflop';
+```
+
+### All Available Exports
+```typescript
+// Core functions
+import { 
+  generateOutput,
+  disperseColors,
+  sortColors,
+  swapItems,
+  getShadowColors
+} from '@birdflop/rgbirdflop';
+
+// Defaults and types
+import {
+  rgbDefaults,
+  animTABDefaults,
+  combinedDefaults,
+  formats,
+  animationStyles
+} from '@birdflop/rgbirdflop';
+
+// Color utilities
+import {
+  ColorGradient,
+  ColorAnimatedGradient,
+  GRADIENT_TYPES
+} from '@birdflop/rgbirdflop';
+
+// Color space utilities
+import {
+  hexToRGB,
+  rgbToHex,
+  rgbToHsl,
+  hslToRgb,
+  rgbToOklab,
+  oklabToRgb,
+  rgbToOklch,
+  oklchToRgb,
+  rgbToCielab,
+  cielabToRgb
+} from '@birdflop/rgbirdflop';
+
+// Animation utilities
+import {
+  generateTAB,
+  generateAnimatedFrames
+} from '@birdflop/rgbirdflop';
+```
+
+## Next Steps
+
+<Card title="Quick Start" icon="rocket" href="/sdk/quickstart">
+  Learn how to use RGBirdflop with a working example
+</Card>

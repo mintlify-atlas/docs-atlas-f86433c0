@@ -1,0 +1,208 @@
+---
+title: 'Custom Formatting'
+description: 'Add bold, italic, underline, and other text formatting to gradients'
+---
+
+## Overview
+
+The RGBirdflop SDK supports Minecraft text formatting options including bold, italic, underline, strikethrough, and obfuscated text. These can be combined with gradients.
+
+## Bold Text
+
+Make your gradient text bold:
+
+```typescript
+import { rgbDefaults, generateOutput } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Bold Gradient',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#00ff00', pos: 100 },
+  ],
+  bold: true,
+});
+
+console.log(result);
+// Output includes &l formatting code for bold
+```
+
+## Italic Text
+
+Apply italic formatting:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Italic Text',
+  colors: [
+    { hex: '#54daf4', pos: 0 },
+    { hex: '#545eb6', pos: 100 },
+  ],
+  italic: true,
+});
+
+// Output includes &o formatting code for italic
+```
+
+## Underline Text
+
+Add underline formatting:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Underlined',
+  colors: [
+    { hex: '#ffaa00', pos: 0 },
+    { hex: '#ff5500', pos: 100 },
+  ],
+  underline: true,
+});
+
+// Output includes &n formatting code for underline
+```
+
+## Strikethrough Text
+
+Apply strikethrough formatting:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Crossed Out',
+  colors: [
+    { hex: '#888888', pos: 0 },
+    { hex: '#444444', pos: 100 },
+  ],
+  strikethrough: true,
+});
+
+// Output includes &m formatting code for strikethrough
+```
+
+## Obfuscated Text
+
+Create obfuscated (magic) text:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Secret',
+  colors: [
+    { hex: '#00ff00', pos: 0 },
+    { hex: '#00aa00', pos: 100 },
+  ],
+  obfuscate: true,
+});
+
+// Output includes &k formatting code for obfuscated text
+```
+
+## Combining Multiple Formats
+
+You can combine multiple formatting options:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'ATTENTION',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#ffff00', pos: 100 },
+  ],
+  bold: true,
+  underline: true,
+});
+
+// Output includes both &l and &n formatting codes
+```
+
+## Format Code Behavior
+
+<Info>
+When using template-based formats (like `&#RRGGBB`), formatting codes are added using the `$f` placeholder in the format string:
+
+- Bold: `&l`
+- Italic: `&o`
+- Underline: `&n`
+- Strikethrough: `&m`
+- Obfuscated: `&k`
+
+The format character (`&` or `§`) is determined by your selected output format.
+</Info>
+
+## MiniMessage Formatting
+
+When using MiniMessage format, formatting uses wrapper tags:
+
+```typescript
+import { formats } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Bold and Italic',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[0], // MiniMessage format
+  bold: true,
+  italic: true,
+});
+
+console.log(result);
+// Output: <b><i><gradient:#ff0000:#0000ff>Bold and Italic</gradient></i></b>
+```
+
+<Note>
+MiniMessage wraps the entire gradient in formatting tags:
+- Bold: `<b>...</b>`
+- Italic: `<i>...</i>`
+- Underline: `<u>...</u>`
+- Strikethrough: `<st>...</st>`
+- Obfuscated: `<obf>...</obf>`
+</Note>
+
+## JSON Formatting
+
+JSON format applies formatting as properties on each text component:
+
+```typescript
+import { formats } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Hi',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  format: formats[2], // JSON format
+  bold: true,
+  italic: true,
+});
+
+console.log(result);
+// Output includes "bold": true, "italic": true in each component
+```
+
+<Tip>
+JSON formatting options:
+- `bold`: boolean
+- `italic`: boolean
+- `underlined`: boolean (note: different spelling)
+- `strikethrough`: boolean
+- `obfuscated`: boolean
+</Tip>
+
+## Format Code Reference
+
+| Option | Template Code | MiniMessage | JSON Property |
+|--------|---------------|-------------|---------------|
+| Bold | `&l` | `<b>...</b>` | `"bold": true` |
+| Italic | `&o` | `<i>...</i>` | `"italic": true` |
+| Underline | `&n` | `<u>...</u>` | `"underlined": true` |
+| Strikethrough | `&m` | `<st>...</st>` | `"strikethrough": true` |
+| Obfuscated | `&k` | `<obf>...</obf>` | `"obfuscated": true` |

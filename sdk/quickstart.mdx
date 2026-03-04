@@ -1,0 +1,268 @@
+---
+title: Quick Start
+description: Get started with RGBirdflop in minutes
+---
+
+## Basic Usage
+
+This guide will walk you through creating your first gradient text with RGBirdflop.
+
+<Steps>
+  <Step title="Import the package">
+    Import the necessary functions from RGBirdflop:
+
+    ```typescript
+    import { rgbDefaults, generateOutput } from '@birdflop/rgbirdflop';
+    ```
+  </Step>
+
+  <Step title="Create a gradient function">
+    Create a helper function that merges your options with the defaults:
+
+    ```typescript
+    function getOutput(options: Partial<typeof rgbDefaults>) {
+      const mergedOptions = {
+        ...rgbDefaults,
+        ...options,
+      };
+
+      const output = generateOutput(mergedOptions);
+      return output;
+    }
+    ```
+  </Step>
+
+  <Step title="Generate gradient text">
+    Call your function with custom colors and text:
+
+    ```typescript
+    const result = getOutput({
+      colors: [
+        { hex: '#ff0000', pos: 0 },
+        { hex: '#00ff00', pos: 50 },
+        { hex: '#0000ff', pos: 100 },
+      ],
+      text: 'Hello, World!',
+      bold: true,
+    });
+
+    console.log(result);
+    ```
+
+    Output:
+    ```
+    &#ff0000&lH&#ff3300&le&#ff6600&ll&#ff9900&ll&#ffcc00&lo&#ffff00&l,&#ccff00&l &#99ff00&lW&#66ff00&lo&#33ff00&lr&#00ff00&ll&#00ff33&ld&#00ff66&l!
+    ```
+  </Step>
+</Steps>
+
+## Complete Example
+
+Here's a full working example:
+
+```typescript
+import { rgbDefaults, generateOutput, formats } from '@birdflop/rgbirdflop';
+
+function getOutput(options: Partial<typeof rgbDefaults>) {
+  const mergedOptions = {
+    ...rgbDefaults,
+    ...options,
+  };
+
+  const output = generateOutput(mergedOptions);
+  return output;
+}
+
+// Example 1: Simple RGB gradient
+const simpleGradient = getOutput({
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#00ff00', pos: 50 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  text: 'Hello, World!',
+  bold: true,
+});
+
+console.log('Simple Gradient:', simpleGradient);
+
+// Example 2: MiniMessage format
+const miniMessageGradient = getOutput({
+  colors: [
+    { hex: '#54daf4', pos: 0 },
+    { hex: '#545eb6', pos: 100 },
+  ],
+  text: 'Birdflop',
+  format: formats[0], // MiniMessage
+  bold: true,
+  italic: true,
+});
+
+console.log('MiniMessage:', miniMessageGradient);
+
+// Example 3: JSON format for Minecraft
+const jsonGradient = getOutput({
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#ffff00', pos: 100 },
+  ],
+  text: 'Server Name',
+  format: formats[2], // JSON
+  bold: true,
+});
+
+console.log('JSON Format:', jsonGradient);
+```
+
+## Configuration Options
+
+### Color Stops
+
+Define colors at specific positions (0-100):
+
+```typescript
+colors: [
+  { hex: '#ff0000', pos: 0 },    // Red at start
+  { hex: '#00ff00', pos: 50 },   // Green at middle
+  { hex: '#0000ff', pos: 100 },  // Blue at end
+]
+```
+
+### Output Formats
+
+Choose from multiple output formats:
+
+```typescript
+import { formats } from '@birdflop/rgbirdflop';
+
+// formats[0] - MiniMessage: <gradient:#ff0000:#0000ff>text</gradient>
+// formats[1] - Legacy: &#ff0000t&#0000ffe&#0000ffx&#0000fft
+// formats[2] - JSON: {"text":"","extra":[...]}
+// formats[3] - Section: §x§f§f§0§0§0§0text
+// formats[4] - Ampersand: &x&f&f&0&0&0&0text
+// formats[5] - Chevron: <#ff0000>text
+// formats[6] - BBCode: [COLOR=#ff0000]text[/COLOR]
+```
+
+### Text Formatting
+
+Apply Minecraft text styles:
+
+```typescript
+{
+  bold: true,          // Bold text
+  italic: true,        // Italic text
+  underline: true,     // Underlined text
+  strikethrough: true, // Strikethrough text
+  obfuscate: true,     // Obfuscated/magic text
+}
+```
+
+### Gradient Types
+
+Choose different color interpolation methods:
+
+```typescript
+{
+  gradientType: 'rgb',     // Linear RGB (default)
+  gradientType: 'hsl',     // HSL color space
+  gradientType: 'oklab',   // Perceptually uniform
+  gradientType: 'oklch',   // Perceptually uniform cylindrical
+  gradientType: 'cielab',  // CIE LAB color space
+  gradientType: 'luvLch',  // Luv LCh color space
+}
+```
+
+### Advanced Options
+
+```typescript
+{
+  colorlength: 1,        // Characters per color step (default: 1)
+  trimspaces: true,      // Don't apply colors to spaces
+  lowercase: false,      // Convert output to lowercase
+  prefixsuffix: '',      // Wrap output with prefix/suffix using $t placeholder
+}
+```
+
+## Common Use Cases
+
+### Server MOTD
+
+```typescript
+const motd = getOutput({
+  colors: [
+    { hex: '#00ffff', pos: 0 },
+    { hex: '#0080ff', pos: 100 },
+  ],
+  text: 'Welcome to My Server',
+  format: formats[0], // MiniMessage
+  bold: true,
+});
+```
+
+### Player Rank Prefix
+
+```typescript
+const rankPrefix = getOutput({
+  colors: [
+    { hex: '#ffd700', pos: 0 },
+    { hex: '#ff8c00', pos: 100 },
+  ],
+  text: '[VIP]',
+  format: formats[1],
+  bold: true,
+});
+```
+
+### Chat Message
+
+```typescript
+const chatMessage = getOutput({
+  colors: [
+    { hex: '#ff69b4', pos: 0 },
+    { hex: '#ff1493', pos: 100 },
+  ],
+  text: 'Player123',
+  format: formats[2], // JSON
+});
+```
+
+## Default Values
+
+Here are the default values when using `rgbDefaults`:
+
+```typescript
+{
+  version: 4,
+  colors: [
+    { hex: '#54daf4', pos: 0 },
+    { hex: '#545eb6', pos: 100 },
+  ],
+  shadowcolors: null,
+  colorlength: 1,
+  text: 'Birdflop',
+  format: formats[1], // &#$1$2$3$4$5$6$f$c
+  prefixsuffix: '',
+  customFormat: false,
+  trimspaces: true,
+  disperse: false,
+  lowercase: false,
+  bold: false,
+  italic: false,
+  underline: false,
+  strikethrough: false,
+  obfuscate: false,
+  gradientType: 'rgb',
+}
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="book" href="/sdk/api-reference">
+    Explore all available functions and types
+  </Card>
+  <Card title="Advanced Examples" icon="code" href="/sdk/examples">
+    Learn advanced techniques and patterns
+  </Card>
+</CardGroup>

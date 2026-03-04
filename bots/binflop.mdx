@@ -1,0 +1,136 @@
+---
+title: 'Binflop'
+description: 'Pastebin service for server logs and configs'
+icon: 'paste'
+---
+
+## Overview
+
+Binflop is Birdflop's spinoff of the original hastebin.com. It provides a modern, improved pastebin service specifically designed for Minecraft server logs, configurations, and other text files.
+
+<Card title="Visit Binflop" icon="link" href="https://bin.birdflop.com/">
+  Start using Binflop at bin.birdflop.com
+</Card>
+
+## Features
+
+Binflop improves upon Hastebin through the following enhancements:
+
+<CardGroup cols={2}>
+  <Card title="Clean Copy/Paste" icon="copy">
+    Ctrl + A, Ctrl + C no longer copies button text nor line numbers - only the actual content
+  </Card>
+  
+  <Card title="Accurate Line Numbers" icon="list-ol">
+    Line numbering is correct across all browsers, all zoom settings, and all uploaded files
+  </Card>
+  
+  <Card title="Vibrant Colors" icon="palette">
+    Colors are more vibrant and visible with improved syntax highlighting
+  </Card>
+  
+  <Card title="Better UI" icon="window">
+    Functions box no longer conceals part of the first line, providing a cleaner interface
+  </Card>
+  
+  <Card title="Hide IPs" icon="eye-slash">
+    Added a "Hide IPs" button to automatically hide all public IP addresses for privacy
+  </Card>
+  
+  <Card title="Permanent Links" icon="link-simple">
+    Links retain their content permanently - your pastes won't disappear
+  </Card>
+  
+  <Card title="Expanded REST API" icon="code">
+    Comprehensive REST API for programmatic access and integrations
+  </Card>
+  
+  <Card title="Botflop Integration" icon="bot">
+    Automatically integrated with Botflop for seamless file uploads in Discord
+  </Card>
+</CardGroup>
+
+## Usage
+
+### Web Interface
+
+1. **Visit**: Go to [bin.birdflop.com](https://bin.birdflop.com/)
+2. **Paste Content**: Paste your log file, configuration, or any text content
+3. **Save**: Click save to generate a permanent link
+4. **Share**: Share the generated URL with others
+
+### Features
+
+#### Copy without Line Numbers
+
+Select and copy text without worrying about line numbers or UI elements being included. Binflop ensures only your content is copied.
+
+#### Hide IP Addresses
+
+Click the "Hide IPs" button to automatically obscure all IP addresses in your paste, perfect for sharing logs publicly while maintaining privacy.
+
+#### Syntax Highlighting
+
+Binflop automatically detects and applies syntax highlighting to common file types:
+
+- YAML configurations
+- JSON files
+- Log files
+- Code snippets
+- And more
+
+### REST API
+
+Binflop provides an expanded REST API for programmatic access:
+
+```bash
+# Create a paste
+curl -X POST https://bin.birdflop.com/documents \
+  -H "Content-Type: text/plain" \
+  -d "Your content here"
+
+# Response: {"key":"unique-key"}
+# Access at: https://bin.birdflop.com/unique-key
+```
+
+## Benefits
+
+<CardGroup cols={2}>
+  <Card title="For Server Owners" icon="server">
+    Easily share logs and configurations with support staff without file downloads
+  </Card>
+  
+  <Card title="For Support Staff" icon="headset">
+    View logs and configs directly in the browser with proper formatting and line numbers
+  </Card>
+  
+  <Card title="For Developers" icon="code">
+    Integrate Binflop into your tools using the comprehensive REST API
+  </Card>
+  
+  <Card title="For Communities" icon="users">
+    Share configurations and examples with permanent links that never expire
+  </Card>
+</CardGroup>
+
+## Privacy & Security
+
+- **IP Hiding**: Built-in feature to automatically hide IP addresses
+- **Permanent Storage**: Your pastes are stored permanently and won't be deleted
+- **No Registration**: Use Binflop without creating an account
+- **Public Access**: All pastes are publicly accessible via their URL
+
+<Note>
+  Be cautious about pasting sensitive information like passwords or API keys. While Binflop has an IP hiding feature, always review your content before sharing.
+</Note>
+
+## Integration
+
+Binflop is automatically integrated with:
+
+- **Botflop**: Text files shared in Discord are automatically uploaded to Binflop
+- **Birdflop Tools**: Various Birdflop tools use Binflop for log and config sharing
+
+## About
+
+Binflop is developed and maintained by Birdflop, a 501(c)(3) nonprofit Minecraft host, to provide a reliable and feature-rich pastebin service for the Minecraft community.

@@ -1,0 +1,563 @@
+---
+title: Hosting Panel Guide
+description: Complete guide to using the Birdflop hosting control panel
+---
+
+# Hosting Panel Guide
+
+Birdflop uses an enhanced version of Pterodactyl Panel for server management. This guide covers all panel features and how to use them effectively.
+
+## Accessing the Panel
+
+<Steps>
+  <Step title="Navigate to Client Portal">
+    Visit `https://client.birdflop.com` in your web browser
+  </Step>
+  <Step title="Log In">
+    Enter your email address and password
+  </Step>
+  <Step title="Select Your Server">
+    Click on your server name to open the control panel
+  </Step>
+</Steps>
+
+<Note>
+  The panel is fully responsive and works on mobile devices, tablets, and desktops.
+</Note>
+
+## Panel Overview
+
+The panel consists of several main tabs:
+
+- **Console**: Real-time server output and command input
+- **Files**: File manager for server files
+- **Databases**: MySQL database management
+- **Schedules**: Automated task scheduling
+- **Users**: Manage subusers and permissions
+- **Backups**: Create and restore backups
+- **Network**: Manage allocations and ports
+- **Startup**: Configure startup parameters
+- **Settings**: Server settings and egg management
+- **Activity**: View server activity logs
+
+## Console Tab
+
+The console tab provides real-time server monitoring and control.
+
+### Server Controls
+
+<CardGroup cols={3}>
+  <Card title="Start" icon="play">
+    Starts the server if it's currently stopped
+  </Card>
+  <Card title="Restart" icon="rotate-right">
+    Gracefully restarts the server
+  </Card>
+  <Card title="Stop" icon="stop">
+    Sends a stop command to shut down gracefully
+  </Card>
+  <Card title="Kill" icon="xmark">
+    Force kills the server process
+  </Card>
+</CardGroup>
+
+<Warning>
+  Use **Kill** only if the server is frozen and won't respond to **Stop**. It can cause data corruption.
+</Warning>
+
+### Resource Statistics
+
+At the top of the console, you'll see real-time statistics:
+
+- **CPU Usage**: Current CPU consumption
+- **Memory Usage**: RAM usage (out of allocated amount)
+- **Disk Usage**: Storage space used
+- **Network**: Current upload/download rates
+
+### Console Commands
+
+Send commands directly to your server:
+
+```bash
+# Common Minecraft commands
+say Hello, world!
+op PlayerName
+whitelist add PlayerName
+timeout PlayerName 10m Reason
+stop
+```
+
+<Note>
+  Commands are sent as if typed by the console, so you don't need to prefix them with `/`
+</Note>
+
+### Console Features
+
+- **Search**: Use Ctrl+F to search console output
+- **Auto-scroll**: Automatically scrolls to newest messages
+- **Copy**: Select text to copy console output
+- **Timestamps**: Shows exact time of each log entry
+
+## Files Tab
+
+The file manager provides a web-based interface for managing server files.
+
+### File Operations
+
+<Tabs>
+  <Tab title="Edit Files">
+    1. Navigate to the file you want to edit
+    2. Click the file name
+    3. Make your changes in the built-in editor
+    4. Click **Save Content** at the top
+    
+    **Supported formats**:
+    - `.txt`, `.yml`, `.yaml`, `.json`
+    - `.properties`, `.conf`, `.cfg`
+    - `.log`, `.md`, `.sh`
+    
+    <Note>
+      The editor includes syntax highlighting for common file types.
+    </Note>
+  </Tab>
+  
+  <Tab title="Upload Files">
+    1. Navigate to the destination folder
+    2. Click the **Upload** button
+    3. Select files from your computer
+    4. Wait for upload to complete
+    
+    **Upload limits**:
+    - Max file size: 100 MB per file
+    - Supports ZIP files (extract after upload)
+    
+    <Warning>
+      Large uploads may timeout on slow connections. For files over 100MB, use SFTP instead.
+    </Warning>
+  </Tab>
+  
+  <Tab title="Create Files/Folders">
+    **Create a folder**:
+    1. Click **Create Directory**
+    2. Enter folder name
+    3. Press Enter
+    
+    **Create a file**:
+    1. Click **Create File**
+    2. Enter filename with extension
+    3. Press Enter
+    4. Click the file to edit it
+  </Tab>
+  
+  <Tab title="Compress/Extract">
+    **Compress files**:
+    1. Select files/folders to compress
+    2. Click **Compress**
+    3. Enter archive name
+    4. Click **Compress**
+    
+    **Extract archives**:
+    1. Right-click on a `.zip` or `.tar.gz` file
+    2. Click **Unarchive**
+    3. Files extract to current directory
+    
+    <Note>
+      Compression helps when downloading multiple files or creating backups.
+    </Note>
+  </Tab>
+</Tabs>
+
+### File Permissions
+
+Right-click any file to view options:
+- **Rename**: Change file name
+- **Move**: Move to another directory
+- **Copy**: Create a duplicate
+- **Download**: Download to your computer
+- **Delete**: Permanently remove (cannot be undone)
+
+### Important Directories
+
+| Directory | Purpose |
+|-----------|----------|
+| `/` | Root server directory |
+| `/plugins/` | Server plugins (Paper/Spigot) |
+| `/mods/` | Server mods (Forge/Fabric) |
+| `/world/` | Main world data |
+| `/world_nether/` | Nether dimension |
+| `/world_the_end/` | End dimension |
+| `/logs/` | Server log files |
+| `/config/` | Mod/plugin configurations |
+
+<Warning>
+  Never modify files while the server is running unless absolutely necessary. Always stop the server first to prevent corruption.
+</Warning>
+
+## Settings Tab
+
+The settings tab contains important server configuration options.
+
+### Change Server Egg
+
+The egg system allows you to switch between different server types quickly.
+
+<Steps>
+  <Step title="Navigate to Settings">
+    Click the **Settings** tab in your server panel
+  </Step>
+  
+  <Step title="Find Change Egg Section">
+    Scroll down to the **Change Egg** section
+  </Step>
+  
+  <Step title="Select New Egg">
+    Choose from available eggs:
+    - **Paper**: Recommended for most servers
+    - **Spigot**: Plugin support (older)
+    - **Vanilla**: Official Minecraft server
+    - **Forge**: For modded servers
+    - **Fabric**: Lightweight modding platform
+    - **Purpur**: Paper with extra features
+    - **Velocity**: Modern proxy server
+    - **BungeeCord**: Legacy proxy server
+  </Step>
+  
+  <Step title="Configure Reinstall Options">
+    Choose whether to:
+    - **Reinstall server**: Downloads fresh server files
+    - **Wipe Server Files**: Deletes existing files
+    
+    <Warning>
+      Enabling **Wipe Server Files** will permanently delete all server data including worlds, plugins, and configurations. Always backup first!
+    </Warning>
+  </Step>
+  
+  <Step title="Confirm Change">
+    Click **Change Egg** and wait for the process to complete
+  </Step>
+</Steps>
+
+### What is an Egg?
+
+An "egg" is a configuration template that defines everything needed for a specific game server:
+
+- **Install Scripts**: Commands to properly install the server
+- **Startup Parameters**: Arguments needed to run the server
+- **Docker Environment**: Docker image and environment settings
+- **Configuration Files**: Default configs and settings
+
+<Note>
+  Eggs make it easy to switch between server types without manual configuration. The egg system is unique to Pterodactyl Panel.
+</Note>
+
+### Reinstall Server
+
+The reinstall function downloads fresh server files:
+
+1. Click **Reinstall Server** button
+2. Confirm the action
+3. Wait for reinstall to complete
+
+**When to reinstall**:
+- Server files are corrupted
+- You want to start fresh
+- Updating to a major new version
+- Switching server types
+
+<Warning>
+  Reinstalling will delete the server JAR file but preserves your worlds and configs. Always backup first to be safe.
+</Warning>
+
+## Backups Tab
+
+Create and manage server backups for data protection.
+
+### Creating Backups
+
+<Steps>
+  <Step title="Navigate to Backups Tab">
+    Click the **Backups** tab
+  </Step>
+  
+  <Step title="Create New Backup">
+    Click **Create Backup** button
+  </Step>
+  
+  <Step title="Configure Backup">
+    - **Name**: Give your backup a descriptive name
+    - **Ignored Files**: Optionally exclude files (e.g., `*.log`)
+    
+    The backup process will start automatically
+  </Step>
+  
+  <Step title="Wait for Completion">
+    Backups appear in the list once complete
+  </Step>
+</Steps>
+
+### Backup Features
+
+- **3 Manual Backups**: Create up to 3 backups yourself
+- **3 Automated Backups**: System creates automatic backups
+- **Off-site Storage**: Backups stored separately from server
+- **Download**: Download backups to your computer
+- **Restore**: Restore server to a backup state
+- **Delete**: Remove old backups to free space
+
+<Note>
+  Automated backups are created periodically by the system. You cannot control when they run, but they're always available.
+</Note>
+
+### Restoring Backups
+
+<Warning>
+  Restoring a backup will overwrite all current server files with the backup contents. This cannot be undone.
+</Warning>
+
+<Steps>
+  <Step title="Stop Your Server">
+    Always stop the server before restoring a backup
+  </Step>
+  
+  <Step title="Select Backup">
+    Find the backup you want to restore
+  </Step>
+  
+  <Step title="Click Restore">
+    Click the restore icon next to the backup
+  </Step>
+  
+  <Step title="Confirm">
+    Confirm you want to restore
+  </Step>
+  
+  <Step title="Wait for Completion">
+    The restore process takes a few minutes
+  </Step>
+  
+  <Step title="Start Server">
+    Start your server once restore completes
+  </Step>
+</Steps>
+
+## Startup Tab
+
+Configure server startup parameters and variables.
+
+### Common Startup Variables
+
+| Variable | Purpose | Example |
+|----------|---------|----------|
+| **Minecraft Version** | Server version to run | `1.21.4` |
+| **Build Number** | Specific build (Paper) | `latest` |
+| **Server JAR File** | JAR filename | `server.jar` |
+| **Java Version** | Java runtime version | `17` or `21` |
+
+<Note>
+  Most startup variables can be left at their defaults. Only change them if you know what you're doing.
+</Note>
+
+### Changing Minecraft Version
+
+<Steps>
+  <Step title="Go to Startup Tab">
+    Click the **Startup** tab
+  </Step>
+  
+  <Step title="Find Minecraft Version">
+    Locate the **Minecraft Version** field
+  </Step>
+  
+  <Step title="Enter Version">
+    Type your desired version (e.g., `1.20.1`, `1.21.4`)
+  </Step>
+  
+  <Step title="Restart Server">
+    Restart your server to download the new version
+  </Step>
+</Steps>
+
+<Warning>
+  Changing versions may break plugins or cause world corruption. Always backup before changing versions, especially when downgrading.
+</Warning>
+
+## Network Tab
+
+Manage server allocations and IP addresses.
+
+### Allocations
+
+An allocation is an IP:Port combination your server uses:
+
+- **Primary Allocation**: Main IP address for connections
+- **Additional Allocations**: Extra ports for plugins (e.g., Dynmap)
+
+### Adding Allocations
+
+<Steps>
+  <Step title="Go to Network Tab">
+    Click the **Network** tab
+  </Step>
+  
+  <Step title="Create Allocation">
+    Click **Create Allocation**
+  </Step>
+  
+  <Step title="Select Allocation">
+    Choose from available ports
+  </Step>
+  
+  <Step title="Make Primary (Optional)">
+    Click **Make Primary** to change main IP
+  </Step>
+</Steps>
+
+<Note>
+  Servers with 8GB+ RAM include a dedicated IP without a port number.
+</Note>
+
+## Schedules Tab
+
+Automate server tasks with scheduled commands.
+
+### Creating a Schedule
+
+<Steps>
+  <Step title="Navigate to Schedules">
+    Click the **Schedules** tab
+  </Step>
+  
+  <Step title="Create Schedule">
+    Click **Create Schedule**
+  </Step>
+  
+  <Step title="Configure Schedule">
+    Set:
+    - **Name**: Description of the schedule
+    - **Schedule**: When to run (cron format)
+    - **Enabled**: Whether schedule is active
+  </Step>
+  
+  <Step title="Add Tasks">
+    Add tasks to the schedule:
+    - **Send Command**: Run server command
+    - **Send Power Action**: Restart, stop, etc.
+    - **Create Backup**: Automatic backup creation
+  </Step>
+</Steps>
+
+### Schedule Examples
+
+**Daily Restart at 4 AM**:
+- Minute: `0`
+- Hour: `4`
+- Day of Month: `*`
+- Month: `*`
+- Day of Week: `*`
+- Task: Power Action - Restart
+
+**Save World Every Hour**:
+- Minute: `0`
+- Hour: `*`
+- Day of Month: `*`
+- Month: `*`
+- Day of Week: `*`
+- Task: Send Command - `save-all`
+
+**Weekly Backup (Sunday 3 AM)**:
+- Minute: `0`
+- Hour: `3`
+- Day of Month: `*`
+- Month: `*`
+- Day of Week: `0`
+- Task: Create Backup
+
+<Note>
+  Schedules use cron format. Use `*` to mean "every" and specific numbers for exact times.
+</Note>
+
+## Users Tab
+
+Grant other users access to manage your server.
+
+### Adding Subusers
+
+<Steps>
+  <Step title="Go to Users Tab">
+    Click the **Users** tab
+  </Step>
+  
+  <Step title="Create User">
+    Click **New User**
+  </Step>
+  
+  <Step title="Enter Email">
+    Enter the email of the user to invite
+    
+    <Note>
+      They must have a Birdflop account with this email
+    </Note>
+  </Step>
+  
+  <Step title="Set Permissions">
+    Choose what they can access:
+    - Console access and commands
+    - File management
+    - Backup creation/restoration
+    - Schedule management
+    - Settings changes
+  </Step>
+  
+  <Step title="Send Invite">
+    Click **Invite User**
+  </Step>
+</Steps>
+
+<Warning>
+  Only grant permissions you trust the user with. Anyone with file access can potentially damage your server.
+</Warning>
+
+## Activity Tab
+
+View a log of all actions performed on your server.
+
+**Logged activities include**:
+- Server starts/stops/restarts
+- File modifications
+- Backup creation/restoration
+- Settings changes
+- User additions/removals
+- Schedule executions
+
+<Note>
+  Activity logs help troubleshoot issues and track changes made to your server.
+</Note>
+
+## Mobile App Support
+
+The panel works great on mobile devices:
+
+- **Responsive Design**: Adapts to any screen size
+- **Touch Optimized**: Easy tap controls
+- **Full Feature Access**: All features available on mobile
+
+<Card title="Mobile Tips" icon="mobile">
+  - Use landscape mode for file editing
+  - Console auto-scrolls on mobile
+  - Pinch to zoom in file editor
+</Card>
+
+## Getting Help
+
+<CardGroup cols={2}>
+  <Card title="Discord Community" icon="discord">
+    Join our Discord for help from staff and community members
+  </Card>
+  <Card title="Submit Ticket" icon="ticket">
+    Create a support ticket through the client area for direct help
+  </Card>
+</CardGroup>
+
+<Note>
+  Most common issues can be resolved by checking the console for error messages. Include console errors when asking for help.
+</Note>

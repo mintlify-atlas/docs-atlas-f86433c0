@@ -1,80 +1,235 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: "Quick Start Guide"
+description: "Get your Minecraft server running with Birdflop in minutes"
 ---
 
-## Get started in three steps
+## Get Started with Birdflop
 
-Get your documentation site running locally and make your first customization.
+This guide will walk you through ordering your first Minecraft server from Birdflop, setting it up, and getting it online.
 
-### Step 1: Set up your local environment
-
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+<Steps>
+  <Step title="Choose Your Plan">
+    Navigate to the [Birdflop homepage](https://birdflop.com) and scroll to the **Plans** section, or visit the plans page directly.
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
+    ### Available Plans
     
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+    Birdflop offers multiple hosting tiers with different RAM configurations:
     
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    - **Budget Plans**: Starting from 2GB, perfect for small servers
+    - **Standard Plans**: 4-16GB options for medium-sized communities
+    - **Premium Plans**: 8GB+ with dedicated IPs for large networks
+    
+    <Note>
+      All plans include:
+      - One-click modpack installer
+      - DDoS protection
+      - 3 off-site backups
+      - Improved Pterodactyl Panel
+      - 3-day satisfaction guarantee
+      - Dedicated IPs on 8+ GB plans
+    </Note>
+    
+    Last quarter, clients paid between **$1.48-$1.99/GB RAM** after reimbursements, making Birdflop one of the most affordable options available.
+    
+    <Tip>
+      Not sure which plan to choose? Contact support on our [Discord server](https://discord.com/invite/nmgtX5z) for personalized recommendations based on your expected player count and modpack requirements.
+    </Tip>
+  </Step>
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+  <Step title="Complete Your Order">
+    Click **Order Now** on your chosen plan and follow the checkout process:
+    
+    1. Select your desired RAM amount
+    2. Choose your server location (US or EU)
+    3. Review pricing and features
+    4. Complete payment through Stripe
+    
+    <Warning>
+      Make sure to select the correct region for your player base to minimize latency. US servers are best for North American players, while EU servers are optimal for European players.
+    </Warning>
+    
+    After successful payment, you'll receive:
+    - An order confirmation email
+    - Access credentials for the Pterodactyl Panel
+    - Your server's IP address and port
+  </Step>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+  <Step title="Access Your Server Panel">
+    Log into the **improved Pterodactyl Panel** using the credentials provided in your welcome email.
+    
+    The panel gives you complete control over your server:
+    
+    - **File Manager**: Upload plugins, mods, and configurations
+    - **Console**: Monitor server logs and execute commands
+    - **Startup Settings**: Configure Java version and startup flags
+    - **Backups**: Create and restore server backups
+    - **Network**: Manage allocations and reverse proxies
+    
+    <Tip>
+      Bookmark your panel URL for easy access. The improved Pterodactyl Panel offers more features and better performance than standard hosting panels.
+    </Tip>
+  </Step>
 
-### Step 3: Go live
+  <Step title="Configure Your Server">
+    Before starting your server for the first time, configure these essential settings:
+    
+    ### Choose Your Server Type
+    
+    From the **Startup** tab, select your preferred server software:
+    - **Paper**: Recommended for most servers (best performance)
+    - **Purpur**: Paper fork with additional features
+    - **Fabric**: For mod support
+    - **Forge**: For mod support (older mods)
+    - **Vanilla**: Official Minecraft server
+    
+    ### Install Modpacks (Optional)
+    
+    Use the **one-click modpack installer** to instantly set up popular modpacks:
+    1. Navigate to the modpack installer in your panel
+    2. Search for your desired modpack (e.g., All the Mods, SkyFactory, etc.)
+    3. Click install and wait for automatic setup
+    
+    ### Optimize Startup Flags
+    
+    For best performance, use the [Flags Generator](https://birdflop.com/resources/flags) to generate optimal Java flags based on your server's RAM allocation.
+    
+    <Note>
+      Birdflop's Flags Generator creates customized startup scripts that maximize your server's performance based on current best practices.
+    </Note>
+  </Step>
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+  <Step title="Start Your Server">
+    Once configured, start your server from the panel:
+    
+    1. Click the **Start** button in the console
+    2. Monitor the console output for any errors
+    3. Wait for the "Done!" message indicating successful startup
+    4. Note your server IP and port for connecting
+    
+    ### Connect to Your Server
+    
+    1. Open Minecraft launcher and select the matching version
+    2. Click **Multiplayer** → **Add Server**
+    3. Enter your server IP and port (e.g., `node1.us.birdflop.com:25565`)
+    4. Click **Done** and join your server
+    
+    <Tip>
+      Share your server IP with friends to start building your community. Consider setting up a Discord server to coordinate with players.
+    </Tip>
+  </Step>
 
-## Next steps
+  <Step title="Optimize Your Server">
+    After your server is running, use Birdflop's free optimization tools to maximize performance:
+    
+    ### Paper Timings Analyzer
+    
+    1. Run `/timings on` in-game
+    2. Wait 10-15 minutes for data collection
+    3. Run `/timings paste`
+    4. Paste the URL into [Birdflop's Paper Timings Analyzer](https://birdflop.com/resources/papertimings)
+    5. Review personalized optimization suggestions
+    
+    ### Spark Profiler
+    
+    1. Install the Spark plugin
+    2. Run `/spark profiler --timeout 300`
+    3. Paste the URL into [Birdflop's Spark Analyzer](https://birdflop.com/resources/sparkprofile)
+    4. Get detailed performance insights
+    
+    <Note>
+      These tools provide **unique recommendations** tailored to your specific server configuration, plugins, and performance profile.
+    </Note>
+  </Step>
+</Steps>
 
-Now that you have your docs running, explore these key features:
+## Alternative: Using Free Tools
+
+Not ready to order hosting? Start by exploring Birdflop's **free tools** for the Minecraft community:
 
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card
+    title="RGBirdflop"
+    icon="palette"
+    href="https://birdflop.com/resources/rgb"
+  >
+    Create beautiful hex gradient text for your Minecraft server. No account required.
+  </Card>
+  <Card
+    title="Flags Generator"
+    icon="flag"
+    href="https://birdflop.com/resources/flags"
+  >
+    Generate optimal startup flags for your server based on RAM and Java version.
+  </Card>
+  <Card
+    title="Banner Generator"
+    icon="image"
+    href="https://birdflop.com/resources/banner"
+  >
+    Design custom banners for Minecraft without complex crafting.
+  </Card>
+  <Card
+    title="Animated TAB"
+    icon="sparkles"
+    href="https://birdflop.com/resources/animtab"
+  >
+    Create animated TAB plugin gradients for player lists.
+  </Card>
 </CardGroup>
 
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+## Need Help?
+
+<AccordionGroup>
+  <Accordion icon="discord" title="Join Our Discord Server">
+    Get **instant support** from our community and staff on our [Discord server](https://discord.com/invite/nmgtX5z). We have dedicated support channels for hosting questions, technical issues, and general Minecraft help.
+  </Accordion>
+  
+  <Accordion icon="book" title="View Server Statistics">
+    Birdflop is transparent about server performance. Check our [Node Stats page](https://birdflop.com/node-stats) to view real-time server load, CPU usage, and network statistics.
+  </Accordion>
+  
+  <Accordion icon="hand-holding-dollar" title="Request a Free Trial">
+    Not sure if Birdflop is right for you? Create a ticket on our Discord server to request a **free trial**. All plans also include a **3-day refund guarantee** if you're not satisfied.
+  </Accordion>
+  
+  <Accordion icon="badge-percent" title="Price Matching">
+    Found a similar plan at a lower price? We're confident we have the best value, but if you find a competitor with comparable specs at a lower price, **ask us about price matching**.
+  </Accordion>
+</AccordionGroup>
+
+## What's Next?
+
+<CardGroup cols={2}>
+  <Card
+    title="Install Botflop"
+    icon="robot"
+    href="https://discord.com/oauth2/authorize?client_id=787929894616825867&permissions=0&scope=bot"
+  >
+    Add Botflop to your Discord for automatic timings analysis and text file uploads.
+  </Card>
+  <Card
+    title="Explore All Resources"
+    icon="box"
+    href="https://birdflop.com/resources"
+  >
+    Browse all free tools including texture animators, TAB previews, and more.
+  </Card>
+  <Card
+    title="View Reimbursements"
+    icon="chart-line"
+    href="https://birdflop.com"
+  >
+    Check historical reimbursement rates and see how much you could save.
+  </Card>
+  <Card
+    title="Support Our Mission"
+    icon="heart"
+    href="https://donate.stripe.com/4gw5kU6nM6mSfxS288"
+  >
+    Make a tax-deductible donation to help us continue providing affordable hosting and free resources.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Remember, Birdflop is a **501(c)(3) nonprofit** dedicated to fostering interest in technology and computer science. Your support helps us accomplish our mission of making hosting accessible to everyone.
+</Tip>

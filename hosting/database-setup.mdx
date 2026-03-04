@@ -1,0 +1,543 @@
+---
+title: Database Setup
+description: How to create and manage MySQL databases for Minecraft plugins
+---
+
+# Database Setup Guide
+
+Many Minecraft plugins require a MySQL database to store data persistently. This guide shows you how to create and manage databases on your Birdflop server.
+
+## What is a MySQL Database?
+
+A MySQL database is a structured data storage system that plugins use to:
+
+- Store player data persistently
+- Share data between multiple servers
+- Keep data safe from server crashes
+- Enable advanced features like leaderboards
+
+<Note>
+  Databases are particularly useful for network setups where multiple servers need to share player data.
+</Note>
+
+## Common Plugins that Use Databases
+
+<CardGroup cols={2}>
+  <Card title="Economy Plugins" icon="coins">
+    - **Vault** (with economy plugins)
+    - **EssentialsX** (optional)
+    - **PlayerPoints**
+  </Card>
+  <Card title="Permission Plugins" icon="shield-halved">
+    - **LuckPerms** (recommended)
+    - **PermissionsEx**
+    - **GroupManager**
+  </Card>
+  <Card title="Protection Plugins" icon="lock">
+    - **CoreProtect**
+    - **GriefPrevention**
+    - **Lands**
+  </Card>
+  <Card title="Other Popular Plugins" icon="puzzle-piece">
+    - **Plan** (analytics)
+    - **AdvancedBan**
+    - **Jobs Reborn**
+    - **mcMMO**
+  </Card>
+</CardGroup>
+
+## Creating a Database
+
+<Steps>
+  <Step title="Navigate to Databases Tab">
+    Log in to your server panel at `https://client.birdflop.com` and click the **Databases** tab.
+  </Step>
+  
+  <Step title="Create New Database">
+    Click the **Create Database** button.
+    
+    You'll see:
+    - **Database Name**: Auto-generated (e.g., `s12_database_name`)
+    - **Connections From**: Set to `%` (allow all)
+    
+    <Note>
+      The `s12_` prefix is your server identifier and is automatically added.
+    </Note>
+  </Step>
+  
+  <Step title="Enter Database Name">
+    Type a descriptive name for your database:
+    
+    Examples:
+    - `luckperms` - for LuckPerms plugin
+    - `coreprotect` - for CoreProtect plugin
+    - `maindata` - for general server data
+    
+    <Warning>
+      Use only letters, numbers, and underscores. No spaces or special characters.
+    </Warning>
+  </Step>
+  
+  <Step title="Create Database">
+    Click **Create Database**.
+    
+    The database will be created instantly and appear in your list.
+  </Step>
+</Steps>
+
+## Database Information
+
+After creating a database, you'll see important connection details:
+
+### Connection Details
+
+| Field | Description | Example |
+|-------|-------------|----------|
+| **Endpoint** | Database server address | `db.birdflop.com:3306` |
+| **Database Name** | Full database name | `s12_luckperms` |
+| **Username** | Database username | `s12_dbuser` |
+| **Password** | Database password | Click eye icon to view |
+| **JDBC Connection String** | Complete connection URL | `jdbc:mysql://...` |
+
+<Note>
+  Click the **eye icon** to reveal the password. Click again to hide it.
+</Note>
+
+### Copying Connection Details
+
+Click any field to copy it to your clipboard:
+
+1. Click the **Endpoint** field to copy the address
+2. Click the **Database Name** to copy the full name
+3. Click the **Password** field to copy the password
+
+## Configuring Plugins
+
+Most plugins have a configuration file where you enter database details.
+
+### LuckPerms Example
+
+LuckPerms is a popular permissions plugin that benefits greatly from MySQL.
+
+<Steps>
+  <Step title="Create Database">
+    Create a database named `luckperms` following the steps above.
+  </Step>
+  
+  <Step title="Stop Your Server">
+    Stop your server to safely edit configuration files.
+  </Step>
+  
+  <Step title="Edit Configuration">
+    Navigate to `/plugins/LuckPerms/config.yml` and find the storage section:
+    
+    ```yaml
+    storage-method: mysql
+    
+    data:
+      address: db.birdflop.com:3306
+      database: s12_luckperms
+      username: s12_dbuser
+      password: 'your_password_here'
+      
+      pool-settings:
+        maximum-pool-size: 10
+        minimum-idle: 10
+        maximum-lifetime: 1800000
+        keepalive-time: 0
+        connection-timeout: 5000
+    ```
+    
+    Replace the placeholders with your actual database details from the panel.
+  </Step>
+  
+  <Step title="Save and Start">
+    1. Save the configuration file
+    2. Start your server
+    3. Check console for successful database connection
+    
+    You should see:
+    ```
+    [LuckPerms] Connected to MySQL database
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+  Always wrap the password in single quotes (`'password'`) to handle special characters correctly.
+</Warning>
+
+### CoreProtect Example
+
+CoreProtect is a block logging and rollback plugin.
+
+<Tabs>
+  <Tab title="Configuration">
+    Edit `/plugins/CoreProtect/config.yml`:
+    
+    ```yaml
+    use-mysql: true
+    table-prefix: co_
+    mysql-host: db.birdflop.com
+    mysql-port: 3306
+    mysql-database: s12_coreprotect
+    mysql-username: s12_dbuser
+    mysql-password: your_password_here
+    ```
+    
+    Replace with your actual database details.
+  </Tab>
+  
+  <Tab title="Why Use MySQL?">
+    CoreProtect benefits from MySQL because:
+    
+    - **Performance**: Faster lookups on large servers
+    - **Shared Data**: Use one database across multiple servers
+    - **Reliability**: Less likely to corrupt than SQLite
+    - **Storage**: Can handle millions of logged blocks
+    
+    <Note>
+      CoreProtect can use SQLite by default, but MySQL is recommended for servers with 10+ players.
+    </Note>
+  </Tab>
+</Tabs>
+
+### General Plugin Configuration
+
+Most plugins follow a similar pattern:
+
+```yaml
+# Common database configuration format
+database:
+  type: mysql
+  host: db.birdflop.com
+  port: 3306
+  database: s12_yourplugin
+  username: s12_dbuser
+  password: 'your_password_here'
+  
+# Alternative format (some plugins)
+db:
+  mysql:
+    enabled: true
+    address: db.birdflop.com:3306
+    db-name: s12_yourplugin
+    user: s12_dbuser
+    pass: 'your_password_here'
+```
+
+<Note>
+  Always check the plugin's documentation for the exact configuration format required.
+</Note>
+
+## Managing Databases
+
+### Viewing Database Contents
+
+You can connect to your database using external tools:
+
+<Tabs>
+  <Tab title="MySQL Workbench">
+    **MySQL Workbench** is a free GUI tool for managing databases.
+    
+    1. Download from [mysql.com/products/workbench](https://dev.mysql.com/downloads/workbench/)
+    2. Open MySQL Workbench
+    3. Click **+** to create a new connection
+    4. Enter your connection details:
+       - **Connection Name**: Birdflop Server
+       - **Hostname**: `db.birdflop.com`
+       - **Port**: `3306`
+       - **Username**: Your database username
+       - **Password**: Click "Store in Keychain" and enter password
+    5. Click **Test Connection**
+    6. Click **OK** to save
+    
+    You can now browse tables, run queries, and manage data.
+  </Tab>
+  
+  <Tab title="phpMyAdmin">
+    **phpMyAdmin** is a web-based database manager.
+    
+    <Warning>
+      Birdflop does not provide phpMyAdmin hosting. You'll need to set up your own instance or use MySQL Workbench instead.
+    </Warning>
+  </Tab>
+  
+  <Tab title="Command Line">
+    Connect via MySQL CLI:
+    
+    ```bash
+    mysql -h db.birdflop.com -P 3306 -u s12_dbuser -p s12_luckperms
+    ```
+    
+    Enter your password when prompted.
+    
+    <Note>
+      The MySQL CLI is useful for advanced users who want to run queries directly.
+    </Note>
+  </Tab>
+</Tabs>
+
+### Deleting Databases
+
+<Warning>
+  Deleting a database is permanent and cannot be undone. All data will be lost.
+</Warning>
+
+<Steps>
+  <Step title="Backup Data (Recommended)">
+    Export the database using MySQL Workbench or create a server backup first.
+  </Step>
+  
+  <Step title="Navigate to Databases">
+    Go to the **Databases** tab in your panel.
+  </Step>
+  
+  <Step title="Delete Database">
+    Click the **trash icon** next to the database you want to delete.
+  </Step>
+  
+  <Step title="Confirm Deletion">
+    Confirm that you want to permanently delete the database.
+  </Step>
+</Steps>
+
+### Rotating Passwords
+
+If you need to change your database password:
+
+<Steps>
+  <Step title="Delete Old Database">
+    Delete the existing database (backup first!).
+  </Step>
+  
+  <Step title="Create New Database">
+    Create a new database with the same name.
+    
+    A new password will be automatically generated.
+  </Step>
+  
+  <Step title="Update Plugin Configs">
+    Update all plugin configuration files with the new password.
+  </Step>
+</Steps>
+
+<Note>
+  There's currently no way to rotate passwords without recreating the database.
+</Note>
+
+## Database Limits
+
+### Default Limits
+
+- **Maximum Databases**: 3 per server
+- **Database Size**: No hard limit, but monitored for abuse
+- **Connections**: Up to 10 simultaneous connections per database
+
+<Note>
+  If you need more than 3 databases, contact support to discuss your use case.
+</Note>
+
+### Performance Considerations
+
+<CardGroup cols={2}>
+  <Card title="Connection Pooling" icon="plug">
+    Plugins should use connection pooling to reuse connections rather than creating new ones for every query.
+    
+    Most modern plugins handle this automatically.
+  </Card>
+  <Card title="Query Optimization" icon="gauge">
+    Poorly optimized queries can slow down your server.
+    
+    Monitor slow queries and optimize plugin configurations.
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Plugin can't connect to database">
+    **Common causes**:
+    1. **Wrong credentials**: Double-check host, database name, username, and password
+    2. **Typos in config**: Verify spelling and formatting
+    3. **Missing quotes**: Wrap password in single quotes
+    4. **Wrong port**: Should be `3306`
+    5. **Plugin not started**: Check if plugin loaded successfully
+    
+    **Check console for errors**:
+    ```
+    [PluginName] Failed to connect to database
+    [PluginName] Access denied for user
+    [PluginName] Unknown database
+    ```
+    
+    These messages indicate the specific issue.
+  </Accordion>
+  
+  <Accordion title="Data not saving to database">
+    **Troubleshooting steps**:
+    1. Verify plugin is using MySQL (check config)
+    2. Check console for database errors
+    3. Test connection with MySQL Workbench
+    4. Verify tables were created (check with Workbench)
+    5. Check plugin permissions and settings
+    
+    <Note>
+      Some plugins require a server restart after enabling MySQL for changes to take effect.
+    </Note>
+  </Accordion>
+  
+  <Accordion title="Connection pool errors">
+    If you see errors about connection pool exhaustion:
+    
+    ```
+    [PluginName] Cannot get connection from pool
+    [PluginName] Connection pool timeout
+    ```
+    
+    **Solutions**:
+    1. Increase `maximum-pool-size` in plugin config
+    2. Reduce `connection-timeout` if set too high
+    3. Check for slow queries causing connections to hang
+    4. Restart the plugin to reset connections
+    
+    <Warning>
+      Connection pool issues usually indicate a plugin configuration problem or very slow queries.
+    </Warning>
+  </Accordion>
+  
+  <Accordion title="Database is full or slow">
+    **Optimization steps**:
+    1. **Check database size** using MySQL Workbench
+    2. **Remove old data**: Many plugins have cleanup commands
+    3. **Optimize tables**: Run `OPTIMIZE TABLE` on large tables
+    4. **Review indexes**: Ensure proper indexes exist
+    5. **Purge logs**: Plugins like CoreProtect can purge old logs
+    
+    **Example CoreProtect purge**:
+    ```
+    /co purge t:30d
+    ```
+    This removes data older than 30 days.
+  </Accordion>
+</AccordionGroup>
+
+## Multi-Server Setups
+
+Databases are especially powerful for networks with multiple servers:
+
+### Shared Permission System
+
+<Steps>
+  <Step title="Create Central Database">
+    Create one LuckPerms database on your main server.
+  </Step>
+  
+  <Step title="Configure All Servers">
+    Configure LuckPerms on every server to use the same database.
+    
+    All servers will share permissions, groups, and user data.
+  </Step>
+  
+  <Step title="Set Server Names">
+    Configure each server with a unique name:
+    
+    ```yaml
+    server: lobby
+    ```
+    
+    This allows per-server permissions while sharing the database.
+  </Step>
+</Steps>
+
+<Note>
+  With a shared database, changes made on one server instantly apply to all servers in your network.
+</Note>
+
+### Shared Economy System
+
+Use a single database for economy plugins to share balances:
+
+```yaml
+# Configure on all servers
+database:
+  type: mysql
+  host: db.birdflop.com
+  database: s12_economy
+  username: s12_dbuser
+  password: 'your_password'
+```
+
+Players keep their balance when moving between servers.
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Backup Regularly" icon="floppy-disk">
+    Export database backups regularly using MySQL Workbench or automated scripts.
+  </Card>
+  <Card title="Monitor Size" icon="chart-line">
+    Check database size periodically and purge old data when needed.
+  </Card>
+  <Card title="Use Strong Passwords" icon="key">
+    Database passwords are auto-generated and secure. Never share them publicly.
+  </Card>
+  <Card title="Document Setup" icon="book">
+    Keep notes on which plugins use which databases for easier troubleshooting.
+  </Card>
+</CardGroup>
+
+## Advanced Topics
+
+### JDBC Connection Strings
+
+Some plugins require a JDBC connection string instead of individual fields:
+
+```
+jdbc:mysql://db.birdflop.com:3306/s12_luckperms?useSSL=false&useUnicode=true&characterEncoding=utf8
+```
+
+The panel provides this pre-formatted in the database details.
+
+### SSL Connections
+
+<Note>
+  SSL is not required for database connections as they occur within Birdflop's internal network.
+</Note>
+
+If a plugin requires SSL, you can typically disable it:
+
+```yaml
+useSSL: false
+# or in JDBC
+?useSSL=false
+```
+
+### Character Encoding
+
+Always use UTF-8 encoding for proper handling of special characters:
+
+```yaml
+characterEncoding: utf8
+useUnicode: true
+```
+
+Most plugins default to UTF-8 automatically.
+
+## Getting Help
+
+<Card title="Need Database Help?" icon="life-ring">
+  Join our Discord community for assistance with:
+  - Database connection issues
+  - Plugin configuration help
+  - Performance optimization
+  - Multi-server setup guidance
+</Card>
+
+<Note>
+  When asking for help, include:
+  - Plugin name and version
+  - Relevant config sections
+  - Console errors (if any)
+  - What you've already tried
+</Note>

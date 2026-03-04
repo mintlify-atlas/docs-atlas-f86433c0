@@ -1,0 +1,107 @@
+---
+title: 'Basic Gradient'
+description: 'Create simple RGB gradients with the RGBirdflop SDK'
+---
+
+## Overview
+
+This example shows how to create a basic RGB gradient using the RGBirdflop SDK. Gradients transition smoothly between multiple colors across your text.
+
+## Basic Two-Color Gradient
+
+The simplest gradient uses two colors:
+
+```typescript
+import { rgbDefaults, generateOutput } from '@birdflop/rgbirdflop';
+
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Hello, World!',
+  colors: [
+    { hex: '#ff0000', pos: 0 },    // Red at start
+    { hex: '#0000ff', pos: 100 },  // Blue at end
+  ],
+});
+
+console.log(result);
+// Output: &#ff0000H&#ea0015e&#d40029l&#bf003fl&#aa0054o&#95006a,&#7f007f &#6a0095W&#5400aao&#3f00bfr&#2900d4l&#1500ead&#0000ff!
+```
+
+## Multi-Color Gradient
+
+Add more colors for complex gradients:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'RGBirdflop',
+  colors: [
+    { hex: '#ff0000', pos: 0 },    // Red
+    { hex: '#00ff00', pos: 50 },   // Green
+    { hex: '#0000ff', pos: 100 },  // Blue
+  ],
+});
+
+console.log(result);
+```
+
+## Color Position Control
+
+Control where each color appears in the gradient using the `pos` property (0-100):
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Minecraft Server',
+  colors: [
+    { hex: '#ffff00', pos: 0 },    // Yellow at start
+    { hex: '#ff8800', pos: 25 },   // Orange at 25%
+    { hex: '#ff0000', pos: 100 },  // Red at end
+  ],
+});
+```
+
+<Note>
+The `pos` property determines where each color appears in the gradient:
+- `0` = start of text
+- `50` = middle of text
+- `100` = end of text
+
+Colors between positions are automatically interpolated.
+</Note>
+
+## Color Length Per Character
+
+Control how many characters share the same color:
+
+```typescript
+const result = generateOutput({
+  ...rgbDefaults,
+  text: 'Hello, World!',
+  colors: [
+    { hex: '#ff0000', pos: 0 },
+    { hex: '#0000ff', pos: 100 },
+  ],
+  colorlength: 2,  // Each color applies to 2 characters
+});
+```
+
+<Tip>
+The `colorlength` option controls gradient smoothness:
+- `1` (default) = smoothest gradient, each character gets its own color
+- `2` = two characters per color
+- Higher values = chunkier, less smooth gradients
+</Tip>
+
+## Output Formats
+
+The default format is `&#RRGGBB` (Minecraft color codes). See other examples for different output formats:
+
+<CardGroup cols={2}>
+  <Card title="MiniMessage" icon="message" href="/sdk/examples/minimessage">
+    Modern MiniMessage format output
+  </Card>
+  <Card title="JSON" icon="code" href="/sdk/examples/json-output">
+    Minecraft JSON text component format
+  </Card>
+</CardGroup>
